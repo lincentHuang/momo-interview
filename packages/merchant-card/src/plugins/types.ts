@@ -1,5 +1,4 @@
 import type { TemplateResult } from "lit";
-import type { z } from "zod";
 import type { Card, CardVariant } from "../schema/card.schema";
 import type { FieldDescriptor } from "../schema/fields";
 
@@ -19,6 +18,11 @@ import type { FieldDescriptor } from "../schema/fields";
  */
 export const CARD_SLOTS = ["media-top", "media-bottom", "badges", "price-extra", "footer"] as const;
 export type CardSlot = (typeof CARD_SLOTS)[number];
+
+/** 最小化的驗證介面（相容 zod 的 safeParse），讓 plugin 不被綁定在特定驗證函式庫 */
+export interface ConfigSchema<C> {
+  safeParse(value: unknown): { success: true; data: C } | { success: false; error: { issues: unknown } };
+}
 
 export interface PluginRenderContext<C> {
   card: Card;
@@ -43,7 +47,11 @@ export interface CardPlugin<C extends Record<string, unknown> = Record<string, u
   order?: number;
   /** 限定可用的 variant；省略代表全部可用 */
   variants?: ReadonlyArray<CardVariant>;
-  configSchema: z.ZodType<C>;
+  /**
+   * config 驗證。任何具備 safeParse 的物件皆可（zod schema 或手寫）；
+   * 省略時直接以 defaults 合併原始 config，適合無建置流程的宿主快速擴充。
+   */
+  configSchema?: ConfigSchema<C>;
   defaults: C;
   /** 編輯器據此自動產生控制項 */
   fields: ReadonlyArray<FieldDescriptor>;

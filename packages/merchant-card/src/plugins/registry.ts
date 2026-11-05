@@ -58,7 +58,12 @@ export class PluginRegistry {
       if (!plugin) continue; // 未註冊的 extension 保留資料但不渲染（向前相容）
       if (plugin.variants && !plugin.variants.includes(card.variant)) continue;
       if (slot !== undefined && plugin.slot !== slot) continue;
-      const parsed = plugin.configSchema.safeParse({ ...plugin.defaults, ...raw });
+      const merged = { ...plugin.defaults, ...raw };
+      if (!plugin.configSchema) {
+        out.push({ plugin, config: merged });
+        continue;
+      }
+      const parsed = plugin.configSchema.safeParse(merged);
       if (!parsed.success) {
         console.warn(`[momo-card] plugin "${id}" config 不合法，改用預設值`, parsed.error.issues);
       }
