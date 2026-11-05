@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AppHeader } from "@/shared/layout/app-header";
+import { AppShell } from "@/shared/layout/app-shell";
 import { TooltipProvider } from "@/shared/ui";
 import "./globals.css";
 
@@ -13,8 +13,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="zh-Hant-TW" className="h-full antialiased">
       <body className="min-h-full font-sans">
         <TooltipProvider>
-          <AppHeader />
-          <main className="mx-auto max-w-7xl px-4 py-6">{children}</main>
+          <AppShell>{children}</AppShell>
         </TooltipProvider>
       </body>
     </html>

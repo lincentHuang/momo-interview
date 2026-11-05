@@ -1,6 +1,6 @@
 "use client";
 
-import { getSharedStore, registerBuiltinPlugins, type CardRecord, type CardStore, type StoreSnapshot } from "@momo/merchant-card";
+import { CARD_SCHEMA_VERSION, DEFAULT_CHANNEL_NAME, DEFAULT_STORAGE_KEY, getSharedStore, pluginRegistry, registerBuiltinPlugins, type CardPlugin, type CardRecord, type CardStore, type CardVariant, type StoreSnapshot } from "@momo/merchant-card";
 import { useSyncExternalStore } from "react";
 
 /**
@@ -53,4 +53,42 @@ const actions: CardActions = {
 
 export function useCardActions(): CardActions {
   return actions;
+}
+
+const subscribePlugins = (cb: () => void) => pluginRegistry.subscribe(cb);
+const getPluginsVersion = () => {
+  runtime(); // 確保內建 plugin 已註冊（只在瀏覽器端呼叫）
+  return pluginRegistry.getVersion();
+};
+
+/**
+ * 已註冊的 plugin（傳入 variant 時只回傳該 variant 可用的）。
+ * registry 在執行期動態註冊 / 移除時自動更新；SSR 時回傳空陣列。
+ */
+export function usePlugins(variant?: CardVariant): CardPlugin[] | null {
+  const version = useSyncExternalStore(subscribePlugins, getPluginsVersion, () => -1);
+  if (version === -1) return null;
+  return variant ? pluginRegistry.available({ variant }) : pluginRegistry.list();
+}
+
+export interface StoreInfo {
+  schemaVersion: number;
+  storageKey: string;
+  channelName: string;
+  /** 本分頁的寫入來源識別（LWW 平手時的決勝依據） */
+  origin: string;
+  broadcastChannel: boolean;
+}
+
+/** 同步機制的診斷資訊（設定頁使用）；SSR 時為 null */
+export function useStoreInfo(): StoreInfo | null {
+  const snapshot = useStoreSnapshot();
+  if (!snapshot) return null;
+  return {
+    schemaVersion: CARD_SCHEMA_VERSION,
+    storageKey: DEFAULT_STORAGE_KEY,
+    channelName: DEFAULT_CHANNEL_NAME,
+    origin: runtime().origin,
+    broadcastChannel: typeof BroadcastChannel !== "undefined",
+  };
 }

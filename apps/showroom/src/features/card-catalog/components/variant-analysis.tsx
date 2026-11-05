@@ -1,13 +1,14 @@
-import { BUILTIN_PLUGINS, VARIANTS } from "@momo/merchant-card";
+import { BUILTIN_PLUGINS, CARD_SLOT_LABELS, CARD_SLOTS, VARIANTS } from "@momo/merchant-card";
 
 /** 領域分析結果：直接由 schema 定義產生，文件與程式碼不會走鐘 */
 export function VariantAnalysis() {
   return (
-    <section aria-labelledby="analysis-heading" className="grid gap-4 lg:grid-cols-[2fr_1fr]">
-      <div className="rounded-xl border border-line bg-white p-5">
-        <h2 id="analysis-heading" className="mb-3 text-sm font-semibold">
-          商品卡類型分析 <span className="font-normal text-muted">· variant（業務型態）</span>
+    <div className="grid gap-6 xl:grid-cols-[3fr_2fr]">
+      <section aria-labelledby="variant-heading" className="rounded-xl border border-line bg-white p-5">
+        <h2 id="variant-heading" className="mb-1 text-sm font-semibold">
+          商品卡類型 <span className="font-normal text-muted">· variant（業務型態）</span>
         </h2>
+        <p className="mb-4 text-xs text-muted">決定卡片的專屬資訊，以 Discriminated Union 建模；新增 variant 時 TypeScript 會強制補齊 renderer。</p>
         <dl className="grid gap-3 sm:grid-cols-2">
           {Object.values(VARIANTS).map((v) => (
             <div key={v.variant} className="rounded-lg bg-surface-muted p-3">
@@ -20,21 +21,28 @@ export function VariantAnalysis() {
             </div>
           ))}
         </dl>
-      </div>
-      <div className="rounded-xl border border-line bg-white p-5">
-        <h2 className="mb-3 text-sm font-semibold">
-          行銷附加資訊 <span className="font-normal text-muted">· plugin</span>
+      </section>
+
+      <section aria-labelledby="slot-heading" className="rounded-xl border border-line bg-white p-5">
+        <h2 id="slot-heading" className="mb-1 text-sm font-semibold">
+          行銷附加資訊 <span className="font-normal text-muted">· plugin × slot</span>
         </h2>
-        <ul className="space-y-2">
-          {BUILTIN_PLUGINS.map((p) => (
-            <li key={p.id} className="text-xs">
-              <span className="font-medium text-ink">{p.name}</span>
-              <span className="text-muted"> — {p.description}</span>
-              {p.slot && <code className="ml-1 rounded bg-surface-muted px-1 text-[11px] text-muted">{p.slot}</code>}
-            </li>
-          ))}
+        <p className="mb-4 text-xs text-muted">變動最頻繁的需求交給 plugin；卡片只提供插槽，編輯器可把模組拖到任一插槽。</p>
+        <ul className="space-y-3">
+          {CARD_SLOTS.map((slot) => {
+            const plugins = BUILTIN_PLUGINS.filter((p) => p.slot === slot);
+            return (
+              <li key={slot} className="flex items-start gap-3 text-xs">
+                <code className="w-24 shrink-0 rounded bg-surface-muted px-1.5 py-0.5 text-[11px] text-muted">{slot}</code>
+                <span>
+                  <span className="font-medium text-ink">{CARD_SLOT_LABELS[slot]}</span>
+                  <span className="text-muted"> — 預設模組：{plugins.map((p) => p.name).join("、") || "無"}</span>
+                </span>
+              </li>
+            );
+          })}
         </ul>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

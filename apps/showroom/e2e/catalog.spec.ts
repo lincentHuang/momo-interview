@@ -2,9 +2,9 @@ import { expect, test } from "@playwright/test";
 import { card } from "./helpers";
 
 test.describe("商品卡目錄", () => {
-  test("列出所有種子卡片與類型分析", async ({ page }) => {
+  test("列出所有種子卡片", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { name: /商品卡類型分析/ })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /商品卡目錄/ })).toBeVisible();
     await expect(page.locator("momo-product-card")).toHaveCount(5);
     await expect(card(page, "flash-earbuds").locator(".flash-banner time")).toHaveText(/^\d{2}:\d{2}:\d{2}$/);
     await expect(card(page, "live-skincare").locator(".tag--live")).toBeVisible();
@@ -31,6 +31,7 @@ test.describe("商品卡目錄", () => {
     await page.goto("/");
     await card(page, "rank-rice").locator(".title").click();
     await expect(page).toHaveURL(/\/cards\/rank-rice$/);
+    await expect(page.getByRole("navigation", { name: "主導覽" }).getByRole("link", { name: "商品卡目錄" })).toHaveAttribute("aria-current", "page");
     await expect(page.getByLabel("商品名稱")).toHaveValue("【池上】一等米 3kg 真空包裝");
   });
 });

@@ -1,1 +1,10 @@
-export { type CardActions, useCardActions, useCardRecord, useCardRecords, useStoreSnapshot } from "./use-card-store";
+export {
+  type CardActions,
+  type StoreInfo,
+  useCardActions,
+  useCardRecord,
+  useCardRecords,
+  usePlugins,
+  useStoreInfo,
+  useStoreSnapshot,
+} from "./use-card-store";
