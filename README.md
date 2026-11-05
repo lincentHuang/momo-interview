@@ -63,9 +63,12 @@ flowchart LR
     fstore["features/card-store<br/>useSyncExternalStore 橋接"]
     preview["features/card-preview<br/>React 包裝 Web Component"]
     catalog["features/card-catalog"]
-    editor["features/card-editor<br/>SchemaForm / PluginPanel"]
+    editor["features/card-editor<br/>WYSIWYG 拖曳設計器 / SchemaForm"]
+    library["features/module-library"]
+    settings["features/settings"]
     catalog --> preview & fstore
     editor --> preview & fstore & shared
+    library & settings --> fstore
     catalog --> shared
   end
 
@@ -90,12 +93,17 @@ packages/merchant-card/src
 
 apps/showroom/src
 ├── app/           路由殼（Server Components），只負責組合 feature
+│   ├── page.tsx              / 商品卡目錄
+│   ├── cards/[id]/           layout（編輯器外框）＋ page（設計）＋ inspect/（檢視器）
+│   ├── modules/ analysis/ embed/ settings/   模組庫、類型分析、嵌入指南、設定與同步
 ├── features/
-│   ├── card-store/    React ↔ Store 唯一橋接點
-│   ├── card-preview/  唯一可以載入 Web Component 的地方
-│   ├── card-catalog/  目錄、篩選、類型分析
-│   └── card-editor/   編輯器（components / hooks / lib）
-└── shared/        ui（Radix 封裝）、layout、lib
+│   ├── card-store/      React ↔ Store / Plugin Registry 唯一橋接點
+│   ├── card-preview/    唯一可以載入 Web Component 的地方
+│   ├── card-catalog/    目錄、篩選、類型分析
+│   ├── card-editor/     WYSIWYG 設計器（模組面板 / 畫布 / 屬性面板）、檢視器
+│   ├── module-library/  已註冊模組一覽
+│   └── settings/        同步診斷、全部重設、介面偏好
+└── shared/        ui（Radix 封裝、icons）、layout（App Shell sidebar、PageHeader）、lib
 ```
 
 **Feature 邊界由 ESLint 強制**（`apps/showroom/eslint.config.mjs`）：
@@ -151,6 +159,16 @@ registerPlugin({
 - **config 不合法**時退回 defaults 並警告；**render / setup 拋錯**只影響該 plugin
 - Registry 掛在 `globalThis`（`Symbol.for`），同頁多份 bundle 共用；註冊後所有卡片自動重繪
 
+#### 所見即所得模組編輯（`placements`）
+
+plugin 宣告的 `slot / order` 只是**預設值**；每張卡片可用 `placements[pluginId] = { slot, order }` 覆寫位置。
+「啟用與設定」（`extensions`）和「擺在哪」（`placements`）分開存放，plugin 不需要知道自己被搬到哪。
+
+- 卡片加上 `editable` attribute 進入編輯模式：插槽以 `data-slot` 標示並顯示為放置區、模組包在 `[data-plugin-id][draggable]` 內；**卡片本身不認識編輯器**
+- 拖放邏輯在宿主：原生 HTML5 DnD 事件是 composed，`composedPath()` 取得 shadow 內的模組、`shadowRoot` 查詢插槽幾何算出插入位置（不用 dnd-kit：函式庫的碰撞偵測拿不到 Shadow DOM 內部節點）
+- 版位運算是套件內的純函式（`placePlugin / removePlugin / shiftPlugin / slotOrder`，有單元測試），直接作用在未驗證的草稿上
+- 鍵盤 / 觸控替代方案：模組面板「＋」加入、屬性面板換插槽 / 上下移動 / 移除
+
 ### 4. 跨宿主狀態一致性
 
 ```
@@ -161,7 +179,7 @@ registerPlugin({
 - **Last-Writer-Wins**：`rev` 大者勝，同 `rev` 以 `origin`（分頁 UUID）字典序決勝 → 訊息亂序、並發寫入都保證收斂（有單元測試）
 - **read-merge-write**：寫 localStorage 前先合併其他分頁剛寫入但訊息未到的資料，避免整包覆蓋
 - **設定**（Showroom 編輯）與**互動狀態**（收藏 / 購物車，任何宿主產生）分開存放、同一套同步
-- **Schema 版本**：讀到舊版資料自動遷移並寫回（v1 `badges[]` → v2 `extensions`）；讀到**較新**版本（新部署的分頁寫入）時進入唯讀，避免舊程式碼把新資料寫壞
+- **Schema 版本**：讀到舊版資料自動遷移並寫回（v1 `badges[]` → v2 `extensions` → v3 `placements`）；讀到**較新**版本（新部署的分頁寫入）時進入唯讀，避免舊程式碼把新資料寫壞
 - 所有外部輸入（屬性、localStorage、訊息、分享連結）都過同一個 `parseCard` 邊界
 
 ### 5. Web Component 封裝
