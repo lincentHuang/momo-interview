@@ -1,281 +1,175 @@
-# Merchant Card Showroom
+# Merchant Card Showroom（momo 商品卡展示與設計系統）
 
-momo 商品卡的 **領域模型 + 框架無關卡片元件 + Showroom 調整介面 + 跨宿主嵌入與狀態同步**。
+這是一個為 **momo 商品卡** 打造的 **跨框架元件庫 + 視覺化設計後台（Showroom）**。
 
-> 題目 B：分析真實 momo 商品卡類型，建立 Card Showroom。
-> 本 repo 的重點不在「把卡片畫得像」，而在「讓一張卡片能被多個團隊、多種宿主長期安全地使用與擴充」。
+> **核心目標（題目 B）**：不只把商品卡「畫得像」，而是建立一套 **能讓多個團隊、不同前端框架長期共用與擴充** 的商品卡系統。
 
-## 快速開始
+---
+
+## 🚀 快速開始
 
 ```bash
 npm install
+npm run dev
 ```
 
-```bash
-npm run dev        # 先建置 card bundle，再啟動 Next.js（http://localhost:3000）
-```
+啟動後打開 **http://localhost:3000** 即可體驗。
 
-| 網址 | 內容 |
-| --- | --- |
-| `/` | 商品卡類型分析 + 目錄（可依類型 / 版型篩選，條件存在 URL） |
-| `/cards/[id]` | Schema 驅動的編輯器 + 即時預覽 + 事件紀錄 |
-| `/sample.html` | 純 HTML 宿主頁面，一行 `<script>` 嵌入商品卡 |
-| `/momo` | momo 首頁情境：以 momo 首頁 API 真實資料（錄製快照 / 即時）渲染限時搶購、精選好物榜、橫式輪播、你可能會喜歡，可一鍵匯入目錄 |
-| `/analysis#data-format` | momo 首頁資料格式摘要（完整版：[`docs/momo-data-format.md`](docs/momo-data-format.md)） |
+### 推薦體驗的 3 個亮點流程
 
-**建議的 Demo 路徑**：開 `/cards/flash-earbuds`，再按「在 sample.html 開啟 ↗」並排兩個視窗——在編輯器改價格 / 開關插件，sample.html 即時更新；在 sample.html 按 ♡ / 🛒，編輯器的互動狀態同步改變。
-
-其他指令：
-
-```bash
-npm test           # merchant-card 單元測試（vitest，41 個）
-```
-
-```bash
-npm run test:e2e   # Playwright E2E（30 個；自動 build 並以 next start 在 3100 埠啟動）
-```
-
-首次執行 E2E 前需安裝瀏覽器：
-
-```bash
-npx --prefix apps/showroom playwright install chromium
-```
-
-```bash
-npm run typecheck && npm run lint && npm run build
-```
+1. **視覺化調整商品卡（`/cards/flash-earbuds`）**
+   - 右側面板可隨時修改標題、價格、切換「直式 / 橫式」版型。
+   - 切到「**模組**」分頁：可自由開關 15 種模組（速達、折價券、贈品、收藏、加入購物車多樣式等），或在左側畫布直接**拖曳模組換位置**。
+2. **跨頁面即時同步（編輯器 ↔ 外部網站）**
+   - 在編輯器右上角點「**在 sample.html 開啟 ↗**」，把兩個視窗並排。
+   - 在編輯器改價格或開關標籤，`sample.html`（純 HTML 頁面）會**零延遲同步更新**；在 `sample.html` 點愛心收藏，編輯器也會同步亮起。
+3. **momo 首頁真實資料情境（`/momo`）**
+   - 以真實 momo 首頁 API 資料（內建離線快照，也可切換即時連線）渲染「限時搶購、精選好物榜、橫式輪播、你可能會喜歡」四大區塊。
+   - 點區塊右上角「**調整此區樣式**」去改代表卡（例如把購物車按鈕改成「整條按鈕」或換版型），整個首頁區塊的所有商品卡會**即時套用新樣式**。
 
 ---
 
-## 架構總覽
+## 🧭 頁面導覽
+
+| 路徑 | 說明 |
+| --- | --- |
+| `/` | **商品卡目錄**：瀏覽、篩選所有商品卡，也可點「＋ 新增卡片」建立自訂商品卡 |
+| `/cards/[id]` | **卡片設計器**：左側即時畫布（支援拖曳排版）＋ 右側內容 / 模組設定面板 |
+| `/cards/[id]/inspect` | **檢視器**：查看卡片背後的 JSON 資料結構與即時觸發的 DOM 事件紀錄 |
+| `/momo` | **momo 首頁情境**：用真實 momo 資料展示四大區塊，支援一鍵匯入目錄與樣式同步 |
+| `/sample.html` | **純 HTML 嵌入範例**：示範非 React 網站如何用一行 `<script>` 嵌入商品卡 |
+| `/modules` | **模組庫**：查看系統內建的 15 個擴充模組與預設插槽 |
+| `/analysis` | **類型分析**：商品卡拆解思路與 momo 首頁 API 資料格式整理 |
+| `/embed` | **嵌入指南**：提供給其他團隊的 Web Component 串接說明 |
+| `/settings` | **設定與同步**：跨分頁同步狀態診斷、一鍵重設所有本地資料 |
+
+---
+
+## 🏗️ 專案結構
+
+專案採用 `npm workspaces` 管理兩個套件，確保「**商品卡核心完全不依賴 React 後台**」：
 
 ```mermaid
 flowchart LR
-  subgraph pkg["packages/merchant-card（框架無關，Lit + zod）"]
-    schema["schema/<br/>Card discriminated union<br/>FieldDescriptor / variants / migrate"]
-    plugins["plugins/<br/>PluginRegistry（globalThis 單例）<br/>內建 13 個 plugin"]
-    store["store/<br/>CardStore<br/>localStorage + BroadcastChannel + LWW"]
-    momo["adapters/momo<br/>momo API → Card<br/>raw schema / mapper / client / 快照"]
-    element["element/<br/>&lt;momo-product-card&gt;<br/>Shadow DOM + variant renderers"]
-    schema --> plugins --> element
-    schema --> store --> element
+  subgraph pkg["packages/merchant-card（框架無關核心：Lit + Zod）"]
+    schema["Schema 驗證與型別"]
+    plugins["Plugin 模組系統（15 個內建模組）"]
+    store["跨分頁同步 Store"]
+    momo["momo 真實資料轉接層"]
+    element["&lt;momo-product-card&gt;<br/>Web Component"]
+    schema --> plugins & store --> element
     momo --> schema
   end
 
-  subgraph app["apps/showroom（Next.js 16 App Router）"]
-    shared["shared/ui<br/>Radix Primitives 封裝"]
-    fstore["features/card-store<br/>useSyncExternalStore 橋接"]
-    preview["features/card-preview<br/>React 包裝 Web Component"]
-    catalog["features/card-catalog"]
-    editor["features/card-editor<br/>WYSIWYG 拖曳設計器 / SchemaForm"]
-    library["features/module-library"]
-    settings["features/settings"]
-    momohome["features/momo-home<br/>/momo 首頁情境 + /api/momo 代理"]
-    catalog --> preview & fstore
-    momohome --> preview & fstore
-    editor --> preview & fstore & shared
-    library & settings --> fstore
-    catalog --> shared
+  subgraph app["apps/showroom（Next.js 16 展示與編輯後台）"]
+    catalog["商品卡目錄 `/`"]
+    editor["視覺化設計器 `/cards/[id]`"]
+    momohome["momo 首頁情境 `/momo`"]
   end
 
-  sample["public/sample.html<br/>純 HTML 宿主"]
+  sample["public/sample.html<br/>外部純 HTML 網站"]
 
-  pkg -- "TS 原始碼（transpilePackages）" --> app
-  pkg -- "vite lib build → ES / IIFE bundle" --> sample
-  app <-. "BroadcastChannel / storage event<br/>（同源跨分頁）" .-> sample
-  momoapi[("momo 首頁 API<br/>（伺服器端呼叫）")] -.-> momohome
+  pkg --> app
+  pkg -- "打包為獨立 JS bundle" --> sample
+  app <-. "BroadcastChannel / localStorage<br/>跨頁面即時同步" .-> sample
 ```
 
-### Repo 結構
-
+```text
+├── packages/merchant-card/   # 商品卡核心套件（可獨立發布給各團隊使用）
+│   └── src/
+│       ├── schema/           # 商品卡資料格式定義（Zod）與版本自動遷移（v1 → v5）
+│       ├── plugins/          # 外掛模組註冊表、版位運算與 15 個內建模組
+│       ├── store/            # 跨分頁狀態同步引擎（localStorage + BroadcastChannel）
+│       ├── adapters/momo/    # momo 首頁 API 轉換器、樣板套用與離線快照
+│       └── element/          # <momo-product-card> Web Component 本體
+│
+└── apps/showroom/            # Next.js 16 展示與編輯後台
+    ├── src/app/              # 頁面路由
+    ├── src/features/         # 功能模組（目錄、設計器、momo 首頁、預覽包裝）
+    ├── src/shared/           # 共用 UI 元件（Radix Primitives 封裝）與版面
+    └── e2e/                  # Playwright 端到端測試
 ```
-packages/merchant-card/src
-├── schema/        領域模型：card.schema（zod）、variants（metadata + 欄位）、fields、migrate、fixtures
-├── core/          純函式：價格 / 折數 / 倒數
-├── plugins/       types（CardPlugin / slot）、registry、builtin/
-├── store/         card-store（同步引擎）、merge（LWW）、shared-store（頁面單例）
-├── element/       momo-product-card（Lit）、styles（tokens）、variants/（各 variant 專屬呈現）
-├── index.ts       純邏輯入口：可在 SSR / Node import，不註冊 Custom Element
-└── element/index.ts  瀏覽器入口：註冊內建 plugin + customElements.define
-
-apps/showroom/src
-├── app/           路由殼（Server Components），只負責組合 feature
-│   ├── page.tsx              / 商品卡目錄
-│   ├── cards/[id]/           layout（編輯器外框）＋ page（設計）＋ inspect/（檢視器）
-│   ├── modules/ analysis/ embed/ settings/   模組庫、類型分析、嵌入指南、設定與同步
-├── features/
-│   ├── card-store/      React ↔ Store / Plugin Registry 唯一橋接點
-│   ├── card-preview/    唯一可以載入 Web Component 的地方
-│   ├── card-catalog/    目錄、篩選、類型分析
-│   ├── card-editor/     WYSIWYG 設計器（模組面板 / 畫布 / 屬性面板）、檢視器
-│   ├── module-library/  已註冊模組一覽
-│   └── settings/        同步診斷、全部重設、介面偏好
-└── shared/        ui（Radix 封裝、icons）、layout（App Shell sidebar、PageHeader）、lib
-```
-
-**Feature 邊界由 ESLint 強制**（`apps/showroom/eslint.config.mjs`）：
-
-- 跨 feature 只能透過 `@/features/<name>`（index）引用，不能深入內部檔案
-- feature 不可直接 import `radix-ui`，只能用 `@/shared/ui`
-- `@momo/merchant-card/element` 只能由 `card-preview` 載入
-- `shared` 不可依賴 `features`
 
 ---
 
-## 設計重點
+## 💡 五大核心設計（為什麼這樣設計？）
 
-### 1. 領域模型：variant × extensions × layout 三個正交維度
+### 1. 商品卡拆解：把「常變的行銷標籤」變成外掛模組
 
-分析 momo 搜尋頁、限時瘋搶、直播、排行榜後，把「一張商品卡」拆成：
+觀察 momo 全站商品卡後，我們將一張卡片拆成三個獨立維度：
 
-| 維度 | 內容 | 變動頻率 | 實作方式 |
+| 維度 | 內容舉例 | 變動頻率 | 設計方式 |
 | --- | --- | --- | --- |
-| **variant**（業務型態） | 一般 / 限時搶購 / 直播 / 排行榜 | 低 | zod discriminated union，各有專屬必填欄位 |
-| **extensions**（行銷附加資訊） | 快速到貨、折價券、贈品、分期、曝光追蹤… | **高** | Plugin，核心 schema 只保留開放 record |
-| **layout**（呈現） | 直式 grid / 橫式 list | — | 卡片預設值 + 宿主可覆寫 |
+| **業務類型（Variant）** | 一般商品、限時搶購、直播、排行榜 | 低 | 核心支援 4 種類型，各自擁有專屬欄位（如倒數計時、名次、觀看數） |
+| **擴充模組（Plugins）** | 速達、折價券、登記、贈品、雙11角標、收藏、加入購物車 | **極高** | **抽離核心**，做成 15 個可自由開關、拖曳換位置的插槽模組 |
+| **呈現版型（Layout）** | 直式（Grid）、橫式（List） | 中 | 同一份商品資料可隨時切換直式或橫式呈現 |
 
-最常變動的「行銷標籤」被移出核心 schema，是整個架構最關鍵的取捨：行銷活動每週都在換，不應該每次都改卡片核心並重新發版給所有宿主。
+> **好處**：行銷團隊每週推出新活動標籤時，只要新增一個幾十行的 Plugin，**不用修改商品卡核心，也不用要求所有外部網站重新更新版本**。連「收藏愛心」與「加入購物車（支援圓形圖示、整條按鈕、右下「搶」頁籤等 5 種樣式）」也都是可插拔模組。
 
-### 2. Schema 驅動：一份定義，三處使用
+### 2. Schema 驅動：寫一份定義，自動長出驗證與表單
 
-`FieldDescriptor`（`text / number / boolean / select / countdown`）同時被 variant 與 plugin 用來宣告「可調整的欄位」：
+每個卡片類型與模組只需宣告一次欄位描述（`FieldDescriptor`）：
+- **資料層**自動用 Zod 檢查型別與數值範圍（例如特價不可高於原價）。
+- **編輯器**自動根據欄位定義渲染出對應的輸入框、下拉選單與開關。
+- 新增一個模組時，**完全不用改編輯器程式碼**，設定面板就會自動出現它的控制項。
 
-- **卡片**用 zod schema 驗證資料
-- **編輯器**用 `SchemaForm` 自動產生 Radix 控制項
-- **目錄頁的類型分析**直接從 `VARIANTS` 表產生，文件不會與程式碼脫節
+### 3. Web Component 封裝：任何網站一行 `<script>` 就能用
 
-新增 plugin → 編輯器自動出現開關與欄位，不需改編輯器。新增 variant → TypeScript 的 mapped type 會強制補上 renderer（`variantRenderers`）與表單分支（`FieldControl` 的 exhaustive switch）。
+商品卡本體使用輕量的 **Lit Web Component**（`<momo-product-card>`）實作：
+- **樣式隔離（Shadow DOM）**：外部網站的 CSS（例如全域 `button { all: unset }`）不會弄壞商品卡；同時開放 `--momo-card-*` CSS 變數讓外部微調主題色。
+- **標準事件**：點擊卡片、收藏、加入購物車都會發出標準 CustomEvent（`momo-card:add-to-cart` 等），方便外部網站接購物車或埋點。
+- **Showroom 零落差**：Showroom 後台預覽畫布裡渲染的，就是**同一顆 Web Component**，保證「在後台看到的樣子 = 嵌入到外部網站的樣子」。
 
-### 3. Plugin 擴充：slot + render + lifecycle
+### 4. 跨頁面狀態同步與防呆
 
-```ts
-registerPlugin({
-  id: "double11",
-  slot: "media-top",                    // media-top / media-bottom / badges / price-extra / footer
-  defaults: { text: "11.11" },
-  fields: [{ kind: "text", key: "text", label: "角標文字" }],
-  configSchema,                         // 可選：任何具 safeParse 的物件（zod 相容）
-  render: ({ config }) => html`<span class="tag tag--solid">${config.text}</span>`,
-  setup: ({ host, emit }) => cleanup,   // 可選：無 UI 的生命週期（例如曝光追蹤）
-});
-```
+為了讓 Showroom 與 `sample.html`（或多個開啟的分頁）保持一致：
+- **即時同步**：透過 `BroadcastChannel` 即時廣播變更，並以 `localStorage` 持久化保存。
+- **衝突解決（Last-Writer-Wins）**：每次修改帶有遞增版本號（`rev`），多視窗同時操作也能確保最終畫面一致。
+- **錯誤不擴散**：在編輯器輸入不合法的數字時，只會在表單顯示紅字提示，**不會把壞資料存進資料庫或廣播給其他頁面**。
+- **自動升級（Schema Migration）**：瀏覽器裡若有舊版格式的卡片資料（v1 ~ v4），讀取時會自動無痛升級到最新 v5 格式。
 
-韌性設計：
+### 5. momo 真實資料轉接層（Adapter）
 
-- **未註冊的 extension** 保留資料但不渲染（向前相容：新版 Showroom 加的 plugin，舊宿主不會壞）
-- **config 不合法**時退回 defaults 並警告；**render / setup 拋錯**只影響該 plugin
-- Registry 掛在 `globalThis`（`Symbol.for`），同頁多份 bundle 共用；註冊後所有卡片自動重繪
-
-#### 所見即所得模組編輯（`placements`）
-
-plugin 宣告的 `slot / order` 只是**預設值**；每張卡片可用 `placements[pluginId] = { slot, order }` 覆寫位置。
-「啟用與設定」（`extensions`）和「擺在哪」（`placements`）分開存放，plugin 不需要知道自己被搬到哪。
-
-- 卡片加上 `editable` attribute 進入編輯模式：插槽以 `data-slot` 標示並顯示為放置區、模組包在 `[data-plugin-id][draggable]` 內；**卡片本身不認識編輯器**
-- 拖放邏輯在宿主：原生 HTML5 DnD 事件是 composed，`composedPath()` 取得 shadow 內的模組、`shadowRoot` 查詢插槽幾何算出插入位置（不用 dnd-kit：函式庫的碰撞偵測拿不到 Shadow DOM 內部節點）
-- 版位運算是套件內的純函式（`placePlugin / removePlugin / shiftPlugin / slotOrder`，有單元測試），直接作用在未驗證的草稿上
-- 鍵盤 / 觸控替代方案：模組面板「＋」加入、屬性面板換插槽 / 上下移動 / 移除
-
-### 4. 跨宿主狀態一致性
-
-```
-寫入：validate → rev+1 → 記憶體 → read-merge-write localStorage → BroadcastChannel 廣播
-接收：BroadcastChannel（即時）＋ storage event（備援）→ migrate → validate → LWW 合併
-```
-
-- **Last-Writer-Wins**：`rev` 大者勝，同 `rev` 以 `origin`（分頁 UUID）字典序決勝 → 訊息亂序、並發寫入都保證收斂（有單元測試）
-- **read-merge-write**：寫 localStorage 前先合併其他分頁剛寫入但訊息未到的資料，避免整包覆蓋
-- **設定**（Showroom 編輯）與**互動狀態**（收藏 / 購物車，任何宿主產生）分開存放、同一套同步
-- **Schema 版本**：讀到舊版資料自動遷移並寫回（v1 `badges[]` → v2 `extensions` → v3 `placements`）；讀到**較新**版本（新部署的分頁寫入）時進入唯讀，避免舊程式碼把新資料寫壞
-- 所有外部輸入（屬性、localStorage、訊息、分享連結）都過同一個 `parseCard` 邊界
-
-### 5. Web Component 封裝
-
-- 三種資料來源：`.card` property（框架宿主）、`data` JSON attribute（SSR / CMS）、`card-id`（接 Store 同步）
-- Shadow DOM 隔離宿主的全域樣式（sample.html 刻意加了汙染樣式驗證）；`--momo-card-*` CSS 變數與 `::part()` 開放主題客製
-- 對外事件全部 `bubbles + composed`：`momo-card:click / favorite-change / add-to-cart / impression / error`
-- 錯誤同時提供可查詢狀態（`invalid` attribute、`issues` getter）：首次渲染的事件可能早於宿主掛監聽器
-- 資料錯誤時顯示錯誤狀態並發出 `momo-card:error`，而不是白畫面
-- Showroom 預覽用的是**同一個** Web Component（React 包裝），保證「Showroom 所見 = 宿主嵌入所得」
-
-### 6. Browser-side Persistence 分層
-
-| 狀態 | 存放 | 理由 |
-| --- | --- | --- |
-| 卡片設定、互動狀態 | localStorage + BroadcastChannel | 要跨分頁 / 跨宿主共享 |
-| 目錄篩選條件 | URL search params | 可分享、可上一頁，不該汙染共享狀態 |
-| 分享特定設定 | URL `?config=`（base64url） | 開啟時**先驗證、再詢問**是否套用，不默默覆蓋本地 |
-| 編輯中的不合法草稿 | React local state | 不寫入、不廣播，避免壞資料擴散 |
+在 `packages/merchant-card/src/adapters/momo` 中實作了完整的資料清洗與轉換層：
+- 將 momo 首頁 API 的原始欄位（千分位價格字串、各種行銷 icon 代碼、銷量文字、YouTube 影片）轉換並驗證為標準 `Card` 格式。
+- **樣板同步（Template Sync）**：在編輯器修改目錄中的「代表樣板卡」，會透過 `applyCardTemplate` 即時套用到 `/momo` 首頁對應區塊的所有真實商品上，同時保留各商品原本的促銷標。
 
 ---
 
-### 7. momo 真實資料串接
+## 🧪 測試與品質把關
 
-實測 momo 首頁的商品區塊與 API 後（[`docs/momo-data-format.md`](docs/momo-data-format.md)），以 `@momo/merchant-card/momo` 提供可直接使用的串接層：
+常用開發與檢查指令：
 
-```ts
-import { createMomoClient, loadMomoHomepage } from "@momo/merchant-card/momo";
-const page = await loadMomoHomepage(createMomoClient()); // 伺服器端（CORS）
-cardElement.card = page.sections[0].cards[0];            // 已通過 CardSchema 驗證
+```bash
+npm test             # 執行 47 個單元測試（Vitest：涵蓋 Schema、版本遷移、Plugin、多視窗同步、momo 資料轉換）
+npm run test:e2e     # 執行 33 個端到端測試（Playwright：涵蓋目錄、拖曳設計器、跨分頁雙向同步、momo 首頁情境）
+npm run typecheck    # TypeScript 型別檢查
+npm run lint         # ESLint 檢查（包含強制檢查 Feature 模組邊界）
+npm run build        # 打包 Web Component bundle 與 Next.js 正式環境建置
 ```
 
-| 層 | 檔案 | 職責 |
-| --- | --- | --- |
-| raw schema | `adapters/momo/raw.ts` | momo 回應的形狀（looseObject：加欄位不壞、改欄位明確報錯） |
-| mapper | `adapters/momo/map.ts` | 清洗（千分位字串、HTML entity、「總銷量>1.5萬」）、行銷標 → plugin、兩種商品形狀收斂成 Card |
-| client | `adapters/momo/client.ts` | 5 支 POST API，只依賴 fetch；不做任何防護規避 |
-| 組合 | `adapters/momo/homepage.ts` | 區塊 → `MomoSection { kind, cards, rejected }`，次要 API 失敗只影響該區塊 |
-| 快照 | `adapters/momo/snapshot/` | 2026-11-05 錄製的真實回應，供測試與離線展示 |
-
-正式上線應改接 momo 商品 feed / 合作 API：只需替換 client，mapper 與卡片元件不必改。
+> 首次執行 `npm run test:e2e` 前，若尚未安裝測試瀏覽器，請先執行：
+> `npx --prefix apps/showroom playwright install chromium`
 
 ---
 
-## 取捨與刻意不做
+## ⚖️ 取捨與未來演進方向
 
-| 優先 | 項目 | 狀態 / 理由 |
-| --- | --- | --- |
-| P0 | 領域模型、Schema 驗證、版本遷移 | ✅ 所有其他功能的地基 |
-| P0 | Web Component + sample.html | ✅ 題目核心需求，也是跨團隊交付的實際形態 |
-| P0 | 跨宿主同步、LWW 收斂 | ✅ 以單元測試覆蓋並發與亂序 |
-| P0 | Plugin Registry、Schema 驅動編輯器 | ✅ |
-| P1 | 刪除卡片 / 新增卡片 | ❌ LWW 刪除需要 tombstone，時間內不做；目前只有「重設」 |
-| P1 | 卡片 SSR（Declarative Shadow DOM） | ❌ 卡片目前 client-only，對 SEO / LCP 不利，見演進方向 |
-| P1 | E2E 測試 | ✅ Playwright 18 個：目錄篩選、編輯器 ↔ sample.html 雙向同步、驗證錯誤不廣播、持久化、分享連結、Shadow DOM 隔離、執行期 plugin |
-| P2 | 視覺回歸測試 | ❌ 下一步以 Playwright screenshot 或 Chromatic 對 variant × plugin 組合做基準圖 |
-| P2 | 真實 momo 圖片與資料 | ❌ 題目要求不呼叫真實網站，使用 SVG placeholder 與虛構商品 |
-| P2 | Dark mode、i18n | ❌ 非評估重點 |
+### 本階段取捨
+- **同網域同步 vs 跨網域同步**：目前使用瀏覽器原生的 `BroadcastChannel` + `localStorage`（限同源網站）。若未來要跨不同網域同步，Store 已預留介面，替換為 WebSocket 或 `postMessage` 即可，不需改動卡片與 UI。
+- **Bundle 體積**：獨立打包的 IIFE bundle 約 51KB（gzip），其中 Zod 驗證庫佔了約一半。正式生產環境可改用 `zod/mini` 進一步縮小至 ~20KB。
+- **預設使用離線快照**：`/momo` 頁面預設讀取預先錄製的真實 API 快照，確保面試官在任何網路環境都能穩定預覽，並提供按鈕可一鍵切換為即時向 momo 伺服器抓取。
 
-已知限制：
-
-- **bundle 大小**：IIFE 約 43KB gzip，其中 zod 佔大半。可改用 `zod/mini` 或於 build time 產生 validator 壓到 ~15KB
-- **跨網域宿主**：BroadcastChannel / localStorage 只在同源有效。真實情境中宿主在不同網域時，需改為 `postMessage` + iframe hub 或後端同步（Store 的 `channel` / `storage` 已是可注入介面，見演進方向）
-- **LWW 是整筆紀錄粒度**：兩個分頁同時改同一張卡的不同欄位，後寫者會覆蓋前者。對「單人在多分頁操作」足夠；多人協作需改為欄位級 LWW 或 CRDT
+### 下一步可演進方向
+1. **伺服器端渲染（SSR）**：結合 Declarative Shadow DOM，讓商品卡在首屏 HTML 就完成渲染，進一步提升 SEO 與 LCP 速度。
+2. **遠端模組熱更新**：讓行銷團隊直接從後台發布新標籤設定檔（JSON Manifest），前端動態載入，完全免發版。
+3. **視覺回歸測試**：在 CI 加入 Playwright 截圖比對，確保每次改動不會影響各版型與標籤組合的視覺細節。
 
 ---
 
-## 後續演進方向
+## 🤝 AI 協作說明（Human–Agent Collaboration）
 
-1. **跨網域同步**：實作 `SyncChannel` 的 `postMessage` / WebSocket adapter，Store 本體不用改
-2. **SSR**：以 Lit SSR 或 Declarative Shadow DOM 輸出首屏 HTML，改善商品列表的 LCP
-3. **Plugin 治理**：plugin 加上 `version` 與相容的 schema 版本範圍；Registry 支援遠端 manifest，行銷團隊可不經發版上架 plugin
-4. **可觀測性**：`momo-card:error` / `impression` 事件統一導向埋點 SDK；Store 遷移失敗與唯讀事件上報
-5. **驗證**：以 Storybook / Chromatic 對 variant × plugin 組合做視覺回歸；E2E 接上 CI
-6. **Bundle**：`zod/mini` + 依 variant 拆分 renderer
+本專案由候選人主導架構設計，並與 AI Coding Agent 協作開發完成（詳細決策演進請見 [`PRD.md`](PRD.md) 與 [`Progress.md`](Progress.md)）：
 
----
-
-## Human–Agent 協作紀錄
-
-本專案由我（候選人）與 Claude Code 協作完成，commit 皆附 `Co-Authored-By`。協作方式：
-
-1. **先定契約、再讓 Agent 填實作**：先確定 `CardSchema`、`FieldDescriptor`、`CardPlugin`、`CardStore` 介面，再實作 renderer、編輯器
-2. **重大決策由人拍板**（詳見 [PRD.md](PRD.md) 決策紀錄）：卡片核心採框架無關（Lit）而非 React 包 WC、Radix Primitives 而非 Themes、Tailwind v4 + 卡片純 CSS、以 feature 為單位 commit
-3. **關鍵修正點**（Agent 初版 → 人工審視後修正）：
-   - Plugin `configSchema` 原本強制 zod 型別，IIFE 需 re-export 整包 `z` → bundle 107KB；改成 duck-typed `safeParse` 介面後降到 42KB
-   - `useCardActions` 初版在 render 期間建立 Store，SSR 時會在 server 端 seed 資料；改為延遲取得
-   - Next.js 16 Cache Components 對 `params` 存取的限制，改為 Suspense 內 await
-   - emoji 圖示在品牌色底上不可辨識（瀏覽器實測發現），改 SVG
-   - **E2E 抓到的真 bug**：資料錯誤的 `momo-card:error` 在 bundle 載入、元素升級的當下就發出，早於宿主掛監聽器而遺失。
-     修正為「事件 + 可查詢狀態」雙管道（`invalid` attribute、`issues` getter），sample.html 也改為先掛監聽再載入 bundle
-4. **驗證方式**：vitest 覆蓋 schema / migration / plugin / 同步收斂；Playwright E2E 以同一 browser context 開多個分頁，驗證編輯器 ↔ sample.html 雙向同步、驗證錯誤 UI、分享連結、Shadow DOM 隔離、執行期 plugin 註冊
+- **人類負責定義邊界與拍板關鍵決策**：包含將卡片核心獨立為 Lit Web Component、將行銷標籤抽離為 Plugin、定義跨分頁同步機制、以及對齊真實 momo 首頁的資料轉接架構。
+- **自動化測試護欄**：每個階段皆透過 Vitest 單元測試與 Playwright 多分頁 E2E 測試驗證（例如透過 E2E 抓出並修正了 Custom Element 初次升級時錯誤事件早於監聽器掛載的時序問題）。
