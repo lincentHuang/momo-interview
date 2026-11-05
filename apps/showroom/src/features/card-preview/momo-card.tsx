@@ -12,6 +12,8 @@ declare module "react" {
         "card-id"?: string;
         layout?: CardLayout;
         data?: string;
+        editable?: boolean;
+        "selected-module"?: string;
       };
     }
   }
@@ -34,6 +36,10 @@ export interface MomoCardEvents {
 export interface MomoCardProps extends MomoCardEvents {
   cardId: string;
   layout?: CardLayout;
+  /** WYSIWYG 編輯模式：顯示插槽放置區、模組可拖曳 */
+  editable?: boolean;
+  /** 編輯模式下高亮的模組 id */
+  selectedModule?: string | null;
   className?: string;
   style?: CSSProperties;
 }
@@ -42,7 +48,7 @@ export interface MomoCardProps extends MomoCardEvents {
  * React 包裝：Showroom 使用的是與 sample.html 完全相同的 Web Component，
  * 確保「在 Showroom 看到的」= 「宿主頁面嵌入後看到的」。
  */
-export function MomoCard({ cardId, layout, className, style, ...events }: MomoCardProps) {
+export function MomoCard({ cardId, layout, editable, selectedModule, className, style, ...events }: MomoCardProps) {
   const ref = useRef<MomoProductCard>(null);
   const [ready, setReady] = useState(false);
   const handlers = useRef(events);
@@ -79,7 +85,13 @@ export function MomoCard({ cardId, layout, className, style, ...events }: MomoCa
   return (
     <div className={className} style={style}>
       {ready ? (
-        <momo-product-card ref={ref} card-id={cardId} layout={layout} />
+        <momo-product-card
+          ref={ref}
+          card-id={cardId}
+          layout={layout}
+          editable={editable || undefined}
+          selected-module={selectedModule ?? undefined}
+        />
       ) : (
         <CardSkeleton layout={layout} />
       )}

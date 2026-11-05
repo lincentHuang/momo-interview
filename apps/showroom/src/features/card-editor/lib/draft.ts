@@ -1,4 +1,4 @@
-import { parseCard, pluginRegistry, type Card } from "@momo/merchant-card";
+import { parseCard, pluginRegistry, type Card, type PlacementTarget } from "@momo/merchant-card";
 
 /** 欄位路徑 → 錯誤訊息（路徑格式與 zod issue path 一致，例如 `extensions.coupon.amount`） */
 export type FieldIssues = Record<string, string>;
@@ -30,7 +30,15 @@ export function validateDraft(draft: unknown): DraftValidation {
   return Object.keys(issues).length ? { ok: false, issues } : { ok: true, card: parsed.card };
 }
 
-type Draft = Record<string, unknown> & { extensions?: Record<string, Record<string, unknown>> };
+export type Draft = Record<string, unknown> & { extensions?: Record<string, Record<string, unknown>> };
+
+/** 版位運算（@momo/merchant-card 的 placePlugin 等）需要的草稿形狀；variant 在草稿中永遠存在 */
+export type ModuleDraft = Draft & PlacementTarget;
+
+/** 包裝版位運算，讓它能直接作為 update(fn) 的參數 */
+export function withModules(fn: (d: ModuleDraft) => ModuleDraft): (d: Draft) => Draft {
+  return (d) => fn(d as ModuleDraft);
+}
 
 export function setField(draft: Draft, key: string, value: unknown): Draft {
   const next = { ...draft };
@@ -45,9 +53,3 @@ export function setPluginField(draft: Draft, pluginId: string, key: string, valu
   return { ...draft, extensions };
 }
 
-export function togglePlugin(draft: Draft, pluginId: string, enabled: boolean): Draft {
-  const extensions = { ...(draft.extensions ?? {}) };
-  if (enabled) extensions[pluginId] = { ...(pluginRegistry.get(pluginId)?.defaults ?? {}) };
-  else delete extensions[pluginId];
-  return { ...draft, extensions };
-}

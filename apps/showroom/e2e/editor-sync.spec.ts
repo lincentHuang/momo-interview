@@ -20,6 +20,10 @@ test.describe("編輯器 ↔ sample.html 跨宿主同步", () => {
     await openEditor(editor, "rank-rice");
     await openSample(sample);
 
+    // 互動狀態與事件屬於開發者資訊，在「檢視器」子頁
+    await editor.getByRole("link", { name: "檢視器" }).click();
+    await expect(editor).toHaveURL(/\/cards\/rank-rice\/inspect$/);
+
     const target = card(sample, "rank-rice");
     await target.getByRole("button", { name: "加入收藏" }).click();
     await target.getByRole("button", { name: "加入購物車" }).click();
@@ -30,14 +34,13 @@ test.describe("編輯器 ↔ sample.html 跨宿主同步", () => {
     await expect(card(editor, "rank-rice").getByRole("button", { name: "取消收藏" })).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("啟用 plugin 後，sample.html 出現對應標籤", async ({ context }) => {
+  test("加入模組後，sample.html 出現對應標籤", async ({ context }) => {
     const editor = await context.newPage();
     const sample = await context.newPage();
     await openEditor(editor, "rank-rice");
     await openSample(sample);
 
-    await editor.getByRole("tab", { name: "行銷插件" }).click();
-    await editor.getByRole("switch", { name: "啟用折價券" }).click();
+    await editor.getByRole("button", { name: "加入折價券" }).click();
 
     await expect(card(sample, "rank-rice").locator(".tag--coupon")).toHaveText("券 $100");
   });
