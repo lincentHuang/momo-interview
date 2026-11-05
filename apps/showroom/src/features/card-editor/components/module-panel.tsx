@@ -51,7 +51,7 @@ export function ModulePanel({
       <div className="rounded-lg border border-dashed border-line p-6 text-center text-sm text-muted">
         卡片上還沒有模組。
         <br />
-        從左側模組面板拖曳到卡片上，或按「＋」加入。
+        從下方模組庫拖曳到卡片上，或按「＋」加入。
       </div>
     );
   }

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import { card, openEditor, openSample } from "./helpers";
 
 /** 設計畫布上的卡片（editable 模式） */
@@ -8,12 +8,22 @@ const slotIds = (page: Page, id: string, slot: string) =>
     .locator(`[data-slot="${slot}"] > [data-plugin-id]`)
     .evaluateAll((els) => els.map((el) => (el as HTMLElement).dataset.pluginId));
 
+async function mouseDrag(page: Page, source: Locator, target: Locator) {
+  const from = (await source.boundingBox())!;
+  const to = (await target.boundingBox())!;
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, { steps: 8 });
+  await page.mouse.up();
+}
+
 test.describe("所見即所得模組編輯器", () => {
-  test("從模組面板拖到卡片插槽，其他宿主即時出現在相同位置", async ({ context }) => {
+  test("從右側模組庫拖到卡片插槽，其他宿主即時出現在相同位置", async ({ context }) => {
     const editor = await context.newPage();
     const sample = await context.newPage();
     await openEditor(editor, "rank-rice");
     await openSample(sample);
+    await editor.getByRole("tab", { name: /模組/ }).click();
 
     // Playwright 的 CSS locator 會穿透 open Shadow DOM，可直接以插槽為放置目標
     await editor.locator('[data-module="corner-label"]').dragTo(canvasCard(editor, "rank-rice").locator('[data-slot="footer"]'));
@@ -27,6 +37,7 @@ test.describe("所見即所得模組編輯器", () => {
 
   test("卡片上的模組可拖曳重新排序", async ({ page }) => {
     await openEditor(page, "std-airfryer");
+    await page.getByRole("tab", { name: /模組/ }).click();
     await page.getByRole("button", { name: "加入贈品" }).click();
     await expect.poll(() => slotIds(page, "std-airfryer", "badges")).toEqual(["fast-delivery", "campaign-tag", "coupon", "register", "gift"]);
 
@@ -36,15 +47,17 @@ test.describe("所見即所得模組編輯器", () => {
     await expect.poll(() => slotIds(page, "std-airfryer", "badges")).toEqual(["gift", "fast-delivery", "campaign-tag", "coupon", "register"]);
   });
 
-  test("把卡片上的模組拖回模組面板即移除", async ({ page }) => {
+  test("把卡片上的模組拖回右側編輯面板即移除", async ({ page }) => {
     await openEditor(page, "std-airfryer");
-    await canvasCard(page, "std-airfryer").locator('[data-plugin-id="coupon"]').dragTo(page.getByRole("complementary", { name: "模組面板" }));
+    // 用真實滑鼠軌跡：locator.dragTo 的落點若在表單 label 上，Chromium 不會觸發 dragstart（使用者實際拖曳不受影響）
+    await mouseDrag(page, canvasCard(page, "std-airfryer").locator('[data-plugin-id="coupon"]'), page.getByRole("complementary", { name: "編輯面板" }));
 
     await expect(canvasCard(page, "std-airfryer").locator(".tag--coupon")).toHaveCount(0);
+    await page.getByRole("tab", { name: /模組/ }).click();
     await expect(page.getByRole("button", { name: "加入折價券" })).toBeVisible();
   });
 
-  test("鍵盤替代方案：在屬性面板換插槽與調整順序", async ({ page }) => {
+  test("鍵盤替代方案：在編輯面板換插槽與調整順序", async ({ page }) => {
     await openEditor(page, "flash-earbuds");
     await page.getByRole("tab", { name: /模組/ }).click();
 
@@ -89,6 +102,7 @@ test.describe("App Shell", () => {
 
   test("設定頁的全部重設需要二次確認，並還原排版", async ({ page }) => {
     await openEditor(page, "std-airfryer");
+    await page.getByRole("tab", { name: /模組/ }).click();
     await page.getByRole("button", { name: "加入活動角標" }).click();
     await expect(canvasCard(page, "std-airfryer").locator(".tag--solid")).toBeVisible();
 

@@ -40,6 +40,7 @@ test.describe("編輯器 ↔ sample.html 跨宿主同步", () => {
     await openEditor(editor, "rank-rice");
     await openSample(sample);
 
+    await editor.getByRole("tab", { name: /模組/ }).click();
     await editor.getByRole("button", { name: "加入折價券" }).click();
 
     // momo 列表上的折價券只標示「折價券」，金額為選填設定
