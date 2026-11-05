@@ -37,6 +37,23 @@ describe("PluginRegistry", () => {
     warn.mockRestore();
   });
 
+  it("圖片角標與底部橫幅僅在第一張圖（imageIndex === 0）渲染", () => {
+    const reg = new PluginRegistry();
+    BUILTIN_PLUGINS.forEach((p) => reg.register(p));
+    const c = card({
+      "image-tag": { imageUrl: "https://example.com/tag.png" },
+      "bottom-banner": { imageUrl: "https://example.com/banner.png" },
+    });
+    const [top] = reg.resolve(c, "media-top");
+    const [bottom] = reg.resolve(c, "media-bottom");
+    const baseRuntime = { state: { favorite: false, cartQty: 0 }, inactive: false, toggleFavorite: () => {}, addToCart: () => {} };
+
+    expect(top?.plugin.render?.({ card: c, config: top.config, runtime: { ...baseRuntime, imageIndex: 0 } })).not.toBeNull();
+    expect(bottom?.plugin.render?.({ card: c, config: bottom.config, runtime: { ...baseRuntime, imageIndex: 0 } })).not.toBeNull();
+    expect(top?.plugin.render?.({ card: c, config: top.config, runtime: { ...baseRuntime, imageIndex: 1 } })).toBeNull();
+    expect(bottom?.plugin.render?.({ card: c, config: bottom.config, runtime: { ...baseRuntime, imageIndex: 1 } })).toBeNull();
+  });
+
   it("config 不合法時退回預設值，而非拋錯", () => {
     const reg = new PluginRegistry();
     BUILTIN_PLUGINS.forEach((p) => reg.register(p));

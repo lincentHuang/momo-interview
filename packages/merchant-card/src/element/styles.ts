@@ -91,9 +91,9 @@ export const cardStyles = css`
   }
   .player-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   .media-top { position: absolute; inset: 0 6px auto 6px; display: flex; gap: 4px; flex-wrap: wrap; align-items: flex-start; }
-  .media-top > :not(.rank-flag) { margin-top: 6px; }
-  .media-top:has(.media-sticker) { justify-content: space-between; }
-  .media-sticker { position: absolute; top: 0; right: 0; width: 34%; max-width: 72px; height: auto; display: block; }
+  .media-top > :not(.rank-flag):not(.media-sticker) { margin-top: 6px; }
+  .media-top:has(.media-sticker) { justify-content: flex-end; }
+  .media-sticker { position: absolute; top: 0; left: 0; width: 34%; max-width: 72px; height: auto; display: block; }
   /* 圖片底部：輪播圓點疊在檔期橫幅上方，不另佔卡片高度（有無多圖的卡片才能等高） */
   .media-foot { position: absolute; inset: auto 0 0 0; display: grid; pointer-events: none; }
   .media-foot > * { pointer-events: auto; }

@@ -125,7 +125,7 @@ export const preOrderPlugin = definePlugin({
   render: () => html`<span class="tag tag--preorder">預購</span>`,
 });
 
-/** 商品圖右上角的活動圖標（API imgTagUrl，例如「最高送170mo」方形貼紙） */
+/** 商品圖左上角的活動圖標（API imgTagUrl，例如「最高送170mo」貼紙）；僅顯示於第一張圖 */
 export const imageTagPlugin = definePlugin({
   id: "image-tag",
   name: "圖片角標",
@@ -138,10 +138,13 @@ export const imageTagPlugin = definePlugin({
     { kind: "text", key: "imageUrl", label: "圖片網址" },
     { kind: "text", key: "alt", label: "替代文字", maxLength: 20 },
   ],
-  render: ({ config }) => (config.imageUrl ? html`<img class="media-sticker" src=${config.imageUrl} alt=${config.alt ?? "活動標"} loading="lazy" />` : null),
+  render: ({ config, runtime }) =>
+    config.imageUrl && (runtime?.imageIndex ?? 0) === 0
+      ? html`<img class="media-sticker" src=${config.imageUrl} alt=${config.alt ?? "活動標"} loading="lazy" />`
+      : null,
 });
 
-/** 商品圖底部的活動橫幅（API imgBottomTagUrl，例如「11/5限定｜滿額登記送1080mo點」） */
+/** 商品圖底部的活動橫幅（API imgBottomTagUrl，例如「11/5限定｜滿額登記送1080mo點」）；僅顯示於第一張圖 */
 export const bottomBannerPlugin = definePlugin({
   id: "bottom-banner",
   name: "圖片底部橫幅",
@@ -154,7 +157,10 @@ export const bottomBannerPlugin = definePlugin({
     { kind: "text", key: "imageUrl", label: "圖片網址" },
     { kind: "text", key: "alt", label: "替代文字", maxLength: 20 },
   ],
-  render: ({ config }) => (config.imageUrl ? html`<img class="media-banner" src=${config.imageUrl} alt=${config.alt ?? "檔期橫幅"} loading="lazy" />` : null),
+  render: ({ config, runtime }) =>
+    config.imageUrl && (runtime?.imageIndex ?? 0) === 0
+      ? html`<img class="media-banner" src=${config.imageUrl} alt=${config.alt ?? "檔期橫幅"} loading="lazy" />`
+      : null,
 });
 
 export const installmentPlugin = definePlugin({

@@ -23,6 +23,8 @@ export interface CardRuntime {
   inactive: boolean;
   /** variant 建議的購買按鈕文字（限時搶購為「搶」）；add-to-cart 的 auto 樣式據此改用角落頁籤 */
   ctaLabel?: string;
+  /** 目前顯示的商品圖索引（0 為首圖）；首圖專屬貼紙 / 橫幅於切換至第 2 張起隱藏 */
+  imageIndex?: number;
 }
 
 export interface PluginRenderContext<C> {

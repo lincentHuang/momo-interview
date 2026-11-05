@@ -200,7 +200,7 @@ export class MomoProductCard extends LitElement {
     e.stopPropagation();
     const track = this.track;
     const next = (index + count) % count;
-    if (!track) return void (this._imageIndex = next);
+    if (!track?.clientWidth || typeof track.scrollTo !== "function") return void (this._imageIndex = next);
     track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
   }
 
@@ -376,6 +376,7 @@ export class MomoProductCard extends LitElement {
     const runtime: CardRuntime = {
       state,
       inactive,
+      imageIndex,
       ctaLabel: renderer.ctaLabel,
       toggleFavorite: () => {
         const favorite = !state.favorite;
