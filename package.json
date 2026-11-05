@@ -1,0 +1,14 @@
+{
+  "name": "momo-merchant-card-showroom",
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"],
+  "scripts": {
+    "build:card": "npm run build -w @momo/merchant-card",
+    "dev": "npm run build:card && npm run dev -w showroom",
+    "build": "npm run build:card && npm run build -w showroom",
+    "start": "npm run start -w showroom",
+    "test": "npm run test -w @momo/merchant-card",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint -w showroom"
+  }
+}
