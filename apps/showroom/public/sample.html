@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>sample.html — 在任意頁面嵌入 momo 商品卡</title>
+  <style>
+    /* 模擬「傳統宿主頁面」：沒有任何建置流程、而且全域樣式很兇。
+       商品卡在 Shadow DOM 內，以下汙染樣式不會影響卡片。 */
+    h3 { color: lime; font-size: 32px; }
+    button { background: yellow !important; }
+    img { border: 6px solid red; }
+
+    body { margin: 0; font-family: -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif; background: #f4f4f6; color: #222; }
+    header, section { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+    header { padding-top: 24px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    h2 { font-size: 16px; margin: 32px 0 6px; }
+    p.note { margin: 0 0 12px; font-size: 13px; color: #666; }
+    code { background: #fff; padding: 1px 4px; border-radius: 4px; font-size: 12px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+    .wide { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 14px; }
+    .highlight { outline: 3px solid #e4007f; outline-offset: 4px; border-radius: 12px; }
+    .theme-blue { --momo-card-primary: #1565c0; --momo-card-primary-soft: #e3f0fd; --momo-card-radius: 0px; }
+    #log { background: #1f1f24; color: #e6e6ea; font: 12px/1.6 ui-monospace, Menlo, monospace; padding: 12px; border-radius: 8px; height: 160px; overflow: auto; margin: 0 0 40px; }
+    #log .t { color: #f48fb1; }
+    pre.snippet { background: #fff; border: 1px solid #e6e6ea; border-radius: 8px; padding: 12px; font-size: 12px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>sample.html — 一行 &lt;script&gt; 嵌入商品卡</h1>
+    <p class="note">
+      這是一個沒有框架、沒有建置流程的純 HTML 頁面（例如舊的 JSP / jQuery 頁面）。
+      只要載入 <code>momo-card.iife.js</code> 就能使用 <code>&lt;momo-product-card&gt;</code>。
+      頁面刻意加了會汙染 <code>h3 / button / img</code> 的全域樣式，用來驗證 Shadow DOM 隔離。
+    </p>
+  </header>
+
+  <section>
+    <h2>① 同步模式：<code>card-id</code></h2>
+    <p class="note">
+      資料來自共享 Store。請同時開著 Showroom 編輯器修改卡片，這裡會即時更新；
+      在這裡按 ♡ 收藏 / 🛒 加入購物車，Showroom 也會同步。（BroadcastChannel + localStorage）
+    </p>
+    <div class="grid" id="synced">
+      <momo-product-card card-id="std-airfryer"></momo-product-card>
+      <momo-product-card card-id="flash-earbuds"></momo-product-card>
+      <momo-product-card card-id="live-skincare"></momo-product-card>
+      <momo-product-card card-id="rank-rice"></momo-product-card>
+      <momo-product-card card-id="std-towel" layout="grid"></momo-product-card>
+    </div>
+
+    <h2>② 靜態模式：<code>data</code> JSON attribute ＋ 主題覆寫</h2>
+    <p class="note">適合 SSR / CMS 直接輸出 HTML；不連 Store、不同步。外層以 <code>--momo-card-*</code> CSS 變數換成藍色、直角主題。</p>
+    <div class="wide theme-blue">
+      <momo-product-card
+        layout="list"
+        data='{"id":"static-1","variant":"standard","title":"【靜態資料】CMS 直接輸出的商品卡","imageUrl":"data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1 1%22%3E%3Crect width=%221%22 height=%221%22 fill=%22%23bbdefb%22/%3E%3C/svg%3E","price":880,"originalPrice":1280,"rating":4.2,"reviewCount":88,"extensions":{"coupon":{"amount":50},"fast-delivery":{"label":"24H到貨"}}}'
+      ></momo-product-card>
+      <momo-product-card
+        data='{"id":"broken","variant":"flash-sale","title":"資料格式錯誤示範","price":-1}'
+      ></momo-product-card>
+    </div>
+
+    <h2>③ 宿主自訂 Plugin：雙 11 角標（不修改卡片原始碼）</h2>
+    <p class="note">
+      下方卡片的資料帶有 <code>extensions.double11</code>。plugin 尚未註冊時被安全忽略；
+      2 秒後頁面呼叫 <code>MomoCard.registerPlugin()</code>，所有卡片自動重繪出角標。
+    </p>
+    <div class="grid" id="plugin-demo">
+      <momo-product-card id="double11-card"></momo-product-card>
+    </div>
+
+    <h2>事件紀錄（composed CustomEvent，宿主可直接監聽）</h2>
+    <pre id="log"></pre>
+
+    <h2>ES Module 載入方式</h2>
+    <pre class="snippet">&lt;script type="module"&gt;
+  import { registerPlugin } from "/vendor/momo-card.js";
+&lt;/script&gt;
+&lt;momo-product-card card-id="std-airfryer"&gt;&lt;/momo-product-card&gt;</pre>
+  </section>
+
+  <script src="/vendor/momo-card.iife.js"></script>
+  <script>
+    const { html, registerPlugin, createFixtures } = window.MomoCard;
+
+    // ③ property 模式：直接塞物件
+    const base = createFixtures().find((c) => c.id === "std-airfryer");
+    document.getElementById("double11-card").card = {
+      ...base,
+      id: "double11-demo",
+      title: "【雙11】宿主頁面自訂 plugin 示範",
+      extensions: { ...base.extensions, double11: { text: "11.11 滿千折百" } },
+    };
+
+    setTimeout(() => {
+      registerPlugin({
+        id: "double11",
+        name: "雙 11 角標",
+        description: "由宿主頁面在執行期註冊",
+        slot: "media-top",
+        defaults: { text: "11.11" },
+        fields: [{ kind: "text", key: "text", label: "角標文字" }],
+        // 沒有 configSchema：無建置流程時可以省略驗證
+        render: ({ config }) => html`<span class="tag tag--solid">🎉 ${config.text}</span>`,
+      });
+      log("plugin:registered", { id: "double11" });
+    }, 2000);
+
+    // 由 Showroom 的「在 sample.html 開啟」帶入 #cardId 時，標示該卡片
+    const target = location.hash.slice(1);
+    if (target) {
+      const el = document.querySelector(`momo-product-card[card-id="${CSS.escape(target)}"]`);
+      el?.classList.add("highlight");
+      el?.scrollIntoView({ block: "center" });
+    }
+
+    // 事件紀錄
+    const logEl = document.getElementById("log");
+    function log(type, detail) {
+      const line = document.createElement("div");
+      line.innerHTML = `${new Date().toLocaleTimeString("zh-TW")} <span class="t"></span> `;
+      line.querySelector(".t").textContent = type;
+      line.append(JSON.stringify(detail));
+      logEl.prepend(line);
+    }
+    ["momo-card:click", "momo-card:favorite-change", "momo-card:add-to-cart", "momo-card:impression", "momo-card:error"].forEach((type) =>
+      document.addEventListener(type, (e) => log(type, e.detail)),
+    );
+  </script>
+</body>
+</html>
