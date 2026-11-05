@@ -82,6 +82,22 @@
 &lt;momo-product-card card-id="std-airfryer"&gt;&lt;/momo-product-card&gt;</pre>
   </section>
 
+  <script>
+    // 事件監聽要在載入 bundle「之前」掛上：bundle 一載入就會升級頁面上的卡片，
+    // 初次渲染時的事件（例如資料錯誤 momo-card:error）才不會漏接。
+    // 若無法控制順序，也可以事後查詢 el.hasAttribute("invalid") / el.issues。
+    const logEl = document.getElementById("log");
+    function log(type, detail) {
+      const line = document.createElement("div");
+      line.innerHTML = `${new Date().toLocaleTimeString("zh-TW")} <span class="t"></span> `;
+      line.querySelector(".t").textContent = type;
+      line.append(JSON.stringify(detail));
+      logEl.prepend(line);
+    }
+    ["momo-card:click", "momo-card:favorite-change", "momo-card:add-to-cart", "momo-card:impression", "momo-card:error"].forEach((type) =>
+      document.addEventListener(type, (e) => log(type, e.detail)),
+    );
+  </script>
   <script src="/vendor/momo-card.iife.js"></script>
   <script>
     const { html, registerPlugin, createFixtures } = window.MomoCard;
@@ -117,18 +133,6 @@
       el?.scrollIntoView({ block: "center" });
     }
 
-    // 事件紀錄
-    const logEl = document.getElementById("log");
-    function log(type, detail) {
-      const line = document.createElement("div");
-      line.innerHTML = `${new Date().toLocaleTimeString("zh-TW")} <span class="t"></span> `;
-      line.querySelector(".t").textContent = type;
-      line.append(JSON.stringify(detail));
-      logEl.prepend(line);
-    }
-    ["momo-card:click", "momo-card:favorite-change", "momo-card:add-to-cart", "momo-card:impression", "momo-card:error"].forEach((type) =>
-      document.addEventListener(type, (e) => log(type, e.detail)),
-    );
   </script>
 </body>
 </html>

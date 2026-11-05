@@ -33,6 +33,7 @@ type Source =
  *
  * 對外事件（bubbles + composed，可穿越 Shadow DOM）：
  *   momo-card:click / momo-card:favorite-change / momo-card:add-to-cart / momo-card:error / momo-card:impression(plugin)
+ * 可查詢狀態：`invalid` attribute、`issues` getter
  */
 export class MomoProductCard extends LitElement {
   static override styles = cardStyles;
@@ -208,9 +209,20 @@ export class MomoProductCard extends LitElement {
     this.pluginCleanups.splice(0).forEach((fn) => fn());
   }
 
+  /**
+   * 錯誤同時以「事件」與「可查詢狀態」兩種方式提供：
+   * 事件可能在宿主掛上監聽器之前就發生（bundle 載入當下即升級元素），
+   * 因此另外反映 `invalid` attribute 與 `issues` getter，宿主任何時候都能查詢。
+   */
+  get issues(): ReadonlyArray<{ path: string; message: string }> {
+    const source = this.resolveSource();
+    return source.kind === "invalid" ? source.issues : [];
+  }
+
   private reportError(source: Source) {
     const key = source.kind === "invalid" ? JSON.stringify(source.issues) : "";
-    if (key && key !== this.lastReportedError) this.emit("momo-card:error", { issues: (source as { issues: unknown }).issues });
+    this.toggleAttribute("invalid", key !== "");
+    if (key && key !== this.lastReportedError) this.emit("momo-card:error", { cardId: this.cardId, issues: (source as { issues: unknown }).issues });
     this.lastReportedError = key;
   }
 

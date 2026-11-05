@@ -26,7 +26,17 @@ npm run dev        # 先建置 card bundle，再啟動 Next.js（http://localhos
 其他指令：
 
 ```bash
-npm test           # merchant-card 單元測試（vitest）
+npm test           # merchant-card 單元測試（vitest，18 個）
+```
+
+```bash
+npm run test:e2e   # Playwright E2E（18 個；自動 build 並以 next start 在 3100 埠啟動）
+```
+
+首次執行 E2E 前需安裝瀏覽器：
+
+```bash
+npx --prefix apps/showroom playwright install chromium
 ```
 
 ```bash
@@ -159,6 +169,7 @@ registerPlugin({
 - 三種資料來源：`.card` property（框架宿主）、`data` JSON attribute（SSR / CMS）、`card-id`（接 Store 同步）
 - Shadow DOM 隔離宿主的全域樣式（sample.html 刻意加了汙染樣式驗證）；`--momo-card-*` CSS 變數與 `::part()` 開放主題客製
 - 對外事件全部 `bubbles + composed`：`momo-card:click / favorite-change / add-to-cart / impression / error`
+- 錯誤同時提供可查詢狀態（`invalid` attribute、`issues` getter）：首次渲染的事件可能早於宿主掛監聽器
 - 資料錯誤時顯示錯誤狀態並發出 `momo-card:error`，而不是白畫面
 - Showroom 預覽用的是**同一個** Web Component（React 包裝），保證「Showroom 所見 = 宿主嵌入所得」
 
@@ -183,7 +194,8 @@ registerPlugin({
 | P0 | Plugin Registry、Schema 驅動編輯器 | ✅ |
 | P1 | 刪除卡片 / 新增卡片 | ❌ LWW 刪除需要 tombstone，時間內不做；目前只有「重設」 |
 | P1 | 卡片 SSR（Declarative Shadow DOM） | ❌ 卡片目前 client-only，對 SEO / LCP 不利，見演進方向 |
-| P1 | E2E / 視覺回歸測試 | ❌ 已用瀏覽器手動驗證雙向同步；下一步補 Playwright |
+| P1 | E2E 測試 | ✅ Playwright 18 個：目錄篩選、編輯器 ↔ sample.html 雙向同步、驗證錯誤不廣播、持久化、分享連結、Shadow DOM 隔離、執行期 plugin |
+| P2 | 視覺回歸測試 | ❌ 下一步以 Playwright screenshot 或 Chromatic 對 variant × plugin 組合做基準圖 |
 | P2 | 真實 momo 圖片與資料 | ❌ 題目要求不呼叫真實網站，使用 SVG placeholder 與虛構商品 |
 | P2 | Dark mode、i18n | ❌ 非評估重點 |
 
@@ -201,7 +213,7 @@ registerPlugin({
 2. **SSR**：以 Lit SSR 或 Declarative Shadow DOM 輸出首屏 HTML，改善商品列表的 LCP
 3. **Plugin 治理**：plugin 加上 `version` 與相容的 schema 版本範圍；Registry 支援遠端 manifest，行銷團隊可不經發版上架 plugin
 4. **可觀測性**：`momo-card:error` / `impression` 事件統一導向埋點 SDK；Store 遷移失敗與唯讀事件上報
-5. **驗證**：Playwright 開兩個 context 自動驗證跨分頁同步；以 Storybook / Chromatic 對 variant × plugin 組合做視覺回歸
+5. **驗證**：以 Storybook / Chromatic 對 variant × plugin 組合做視覺回歸；E2E 接上 CI
 6. **Bundle**：`zod/mini` + 依 variant 拆分 renderer
 
 ---
@@ -217,4 +229,6 @@ registerPlugin({
    - `useCardActions` 初版在 render 期間建立 Store，SSR 時會在 server 端 seed 資料；改為延遲取得
    - Next.js 16 Cache Components 對 `params` 存取的限制，改為 Suspense 內 await
    - emoji 圖示在品牌色底上不可辨識（瀏覽器實測發現），改 SVG
-4. **驗證方式**：vitest 覆蓋 schema / migration / plugin / 同步收斂；瀏覽器實測編輯器 ↔ sample.html 雙向同步、驗證錯誤 UI、Shadow DOM 隔離、執行期 plugin 註冊
+   - **E2E 抓到的真 bug**：資料錯誤的 `momo-card:error` 在 bundle 載入、元素升級的當下就發出，早於宿主掛監聽器而遺失。
+     修正為「事件 + 可查詢狀態」雙管道（`invalid` attribute、`issues` getter），sample.html 也改為先掛監聽再載入 bundle
+4. **驗證方式**：vitest 覆蓋 schema / migration / plugin / 同步收斂；Playwright E2E 以同一 browser context 開多個分頁，驗證編輯器 ↔ sample.html 雙向同步、驗證錯誤 UI、分享連結、Shadow DOM 隔離、執行期 plugin 註冊

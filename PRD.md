@@ -27,3 +27,5 @@
 - **2026-11-05｜Plugin configSchema 改為 duck-typed `safeParse` 介面，不 re-export zod**：re-export 整包 `z` 使 IIFE bundle 從 42KB 膨脹到 107KB（gzip）；同時讓無建置流程的宿主可以不寫驗證直接註冊 plugin。
 - **2026-11-05｜刪除 / 新增卡片不做**：LWW 下的刪除需要 tombstone，時限內優先保證既有卡片同步正確，以「重設」取代。
 - **2026-11-05｜以 feature 為單位漸進式 commit（使用者決定）**：呈現演進過程，每個 commit 附 Co-Authored-By。
+- **2026-11-05｜E2E 用 production build（next start :3100）、固定 2 workers**：貼近部署行為且不干擾開發中的 dev server；多分頁測試在 4 workers 下 CPU 飽和導致逾時，2 workers 穩定（連跑兩輪 18/18）。
+- **2026-11-05｜卡片錯誤採「事件 + 可查詢狀態」雙管道**：Custom Element 在 bundle 載入當下即升級，初次渲染的事件可能早於宿主監聽器；只靠事件會漏接。

@@ -7,3 +7,4 @@
 - 2026-11-05：Showroom：Radix 共用 UI、目錄、Schema 驅動編輯器、分享連結、ESLint feature 邊界（`apps/showroom/src`）
 - 2026-11-05：sample.html 純 HTML 嵌入範例；瀏覽器實測編輯器 ↔ sample.html 雙向同步（`apps/showroom/public/sample.html`）
 - 2026-11-05：README（架構、取捨、演進）、PRD 決策紀錄（`README.md`、`PRD.md`）
+- 2026-11-05：Playwright E2E 18 個（跨分頁同步、驗證、分享連結、Shadow DOM、執行期 plugin）；修正首次渲染時 momo-card:error 事件遺失（`apps/showroom/e2e`、`element/momo-product-card.ts`）

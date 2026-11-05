@@ -6,3 +6,7 @@ dist/
 coverage/
 # 由 card 套件建置後複製進 showroom 的產物
 apps/showroom/public/vendor/
+
+# Playwright
+apps/showroom/test-results/
+apps/showroom/playwright-report/
