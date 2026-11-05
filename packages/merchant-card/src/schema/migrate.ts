@@ -1,4 +1,4 @@
-import { CARD_SCHEMA_VERSION } from "./card.schema";
+import { CARD_SCHEMA_VERSION, defaultActionExtensions } from "./card.schema";
 
 /**
  * Schema 版本遷移
@@ -13,6 +13,8 @@ import { CARD_SCHEMA_VERSION } from "./card.schema";
  * v3 → v4：對齊 momo 真實資料（見 docs/momo-data-format.md）。
  *          - flash-sale：`stockSold` 改為 `stockRemaining`（momo 只提供 remainingAmount「最後 N 組」）
  *          - `soldCount` 由 standard 專屬提升為共用欄位；新增 subtitle / images / videoUrl / url / priceFrom（皆有預設或選填）
+ * v4 → v5：「收藏」「加入購物車」由卡片內建改為可選模組（plugin `favorite` / `add-to-cart`，插槽 `actions`）。
+ *          舊資料一律補上這兩個模組，維持升級前的外觀；之後可在編輯器移除。
  */
 type Raw = Record<string, unknown>;
 type MigrationStep = (card: Raw) => Raw;
@@ -46,6 +48,8 @@ const steps: Record<number, MigrationStep> = {
     const sold = typeof stockSold === "number" ? stockSold : 0;
     return { ...rest, stockRemaining: Math.max(0, total - sold) };
   },
+  // from v4
+  4: (card) => ({ ...card, extensions: { ...defaultActionExtensions(), ...((card.extensions as Raw | undefined) ?? {}) } }),
 };
 
 export function migrateCard(raw: unknown, fromVersion: number): unknown {

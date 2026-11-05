@@ -6,7 +6,7 @@ export { migrateCard } from "./schema/migrate";
 export { createFixtures, placeholderImage } from "./schema/fixtures";
 export * from "./core/pricing";
 export * from "./core/countdown";
-export { definePlugin, type CardPlugin, type ConfigSchema, type PluginRenderContext, type PluginSetupContext } from "./plugins/types";
+export { definePlugin, type CardPlugin, type CardRuntime, type ConfigSchema, type PluginRenderContext, type PluginSetupContext } from "./plugins/types";
 export { PluginRegistry, pluginRegistry, type ResolvedPlugin } from "./plugins/registry";
 export { BUILTIN_PLUGINS, registerBuiltinPlugins } from "./plugins/builtin";
 export { addPlugin, effectivePlacement, placePlugin, removePlugin, shiftPlugin, slotOrder, type PlacementTarget } from "./plugins/placement";

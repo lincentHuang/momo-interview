@@ -1,4 +1,4 @@
-import type { CardInput } from "./card.schema";
+import { defaultActionExtensions, type CardInput } from "./card.schema";
 
 /** 無外部請求的商品圖：以 SVG data URI 產生（題目要求不呼叫真實網站資源） */
 export function placeholderImage(label: string, hue: number): string {
@@ -32,7 +32,7 @@ export function createFixtures(now = Date.now()): CardInput[] {
       rating: 4.8,
       reviewCount: 2318,
       soldCount: 10000,
-      extensions: { "fast-delivery": { label: "最快今日" }, "campaign-tag": { text: "雙11必買", color: "#E4007F" }, coupon: {}, register: {} },
+      extensions: { ...defaultActionExtensions(), "fast-delivery": { label: "最快今日" }, "campaign-tag": { text: "雙11必買", color: "#E4007F" }, coupon: {}, register: {} },
     },
     {
       id: "std-towel",
@@ -47,7 +47,7 @@ export function createFixtures(now = Date.now()): CardInput[] {
       reviewCount: 845,
       soldCount: 3000,
       layout: "list",
-      extensions: { "store-plus": {}, gift: { text: "贈品" } },
+      extensions: { ...defaultActionExtensions(), "store-plus": {}, gift: { text: "贈品" } },
     },
     {
       id: "flash-earbuds",
@@ -62,7 +62,7 @@ export function createFixtures(now = Date.now()): CardInput[] {
       endsAt: now + 2 * hour + 15 * 60 * 1000,
       stockRemaining: 118,
       stockTotal: 500,
-      extensions: { "fast-delivery": { label: "24H到貨" }, installment: { periods: 6 } },
+      extensions: { ...defaultActionExtensions(), "fast-delivery": { label: "24H到貨" }, installment: { periods: 6 } },
     },
     {
       id: "live-skincare",
@@ -78,7 +78,7 @@ export function createFixtures(now = Date.now()): CardInput[] {
       liveStatus: "live",
       viewers: 12800,
       hostName: "momo 小編",
-      extensions: { coupon: { amount: 100 }, gift: { text: "贈旅行組" } },
+      extensions: { ...defaultActionExtensions(), coupon: { amount: 100 }, gift: { text: "贈旅行組" } },
     },
     {
       id: "rank-rice",
@@ -92,7 +92,7 @@ export function createFixtures(now = Date.now()): CardInput[] {
       soldCount: 50000,
       rank: 1,
       rankCategory: "生鮮熱銷",
-      extensions: { "fast-delivery": { label: "超商取貨" }, register: {} },
+      extensions: { ...defaultActionExtensions(), "fast-delivery": { label: "超商取貨" }, register: {} },
     },
   ];
 }

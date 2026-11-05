@@ -95,6 +95,8 @@ export function MomoCard({ cardId, card, layout, editable, selectedModule, class
       {ready ? (
         <momo-product-card
           ref={ref}
+          // 填滿外層：外層被 grid / flex 拉伸（h-full）時卡片跟著等高；外層高度為 auto 時不影響
+          className="h-full"
           card-id={cardId}
           layout={layout}
           editable={editable || undefined}

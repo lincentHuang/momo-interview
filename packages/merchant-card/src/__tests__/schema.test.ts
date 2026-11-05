@@ -41,7 +41,8 @@ describe("migrateCard", () => {
     const v1 = { id: "a", variant: "standard", title: "t", imageUrl: "i", price: 10, badges: ["coupon", "unknown"] };
     const migrated = migrateCard(v1, 1) as Record<string, unknown>;
     expect(migrated.badges).toBeUndefined();
-    expect(migrated.extensions).toEqual({ coupon: {} });
+    expect(migrated.extensions).toMatchObject({ coupon: {} });
+    expect(migrated.extensions).not.toHaveProperty("unknown");
     expect(parseCard(migrated).ok).toBe(true);
   });
 
@@ -50,6 +51,13 @@ describe("migrateCard", () => {
     const migrated = migrateCard(v3, 3) as Record<string, unknown>;
     expect(migrated.stockSold).toBeUndefined();
     expect(migrated.stockRemaining).toBe(118);
+    expect(parseCard(migrated).ok).toBe(true);
+  });
+
+  it("v4 → v5 補上收藏 / 購物車模組，且不覆寫既有設定", () => {
+    const v4 = { id: "s", variant: "standard", title: "t", imageUrl: "i", price: 10, extensions: { coupon: { amount: 50 } }, placements: {} };
+    const migrated = migrateCard(v4, 4) as { extensions: Record<string, unknown> };
+    expect(migrated.extensions).toEqual({ favorite: {}, "add-to-cart": {}, coupon: { amount: 50 } });
     expect(parseCard(migrated).ok).toBe(true);
   });
 

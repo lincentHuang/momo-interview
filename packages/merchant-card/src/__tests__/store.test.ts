@@ -85,7 +85,7 @@ describe("createCardStore", () => {
       }),
     );
     const store = createCardStore({ storage, channel: null, eventTarget: null, seed });
-    expect(store.get("old")!.card.extensions).toEqual({ gift: {} });
+    expect(store.get("old")!.card.extensions).toEqual({ favorite: {}, "add-to-cart": {}, gift: {} });
     expect(JSON.parse(storage.map.get("momo-card:store")!).schemaVersion).toBe(CARD_SCHEMA_VERSION);
   });
 

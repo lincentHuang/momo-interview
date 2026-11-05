@@ -16,6 +16,14 @@ describe("PluginRegistry", () => {
     expect(resolved.map((r) => r.plugin.id)).toEqual(["fast-delivery", "coupon", "gift"]);
   });
 
+  it("收藏 / 購物車是可移除的 actions 模組", () => {
+    const reg = new PluginRegistry();
+    BUILTIN_PLUGINS.forEach((p) => reg.register(p));
+    expect(reg.resolve(card({ favorite: {}, "add-to-cart": {} }), "actions").map((r) => r.plugin.id)).toEqual(["favorite", "add-to-cart"]);
+    expect(reg.resolve(card({ "add-to-cart": {} }), "actions").map((r) => r.plugin.id)).toEqual(["add-to-cart"]);
+    expect(reg.resolve(card({}), "actions")).toEqual([]);
+  });
+
   it("config 不合法時退回預設值，而非拋錯", () => {
     const reg = new PluginRegistry();
     BUILTIN_PLUGINS.forEach((p) => reg.register(p));

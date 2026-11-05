@@ -18,7 +18,7 @@ z.config(zhTW());
  *
  * layout（grid / list）屬於「呈現」維度，與 variant 正交。
  */
-export const CARD_SCHEMA_VERSION = 4;
+export const CARD_SCHEMA_VERSION = 5;
 
 export const CARD_VARIANTS = ["standard", "flash-sale", "live", "ranking"] as const;
 export type CardVariant = (typeof CARD_VARIANTS)[number];
@@ -37,10 +37,11 @@ export type CardLayout = (typeof CARD_LAYOUTS)[number];
  *  │ title                │
  *  │ badges  (標籤列)      │
  *  │ price  + price-extra │
+ *  │ meta      [actions]  │
  *  │ footer               │
  *  └──────────────────────┘
  */
-export const CARD_SLOTS = ["media-top", "media-bottom", "badges", "price-extra", "footer"] as const;
+export const CARD_SLOTS = ["media-top", "media-bottom", "badges", "price-extra", "actions", "footer"] as const;
 export type CardSlot = (typeof CARD_SLOTS)[number];
 
 export const CARD_SLOT_LABELS: Record<CardSlot, string> = {
@@ -48,8 +49,17 @@ export const CARD_SLOT_LABELS: Record<CardSlot, string> = {
   "media-bottom": "圖片底部",
   badges: "標籤列",
   "price-extra": "價格旁",
+  actions: "互動按鈕",
   footer: "卡片底部",
 };
+
+/**
+ * 新卡片預設啟用的互動模組（收藏 / 加入購物車）。兩者都是可移除的 plugin，
+ * 這裡只用 id 描述「預設開啟」，不依賴 plugin 實作（schema 層不 import plugins）。
+ */
+export function defaultActionExtensions(): Record<string, Record<string, unknown>> {
+  return { favorite: {}, "add-to-cart": {} };
+}
 
 /** 單張卡片對某個 plugin 的版位覆寫（WYSIWYG 拖曳的結果）；省略時用 plugin 宣告的 slot / order */
 export const PlacementSchema = z.object({ slot: z.enum(CARD_SLOTS), order: z.number().int() });

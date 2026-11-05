@@ -8,7 +8,7 @@ test.describe("sample.html 嵌入", () => {
     // 宿主設定 h3 { color: lime; font-size: 32px }
     await expect(title).not.toHaveCSS("color", "rgb(0, 255, 0)");
     await expect(title).toHaveCSS("font-size", "14px");
-    await expect(card(page, "std-airfryer").locator("img")).toHaveCSS("border-top-width", "0px");
+    await expect(card(page, "std-airfryer").locator(".track img").first()).toHaveCSS("border-top-width", "0px");
   });
 
   test("CSS 變數可穿透 Shadow DOM 覆寫主題", async ({ page }) => {
@@ -48,5 +48,43 @@ test.describe("sample.html 嵌入", () => {
     await openSample(b);
     await card(a, "std-towel").getByRole("button", { name: "加入收藏" }).click();
     await expect(card(b, "std-towel").getByRole("button", { name: "取消收藏" })).toBeVisible();
+  });
+
+  test("多圖輪播：箭頭 / 圓點切換，且不觸發卡片點擊", async ({ page }) => {
+    await openSample(page);
+    const target = card(page, "std-airfryer");
+    await target.hover();
+    await target.getByRole("button", { name: "下一張圖" }).click();
+    await expect(target.getByRole("tab", { name: "第 2 張圖" })).toHaveAttribute("aria-selected", "true");
+    await target.getByRole("tab", { name: "第 1 張圖" }).click();
+    await expect(target.getByRole("tab", { name: "第 1 張圖" })).toHaveAttribute("aria-selected", "true");
+    await expect(page.locator("#log")).not.toContainText(/momo-card:click \{"cardId":"std-airfryer"/);
+  });
+
+  test("標籤列固定單行；收藏 / 購物車可由 extensions 移除；影片在卡片內播放", async ({ page }) => {
+    await openSample(page);
+    await page.evaluate(() => {
+      const el = document.createElement("momo-product-card");
+      el.id = "optional-card";
+      el.style.width = "160px";
+      (el as unknown as { card: unknown }).card = {
+        id: "opt",
+        variant: "standard",
+        title: "選配測試",
+        imageUrl: "data:image/gif;base64,R0lGODlhAQABAAAAACw=",
+        videoUrl: "https://example.com/demo.mp4",
+        price: 100,
+        extensions: { "store-plus": {}, "pre-order": {}, "fast-delivery": {}, coupon: {}, register: {}, gift: {} },
+      };
+      document.body.append(el);
+    });
+    const target = page.locator("#optional-card");
+    await expect(target.locator(".badges")).toHaveCSS("height", "18px");
+    await expect(target.getByRole("button", { name: "加入收藏" })).toHaveCount(0);
+    await expect(target.getByRole("button", { name: "加入購物車" })).toHaveCount(0);
+    await target.getByRole("button", { name: "播放商品影片" }).click();
+    await expect(target.locator(".player video")).toHaveAttribute("src", "https://example.com/demo.mp4");
+    await target.getByRole("button", { name: "關閉影片" }).click();
+    await expect(target.locator(".player")).toHaveCount(0);
   });
 });

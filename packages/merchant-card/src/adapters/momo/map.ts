@@ -1,4 +1,4 @@
-import { parseCard, type Card, type CardInput } from "../../schema/card.schema";
+import { defaultActionExtensions, parseCard, type Card, type CardInput } from "../../schema/card.schema";
 import { RawColumnGoods, RawGoodsInfo, type RawIcon, type RawPriceModel, type RawSaleInfo } from "./raw";
 
 /**
@@ -120,7 +120,8 @@ function imageExtensions(imgTagUrl?: string, imgBottomTagUrl?: string): Extensio
 // ---------- 驗證邊界 ----------
 
 function finalize(input: CardInput, goodsCode: string): MapResult {
-  const parsed = parseCard(input);
+  // 收藏 / 購物車是可選模組；momo 轉出的卡片預設開啟（行銷標以外的互動能力）
+  const parsed = parseCard({ ...input, extensions: { ...defaultActionExtensions(), ...input.extensions } });
   if (parsed.ok) return { ok: true, card: parsed.card };
   return { ok: false, goodsCode, reason: parsed.issues.map((i) => `${i.path}：${i.message}`).join("；") };
 }

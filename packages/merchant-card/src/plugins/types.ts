@@ -1,6 +1,7 @@
 import type { TemplateResult } from "lit";
 import type { Card, CardSlot, CardVariant } from "../schema/card.schema";
 import type { FieldDescriptor } from "../schema/fields";
+import type { CardRuntimeState } from "../store/types";
 
 /** 插槽定義在 schema 層（placements 需驗證 slot 名稱），這裡 re-export 維持原本的引用路徑 */
 export { CARD_SLOT_LABELS, CARD_SLOTS, type CardSlot } from "../schema/card.schema";
@@ -10,9 +11,25 @@ export interface ConfigSchema<C> {
   safeParse(value: unknown): { success: true; data: C } | { success: false; error: { issues: unknown } };
 }
 
+/**
+ * 卡片提供給 plugin 的互動能力（收藏 / 加入購物車這類「有狀態」的模組使用）。
+ * 狀態本身仍由卡片管理（同步模式寫入 Store、獨立模式存在卡片內），plugin 只負責呈現與觸發。
+ */
+export interface CardRuntime {
+  state: CardRuntimeState;
+  toggleFavorite: () => void;
+  addToCart: () => void;
+  /** 卡片處於「已結束」狀態（例如限搶倒數結束），購買類按鈕應停用 */
+  inactive: boolean;
+  /** variant 指定的文字主按鈕（限時搶購為「搶」）；省略時使用購物車圖示 */
+  ctaLabel?: string;
+}
+
 export interface PluginRenderContext<C> {
   card: Card;
   config: C;
+  /** 由 <momo-product-card> 提供；在卡片外單獨呼叫 render 時可能不存在 */
+  runtime?: CardRuntime;
 }
 
 export interface PluginSetupContext<C> extends PluginRenderContext<C> {

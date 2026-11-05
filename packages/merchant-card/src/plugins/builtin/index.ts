@@ -1,4 +1,4 @@
-import { html } from "lit";
+import { html, svg } from "lit";
 import { z } from "zod";
 import { formatPrice } from "../../core/pricing";
 import { pluginRegistry } from "../registry";
@@ -209,6 +209,65 @@ export const cashbackPlugin = definePlugin({
     html`<span class="cashback">回饋 ${config.percent}%・約 ${formatPrice(Math.floor((card.price * config.percent) / 100))} mo幣</span>`,
 });
 
+const heartIcon = (filled: boolean) => html`<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+  ${svg`<path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"
+    fill=${filled ? "currentColor" : "none"} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>`}
+</svg>`;
+
+const cartIcon = html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  ${svg`<path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/>`}
+</svg>`;
+
+/** 按鈕點擊不應冒泡成「點擊卡片」（導到商品頁） */
+const stop = (fn: () => void) => (e: Event) => {
+  e.stopPropagation();
+  fn();
+};
+
+/**
+ * 我的最愛（收藏）。狀態由卡片管理（同步模式會跨分頁同步），plugin 只負責按鈕本身，
+ * 因此可以像行銷標籤一樣被移除、搬到其他插槽。
+ */
+export const favoritePlugin = definePlugin({
+  id: "favorite",
+  name: "我的最愛",
+  description: "愛心收藏按鈕（發出 momo-card:favorite-change）",
+  slot: "actions",
+  order: 0,
+  defaults: {},
+  fields: [],
+  render: ({ runtime }) => {
+    const on = runtime?.state.favorite ?? false;
+    return html`<button
+      class="icon-btn"
+      aria-label=${on ? "取消收藏" : "加入收藏"}
+      aria-pressed=${on ? "true" : "false"}
+      @click=${stop(() => runtime?.toggleFavorite())}
+    >${heartIcon(on)}</button>`;
+  },
+});
+
+/** 加入購物車。限時搶購卡由 variant 指定文字主按鈕（「搶」），其餘為購物車圖示 */
+export const addToCartPlugin = definePlugin({
+  id: "add-to-cart",
+  name: "加入購物車",
+  description: "購物車 / 搶購按鈕（發出 momo-card:add-to-cart）",
+  slot: "actions",
+  order: 10,
+  defaults: {},
+  fields: [],
+  render: ({ runtime }) => {
+    const qty = runtime?.state.cartQty ?? 0;
+    const inactive = runtime?.inactive ?? false;
+    const cta = runtime?.ctaLabel;
+    const add = stop(() => runtime?.addToCart());
+    return html`${qty > 0 ? html`<span class="cart-qty" aria-live="polite">×${qty}</span>` : null}${cta
+      ? html`<button class="cta" aria-label="${cta}購：加入購物車" ?disabled=${inactive} @click=${add}>${inactive ? "已結束" : cta}</button>`
+      : html`<button class="icon-btn icon-btn--cart" aria-label="加入購物車" ?disabled=${inactive} @click=${add}>${cartIcon}</button>`}`;
+  },
+});
+
 /**
  * 無 UI 的 plugin 範例：曝光追蹤。
  * 卡片可見面積超過門檻時發出一次 `momo-card:impression` 事件，由宿主串接自己的埋點系統。
@@ -249,6 +308,8 @@ export const BUILTIN_PLUGINS = [
   installmentPlugin,
   cornerLabelPlugin,
   cashbackPlugin,
+  favoritePlugin,
+  addToCartPlugin,
   impressionTrackerPlugin,
 ] as const;
 

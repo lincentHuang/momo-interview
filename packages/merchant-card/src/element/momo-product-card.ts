@@ -1,24 +1,28 @@
 import { LitElement, html, nothing, svg, type PropertyValues, type TemplateResult } from "lit";
 import { formatCount, formatPrice, formatSoldCount } from "../core/pricing";
 import { pluginRegistry, type ResolvedPlugin } from "../plugins/registry";
-import type { CardSlot } from "../plugins/types";
+import type { CardRuntime, CardSlot } from "../plugins/types";
 import { CARD_SLOT_LABELS, parseCard, type Card, type CardLayout } from "../schema/card.schema";
 import { getSharedStore } from "../store/shared-store";
 import type { CardRecord, CardRuntimeState } from "../store/types";
 import { cardStyles } from "./styles";
 import { rendererFor } from "./variants";
 
-const heartIcon = (filled: boolean) => html`<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-  ${svg`<path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"
-    fill=${filled ? "currentColor" : "none"} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>`}
-</svg>`;
-
-const cartIcon = html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  ${svg`<path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/>`}
-</svg>`;
-
 const playIcon = html`<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">${svg`<path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/>`}</svg>`;
+const chevron = (dir: "prev" | "next") =>
+  html`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${svg`<path d=${dir === "prev" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"}/>`}</svg>`;
+
+/**
+ * 影片網址 → 卡片內可直接播放的形式。
+ * momo vodUrl 實測為 YouTube 連結；直接的影音檔用 <video>；其他（直播間頁面等）無法內嵌，交給宿主處理。
+ */
+type VideoSource = { kind: "youtube"; src: string } | { kind: "file"; src: string } | { kind: "external" };
+export function videoSource(url: string): VideoSource {
+  const yt = url.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+  if (yt) return { kind: "youtube", src: `https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&mute=1&playsinline=1&rel=0` };
+  if (/\.(mp4|webm|ogv|mov|m4v)(\?|#|$)/i.test(url)) return { kind: "file", src: url };
+  return { kind: "external" };
+}
 
 type Source =
   | { kind: "ok"; card: Card; state: CardRuntimeState; synced: boolean }
@@ -57,6 +61,7 @@ export class MomoProductCard extends LitElement {
     _record: { state: true },
     _pluginsVersion: { state: true },
     _imageIndex: { state: true },
+    _playingId: { state: true },
   };
 
   declare cardId: string | null;
@@ -73,6 +78,8 @@ export class MomoProductCard extends LitElement {
   declare private _record: CardRecord | undefined;
   declare private _pluginsVersion: number;
   declare private _imageIndex: number;
+  /** 正在卡片內播放影片的卡片 id（換成別張卡片時自動停止） */
+  declare private _playingId: string | null;
 
   private unsubscribers: Array<() => void> = [];
   private pluginCleanups: Array<() => void> = [];
@@ -93,12 +100,18 @@ export class MomoProductCard extends LitElement {
     this._record = undefined;
     this._pluginsVersion = 0;
     this._imageIndex = 0;
+    this._playingId = null;
   }
 
   override connectedCallback(): void {
     super.connectedCallback();
     this.unsubscribers.push(pluginRegistry.subscribe(() => this._pluginsVersion++));
     this.bindStore();
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(() => this.markBadgeOverflow());
+      ro.observe(this);
+      this.unsubscribers.push(() => ro.disconnect());
+    }
   }
 
   override disconnectedCallback(): void {
@@ -117,6 +130,7 @@ export class MomoProductCard extends LitElement {
     this.syncTicker(source);
     this.syncPluginLifecycles(source);
     this.reportError(source);
+    this.markBadgeOverflow();
   }
 
   // ---------- 資料來源 ----------
@@ -177,28 +191,56 @@ export class MomoProductCard extends LitElement {
     else this._localState = { ...this._localState, ...patch };
   }
 
-  private onToggleFavorite(e: Event, card: Card, state: CardRuntimeState, synced: boolean) {
-    e.stopPropagation();
-    const favorite = !state.favorite;
-    this.updateState(card, synced, { favorite });
-    this.emit("momo-card:favorite-change", { cardId: card.id, favorite });
+  private get track(): HTMLElement | null {
+    return this.renderRoot.querySelector(".track");
   }
 
-  private onAddToCart(e: Event, card: Card, state: CardRuntimeState, synced: boolean) {
+  /** 切到第 index 張圖：捲動軌道，由 scroll 事件回寫 _imageIndex（滑動 / 點圓點 / 箭頭共用同一條路徑） */
+  private goToImage(e: Event, index: number, count: number) {
     e.stopPropagation();
-    const cartQty = state.cartQty + 1;
-    this.updateState(card, synced, { cartQty });
-    this.emit("momo-card:add-to-cart", { cardId: card.id, price: card.price, cartQty });
+    const track = this.track;
+    const next = (index + count) % count;
+    if (!track) return void (this._imageIndex = next);
+    track.scrollTo({ left: next * track.clientWidth, behavior: "smooth" });
   }
 
-  private onSelectImage(e: Event, index: number) {
-    e.stopPropagation();
-    this._imageIndex = index;
+  private onTrackScroll(e: Event) {
+    const track = e.currentTarget as HTMLElement;
+    if (!track.clientWidth) return;
+    const index = Math.round(track.scrollLeft / track.clientWidth);
+    if (index !== this._imageIndex) this._imageIndex = index;
   }
 
   private onPlayVideo(e: Event, card: Card) {
     e.stopPropagation();
+    // 能內嵌的影片直接在卡片內播放；無法內嵌的（例如直播間頁面）只發事件，交由宿主開啟
+    if (card.videoUrl && videoSource(card.videoUrl).kind !== "external") this._playingId = card.id;
     this.emit("momo-card:play-video", { cardId: card.id, videoUrl: card.videoUrl });
+  }
+
+  private onCloseVideo(e: Event) {
+    e.stopPropagation();
+    this._playingId = null;
+  }
+
+  /**
+   * 標籤列只佔一行：依 plugin order（重要度）排列，放不下的整顆收起，不換行、不截半顆字。
+   * 正式模式由 CSS（單行高度 + overflow hidden）隱藏；這裡額外標記 data-overflow，
+   * 讓編輯模式能把「正式頁面會被收起」的模組以淡色顯示，避免拖進去卻看不到。
+   */
+  private markBadgeOverflow() {
+    const row = this.renderRoot?.querySelector<HTMLElement>(".badges");
+    if (!row) return;
+    const items = [...row.children] as HTMLElement[];
+    const top = items[0]?.offsetTop ?? 0;
+    let hidden = 0;
+    for (const el of items) {
+      const over = el.offsetTop > top;
+      el.toggleAttribute("data-overflow", over);
+      if (over) hidden++;
+    }
+    if (hidden) row.dataset.hidden = String(hidden);
+    else delete row.dataset.hidden;
   }
 
   // ---------- 生命週期：倒數 / plugin setup / 錯誤回報 ----------
@@ -255,11 +297,11 @@ export class MomoProductCard extends LitElement {
 
   // ---------- 渲染 ----------
 
-  private renderSlot(card: Card, slot: CardSlot): Array<TemplateResult | null> {
+  private renderSlot(card: Card, slot: CardSlot, runtime?: CardRuntime): Array<TemplateResult | null> {
     return pluginRegistry.resolve(card, slot).map(({ plugin, config }: ResolvedPlugin) => {
       let out: TemplateResult | null = null;
       try {
-        out = plugin.render?.({ card, config }) ?? null;
+        out = plugin.render?.({ card, config, runtime }) ?? null;
       } catch (err) {
         console.warn(`[momo-card] plugin "${plugin.id}" render 失敗`, err);
         return null; // 單一 plugin 失敗不影響卡片
@@ -277,6 +319,36 @@ export class MomoProductCard extends LitElement {
   /** 插槽容器的屬性：data-slot 供宿主辨識；data-label 只在編輯模式提供（空插槽的提示文字） */
   private slotLabel(slot: CardSlot) {
     return this.editable ? `${CARD_SLOT_LABELS[slot]}・拖曳模組到此` : nothing;
+  }
+
+  /** 商品圖：多張時為可滑動（scroll-snap）的輪播；播放中則換成內嵌影片 */
+  private renderMedia(card: Card, gallery: string[], imageIndex: number) {
+    if (card.videoUrl && this._playingId === card.id) {
+      const video = videoSource(card.videoUrl);
+      return html`<div class="player" @click=${(e: Event) => e.stopPropagation()}>
+        ${video.kind === "youtube"
+          ? html`<iframe src=${video.src} title="${card.title} 商品影片" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`
+          : video.kind === "file"
+            ? html`<video src=${video.src} controls autoplay muted playsinline></video>`
+            : nothing}
+        <button class="player-close" aria-label="關閉影片" @click=${this.onCloseVideo}>✕</button>
+      </div>`;
+    }
+    const multi = gallery.length > 1;
+    return html`
+      <div class="track" @scroll=${multi ? this.onTrackScroll : nothing} aria-roledescription=${multi ? "輪播" : nothing}>
+        ${gallery.map(
+          (src, i) => html`<img src=${src} alt=${i === 0 ? card.title : `${card.title}（第 ${i + 1} 張）`} loading="lazy" draggable="false" />`,
+        )}
+      </div>
+      ${multi
+        ? html`<button class="nav nav--prev" aria-label="上一張圖" @click=${(e: Event) => this.goToImage(e, imageIndex - 1, gallery.length)}>${chevron("prev")}</button>
+            <button class="nav nav--next" aria-label="下一張圖" @click=${(e: Event) => this.goToImage(e, imageIndex + 1, gallery.length)}>${chevron("next")}</button>`
+        : nothing}
+      ${card.videoUrl
+        ? html`<button class="play" aria-label="播放商品影片" @click=${(e: Event) => this.onPlayVideo(e, card)}>${playIcon}</button>`
+        : nothing}
+    `;
   }
 
   protected override render() {
@@ -298,9 +370,24 @@ export class MomoProductCard extends LitElement {
     const layout = this.layout ?? card.layout;
     const inactive = renderer.inactive?.(card as never, this._now) ?? false;
     const gallery = [card.imageUrl, ...card.images];
-    const imageIndex = this._imageIndex < gallery.length ? this._imageIndex : 0;
+    const imageIndex = Math.min(this._imageIndex, gallery.length - 1);
     const price = formatPrice(card.price).slice(1);
     const showOriginal = card.originalPrice !== undefined && card.originalPrice > card.price;
+    const runtime: CardRuntime = {
+      state,
+      inactive,
+      ctaLabel: renderer.ctaLabel,
+      toggleFavorite: () => {
+        const favorite = !state.favorite;
+        this.updateState(card, synced, { favorite });
+        this.emit("momo-card:favorite-change", { cardId: card.id, favorite });
+      },
+      addToCart: () => {
+        const cartQty = state.cartQty + 1;
+        this.updateState(card, synced, { cartQty });
+        this.emit("momo-card:add-to-cart", { cardId: card.id, price: card.price, cartQty });
+      },
+    };
 
     return html`
       <article
@@ -309,68 +396,46 @@ export class MomoProductCard extends LitElement {
         @click=${() => this.emit("momo-card:click", { cardId: card.id, url: card.url ?? null })}
       >
         <div class="media" part="media">
-          <img src=${gallery[imageIndex]} alt=${card.title} loading="lazy" />
-          ${card.videoUrl
-            ? html`<button class="play" aria-label="播放商品影片" @click=${(e: Event) => this.onPlayVideo(e, card)}>${playIcon}</button>`
-            : nothing}
-          <div class="media-top" data-slot="media-top" data-label=${this.slotLabel("media-top")}>${renderer.mediaTop?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-top")}</div>
-          <div class="media-bottom" data-slot="media-bottom" data-label=${this.slotLabel("media-bottom")}>${this.renderSlot(card, "media-bottom")}${renderer.mediaBottom?.(card as never, this._now) ?? nothing}</div>
+          ${this.renderMedia(card, gallery, imageIndex)}
+          <div class="media-top" data-slot="media-top" data-label=${this.slotLabel("media-top")}>${renderer.mediaTop?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-top", runtime)}</div>
+          <div class="media-foot">
+            ${gallery.length > 1 && this._playingId !== card.id
+              ? html`<div class="dots" role="tablist" aria-label="商品圖片">
+                  ${gallery.map(
+                    (_, i) => html`<button
+                      role="tab"
+                      aria-label="第 ${i + 1} 張圖"
+                      aria-selected=${i === imageIndex ? "true" : "false"}
+                      @click=${(e: Event) => this.goToImage(e, i, gallery.length)}
+                    ></button>`,
+                  )}
+                </div>`
+              : nothing}
+            <div class="media-bottom" data-slot="media-bottom" data-label=${this.slotLabel("media-bottom")}>${this.renderSlot(card, "media-bottom", runtime)}${renderer.mediaBottom?.(card as never, this._now) ?? nothing}</div>
+          </div>
         </div>
-        ${gallery.length > 1
-          ? html`<div class="dots" role="tablist" aria-label="商品圖片">
-              ${gallery.slice(0, 6).map(
-                (_, i) => html`<button
-                  role="tab"
-                  aria-label="第 ${i + 1} 張圖"
-                  aria-selected=${i === imageIndex ? "true" : "false"}
-                  @click=${(e: Event) => this.onSelectImage(e, i)}
-                ></button>`,
-              )}
-            </div>`
-          : nothing}
         <div class="body">
-          ${card.subtitle ? html`<p class="subtitle" part="subtitle">${card.subtitle}</p>` : nothing}
+          <p class="subtitle" part="subtitle">${card.subtitle ?? nothing}</p>
           <h3 class="title" part="title" title=${card.title}>${card.title}</h3>
           <div class="price-row" part="price">
             ${renderer.priceLabel ? html`<span class="price-label">${renderer.priceLabel}</span>` : nothing}
             <span class="price"><small>$</small>${price}${card.priceFrom ? html`<small class="from">起</small>` : nothing}</span>
             ${showOriginal ? html`<s class="original">${formatPrice(card.originalPrice!)}</s>` : nothing}
           </div>
-          <div class="price-extra" data-slot="price-extra" data-label=${this.slotLabel("price-extra")}>${this.renderSlot(card, "price-extra")}</div>
+          <div class="price-extra" data-slot="price-extra" data-label=${this.slotLabel("price-extra")}>${this.renderSlot(card, "price-extra", runtime)}</div>
           ${card.rating !== undefined && card.rating > 0
             ? html`<div class="rating" aria-label="評分 ${card.rating.toFixed(1)}">
                 <span class="stars" style="--_fill:${(card.rating / 5) * 100}%" aria-hidden="true"></span>
                 ${card.reviewCount ? html`<span>(${formatCount(card.reviewCount)})</span>` : nothing}
               </div>`
             : nothing}
-          <div class="badges" data-slot="badges" data-label=${this.slotLabel("badges")}>${this.renderSlot(card, "badges")}</div>
+          <div class="badges" data-slot="badges" data-label=${this.slotLabel("badges")}>${this.renderSlot(card, "badges", runtime)}</div>
           ${renderer.body?.(card as never, this._now) ?? nothing}
           <div class="meta">
             <span class="sold">${card.soldCount ? formatSoldCount(card.soldCount) : nothing}</span>
-            <span class="actions" part="actions">
-              ${state.cartQty > 0 ? html`<span class="cart-qty" aria-live="polite">×${state.cartQty}</span>` : nothing}
-              <button
-                class="icon-btn"
-                aria-label=${state.favorite ? "取消收藏" : "加入收藏"}
-                aria-pressed=${state.favorite ? "true" : "false"}
-                @click=${(e: Event) => this.onToggleFavorite(e, card, state, synced)}
-              >${heartIcon(state.favorite)}</button>
-              ${renderer.ctaLabel
-                ? html`<button
-                    class="cta"
-                    aria-label="${renderer.ctaLabel}購：加入購物車"
-                    ?disabled=${inactive}
-                    @click=${(e: Event) => this.onAddToCart(e, card, state, synced)}
-                  >${inactive ? "已結束" : renderer.ctaLabel}</button>`
-                : html`<button
-                    class="icon-btn icon-btn--cart"
-                    aria-label="加入購物車"
-                    ?disabled=${inactive}
-                    @click=${(e: Event) => this.onAddToCart(e, card, state, synced)}
-                  >${cartIcon}</button>`}
-            </span>
+            <span class="actions" part="actions" data-slot="actions" data-label=${this.slotLabel("actions")}>${this.renderSlot(card, "actions", runtime)}</span>
           </div>
-          <div class="footer" data-slot="footer" data-label=${this.slotLabel("footer")}>${this.renderSlot(card, "footer")}</div>
+          <div class="footer" data-slot="footer" data-label=${this.slotLabel("footer")}>${this.renderSlot(card, "footer", runtime)}</div>
         </div>
       </article>
     `;

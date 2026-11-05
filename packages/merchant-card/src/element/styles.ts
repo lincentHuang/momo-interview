@@ -40,19 +40,46 @@ export const cardStyles = css`
     cursor: pointer;
   }
   .card:hover { box-shadow: 0 4px 16px rgb(0 0 0 / 0.1); }
-  .card--grid { grid-template-rows: auto auto 1fr; }
-  .card--list { grid-template-columns: minmax(96px, 38%) 1fr; grid-template-rows: 1fr auto; }
-  .card--list .media { grid-row: 1; }
-  .card--list .dots { grid-column: 1; grid-row: 2; }
-  .card--list .body { grid-column: 2; grid-row: 1 / span 2; }
+  /* 卡片等高：宿主給高度（grid / flex stretch）時 body 撐滿，互動列以 margin-top:auto 貼底 */
+  .card--grid { grid-template-rows: auto 1fr; }
+  .card--list { grid-template-columns: minmax(96px, 38%) 1fr; }
 
-  .media { position: relative; aspect-ratio: 1; background: #f6f6f6; }
-  .media > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .media { position: relative; aspect-ratio: 1; background: #f6f6f6; overflow: hidden; }
+  .card--list .media { align-self: start; }
+  /* 多圖輪播：原生 scroll-snap，觸控滑動 / 觸控板橫向捲動 / 箭頭 / 圓點共用同一條捲動軌道 */
+  .track {
+    display: flex; width: 100%; height: 100%; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+  .track > img { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; display: block; scroll-snap-align: start; scroll-snap-stop: always; }
+  .nav {
+    all: unset; position: absolute; top: 50%; translate: 0 -50%; display: grid; place-items: center;
+    width: 26px; height: 26px; border-radius: 50%; background: rgb(255 255 255 / 0.85); color: #404040;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.18); cursor: pointer; opacity: 0; transition: opacity 0.15s ease;
+  }
+  .nav--prev { left: 6px; }
+  .nav--next { right: 6px; }
+  .media:hover .nav, .nav:focus-visible { opacity: 1; }
+  .nav:focus-visible { outline: 2px solid var(--_primary); outline-offset: 2px; }
+  @media (hover: none) { .nav { display: none; } }
+
+  /* 播放中蓋住角標 / 橫幅 / 圓點，避免遮住影片控制列 */
+  .player { position: absolute; inset: 0; z-index: 2; background: #000; cursor: default; }
+  .player iframe, .player video { width: 100%; height: 100%; border: 0; display: block; object-fit: contain; }
+  .player-close {
+    all: unset; position: absolute; top: 6px; right: 6px; display: grid; place-items: center; width: 24px; height: 24px;
+    border-radius: 50%; background: rgb(0 0 0 / 0.55); color: #fff; font-size: 12px; cursor: pointer;
+  }
+  .player-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
   .media-top { position: absolute; inset: 0 6px auto 6px; display: flex; gap: 4px; flex-wrap: wrap; align-items: flex-start; }
   .media-top > :not(.rank-flag) { margin-top: 6px; }
   .media-top:has(.media-sticker) { justify-content: space-between; }
   .media-sticker { position: absolute; top: 0; right: 0; width: 34%; max-width: 72px; height: auto; display: block; }
-  .media-bottom { position: absolute; inset: auto 0 0 0; display: grid; }
+  /* 圖片底部：輪播圓點疊在檔期橫幅上方，不另佔卡片高度（有無多圖的卡片才能等高） */
+  .media-foot { position: absolute; inset: auto 0 0 0; display: grid; pointer-events: none; }
+  .media-foot > * { pointer-events: auto; }
+  .media-bottom { display: grid; }
   .media-banner { width: 100%; height: auto; display: block; }
   .play {
     all: unset; position: absolute; inset: 50% auto auto 50%; translate: -50% -50%;
@@ -61,14 +88,15 @@ export const cardStyles = css`
   }
   .play:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
-  .dots { display: flex; justify-content: center; gap: 4px; padding: 6px 0 0; }
-  .dots button { all: unset; width: 5px; height: 5px; border-radius: 50%; background: #d9d9d9; cursor: pointer; }
+  .dots { display: flex; justify-content: center; gap: 4px; padding: 0 0 6px; justify-self: center; }
+  .dots button { all: unset; width: 5px; height: 5px; border-radius: 50%; background: rgb(0 0 0 / 0.22); box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6); cursor: pointer; }
   .dots button[aria-selected="true"] { background: var(--_primary); width: 12px; border-radius: 3px; }
   .dots button:focus-visible { outline: 2px solid var(--_primary); outline-offset: 2px; }
 
   .body { display: flex; flex-direction: column; gap: 3px; padding: 6px 8px 10px; min-width: 0; }
+  /* 促銷短語即使沒有也保留一行，讓同一列卡片的標題、價格對齊 */
   .subtitle {
-    margin: 0; color: var(--_promo); font-size: 13px; line-height: 18px;
+    margin: 0; min-height: 18px; color: var(--_promo); font-size: 13px; line-height: 18px;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   .card--flash-sale .subtitle { font-size: 14px; font-weight: 700; }
@@ -77,8 +105,14 @@ export const cardStyles = css`
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     min-height: 40px;
   }
-  .badges, .price-extra { display: flex; flex-wrap: wrap; gap: 2px 4px; align-items: center; }
-  .badges:empty, .price-extra:empty, .media-top:empty, .footer:empty { display: none; }
+  .price-extra { display: flex; flex-wrap: wrap; gap: 2px 4px; align-items: center; }
+  /*
+   * 標籤列固定單行：依 plugin order（重要度）由左到右排，放不下的整顆換到第二行並被裁掉，
+   * 所以卡片高度不會因標籤多寡而不同。（編輯模式改以 data-overflow 淡色提示，見下方）
+   */
+  .badges { display: flex; flex-wrap: wrap; gap: 0 4px; align-items: center; height: 18px; overflow: hidden; }
+  .badges > * { flex-shrink: 0; }
+  .badges:empty, .price-extra:empty, .media-top:empty, .footer:empty, .actions:empty { display: none; }
   .footer { display: flex; flex-wrap: wrap; gap: 4px; }
   .cashback { font-size: 11px; color: #b26a00; background: #fff8e6; border-radius: 2px; padding: 2px 6px; }
 
@@ -175,7 +209,12 @@ export const cardStyles = css`
     content: attr(data-label); font-size: 10px; color: var(--_muted); letter-spacing: 0.02em; pointer-events: none;
   }
   :host([editable]) .media-top:empty, :host([editable]) .media-bottom:empty { background: rgb(255 255 255 / 0.75); }
-  :host([editable]) .media-bottom:empty { inset: auto 8px 8px 8px; }
+  :host([editable]) .media-bottom:empty { margin: 0 8px 8px; }
+  :host([editable]) .badges { height: auto; overflow: visible; row-gap: 4px; }
+  :host([editable]) .badges [data-overflow] { opacity: 0.4; outline: 1px dashed var(--_muted); }
+  :host([editable]) .badges[data-hidden]::after {
+    content: "＋" attr(data-hidden) " 個空間不足，正式頁面會收起"; flex-basis: 100%; font-size: 10px; color: var(--_muted);
+  }
   .module { display: inline-flex; border-radius: 4px; cursor: grab; outline: 1px solid transparent; outline-offset: 1px; }
   .module:hover { outline-color: var(--_primary); }
   .module.is-selected { outline: 2px solid var(--_primary); }

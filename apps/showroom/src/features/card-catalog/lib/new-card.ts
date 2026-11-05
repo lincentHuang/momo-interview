@@ -1,4 +1,4 @@
-import { placeholderImage, VARIANTS, type CardInput, type CardVariant } from "@momo/merchant-card";
+import { defaultActionExtensions, placeholderImage, VARIANTS, type CardInput, type CardVariant } from "@momo/merchant-card";
 
 const ID_PREFIX: Record<CardVariant, string> = {
   standard: "std",
@@ -46,6 +46,7 @@ export function createBlankCard({
     title,
     imageUrl: placeholderImage(label, hue),
     price,
+    extensions: defaultActionExtensions(),
     ...VARIANTS[variant].defaults(now),
   } as CardInput;
 }
