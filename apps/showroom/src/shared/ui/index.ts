@@ -2,6 +2,7 @@
 // feature 只能從這裡引用 UI，不直接依賴 radix-ui，方便日後替換或統一調整。
 export { Accordion, AccordionItem, AccordionTrigger } from "./accordion";
 export { Button, type ButtonProps } from "./button";
+export { Dialog, DialogClose } from "./dialog";
 export { Drawer, DrawerClose } from "./drawer";
 export * from "./icons";
 export { Input } from "./input";

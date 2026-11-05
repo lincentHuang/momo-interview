@@ -101,6 +101,44 @@ test.describe("App Shell", () => {
     await expect(canvasCard(page, "std-airfryer").locator(".tag--solid")).toHaveCount(0);
   });
 
+  test("新增卡片：建立後進入設計頁，其他分頁的目錄即時出現", async ({ context }) => {
+    const page = await context.newPage();
+    const other = await context.newPage();
+    await other.goto("/");
+    await page.goto("/");
+
+    await page.getByRole("button", { name: "新增卡片" }).click();
+    const dialog = page.getByRole("dialog", { name: "新增商品卡" });
+    await dialog.getByRole("radio", { name: /限時搶購卡/ }).check();
+    await dialog.getByLabel("商品名稱").fill("【E2E】測試用保溫杯");
+    await dialog.getByLabel("售價（元）").fill("680");
+    await dialog.getByRole("button", { name: "建立並開始編輯" }).click();
+
+    await expect(page).toHaveURL(/\/cards\/flash-[a-z0-9]{6}$/);
+    const id = page.url().split("/").pop()!;
+    await expect(canvasCard(page, id)).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("【E2E】測試用保溫杯");
+    // 自訂卡片沒有種子資料可還原
+    await expect(page.getByRole("button", { name: "重設", exact: true })).toHaveCount(0);
+
+    // 預設停在「內容」分頁，可直接補資料；切到「模組」即可加模組
+    await expect(page.getByLabel("商品名稱")).toHaveValue("【E2E】測試用保溫杯");
+    await page.getByRole("tab", { name: /模組/ }).click();
+    await page.getByRole("button", { name: "加入折價券" }).click();
+    await expect(canvasCard(page, id).locator('[data-plugin-id="coupon"]')).toBeVisible();
+
+    const listed = other.locator(`li:has(momo-product-card[card-id="${id}"])`);
+    await expect(listed.getByText("自訂")).toBeVisible();
+  });
+
+  test("新增卡片：名稱必填", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("button", { name: "新增商品卡" }).click();
+    await page.getByRole("button", { name: "建立並開始編輯" }).click();
+    await expect(page.getByRole("alert")).toHaveText("請輸入商品名稱");
+    await expect(page).toHaveURL(/\/$/);
+  });
+
   test("側欄可收合，偏好在重新整理後保留", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: "收合側欄" }).click();

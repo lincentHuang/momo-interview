@@ -4,7 +4,7 @@ import { VARIANTS } from "@momo/merchant-card";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useState, type ReactNode } from "react";
-import { useStoreSnapshot } from "@/features/card-store";
+import { SEED_CARD_IDS, useStoreSnapshot } from "@/features/card-store";
 import { PageHeader } from "@/shared/layout/page-header";
 import { cn } from "@/shared/lib/cn";
 import { Button, ExternalIcon, Tooltip } from "@/shared/ui";
@@ -68,11 +68,13 @@ function ShellFrame({ children }: { children: ReactNode }) {
         title={<span className="line-clamp-1">{record.card.title}</span>}
         actions={
           <>
-            <Tooltip content="恢復成種子資料（含模組排版），並同步到所有分頁">
-              <Button size="sm" variant="ghost" onClick={reset}>
-                重設
-              </Button>
-            </Tooltip>
+            {SEED_CARD_IDS.has(id) && (
+              <Tooltip content="恢復成種子資料（含模組排版），並同步到所有分頁">
+                <Button size="sm" variant="ghost" onClick={reset}>
+                  重設
+                </Button>
+              </Tooltip>
+            )}
             <Tooltip content="設定編碼在網址中，對方開啟後可選擇套用">
               <Button size="sm" onClick={copyShare}>
                 {copied ? "✓ 已複製" : "複製分享連結"}

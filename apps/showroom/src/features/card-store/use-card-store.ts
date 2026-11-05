@@ -1,6 +1,6 @@
 "use client";
 
-import { CARD_SCHEMA_VERSION, DEFAULT_CHANNEL_NAME, DEFAULT_STORAGE_KEY, getSharedStore, pluginRegistry, registerBuiltinPlugins, type CardPlugin, type CardRecord, type CardStore, type CardVariant, type StoreSnapshot } from "@momo/merchant-card";
+import { CARD_SCHEMA_VERSION, createFixtures, DEFAULT_CHANNEL_NAME, DEFAULT_STORAGE_KEY, getSharedStore, pluginRegistry, registerBuiltinPlugins, type CardPlugin, type CardRecord, type CardStore, type CardVariant, type StoreSnapshot } from "@momo/merchant-card";
 import { useSyncExternalStore } from "react";
 
 /**
@@ -92,3 +92,6 @@ export function useStoreInfo(): StoreInfo | null {
     broadcastChannel: typeof BroadcastChannel !== "undefined",
   };
 }
+
+/** 種子卡片 id：可「重設」回種子資料；不在其中的是使用者新增的卡片 */
+export const SEED_CARD_IDS: ReadonlySet<string> = new Set(createFixtures(0).map((c) => c.id));
