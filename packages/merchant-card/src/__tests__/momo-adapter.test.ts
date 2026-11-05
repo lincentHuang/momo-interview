@@ -1,5 +1,6 @@
-import { parseCard } from "../index";
+import { addPlugin, createCardStore, createFixtures, parseCard, placePlugin, registerBuiltinPlugins, removePlugin } from "../index";
 import {
+  applyCardTemplate,
   applySaleInfo,
   columnGoodsToCard,
   createMomoClient,
@@ -11,6 +12,7 @@ import {
   MomoApiError,
   parseMoney,
   parseSaleCount,
+  resolveSectionCards,
   tagsToExtensions,
 } from "../adapters/momo";
 import mainPage from "../adapters/momo/snapshot/main-page-v5.json";
@@ -143,5 +145,94 @@ describe("createMomoClient", () => {
       createMomoClient({ fetch: fakeFetch({ success: false, resultCode: "400", resultMessage: "請求參數錯誤" }) }).getFeaturedKeywords(),
     ).rejects.toThrow("請求參數錯誤");
     await expect(createMomoClient({ fetch: fakeFetch({}, 503) }).getMainPage()).rejects.toThrow("HTTP 503");
+  });
+});
+
+describe("applyCardTemplate / resolveSectionCards", () => {
+  beforeAll(() => registerBuiltinPlugins());
+
+  const sampleCard = () => {
+    const r = goodsInfoToCard(recommend.rtnData.goodsInfoList[0]);
+    if (!r.ok) throw new Error(r.reason);
+    return r.card;
+  };
+
+  it("預設狀態保留商品原本的 momo API 行銷標，不把樣板種子假資料硬塞給其他商品", () => {
+    const store = createCardStore({ storage: null, channel: null, seed: () => createFixtures(0) });
+    const template = store.get("std-airfryer")!.card;
+    const raw = sampleCard();
+    const styled = applyCardTemplate(raw, template);
+    expect(styled.extensions).toEqual(raw.extensions);
+  });
+
+  it("樣板卡修改加入購物車樣式、額外模組與版位時，即時套用到 momo 商品卡並保留商品自有行銷標", () => {
+    const store = createCardStore({ storage: null, channel: null, seed: () => createFixtures(0) });
+    const raw = sampleCard();
+    const baseTemplate = store.get("std-airfryer")!.card;
+    const withCartAndCashback = addPlugin(
+      removePlugin(
+        {
+          ...baseTemplate,
+          extensions: {
+            ...baseTemplate.extensions,
+            "add-to-cart": { style: "bar", position: "bottom-right", imageHeight: 36 },
+          },
+        },
+        "favorite",
+      ),
+      "cashback",
+    );
+    const editedTemplate = placePlugin(
+      {
+        ...withCartAndCashback,
+        extensions: { ...withCartAndCashback.extensions, cashback: { percent: 8 } },
+      },
+      "fast-delivery",
+      "media-top",
+      0,
+    );
+
+    const styled = applyCardTemplate(raw, editedTemplate);
+    expect(styled.extensions["add-to-cart"]).toEqual({ style: "bar", position: "bottom-right", imageHeight: 36 });
+    expect(styled.extensions.favorite).toBeUndefined();
+    expect(styled.extensions.cashback).toEqual({ percent: 8 });
+    expect(styled.placements["fast-delivery"]).toEqual({ slot: "media-top", order: 0 });
+    // 商品自身原本的速標仍保留
+    if ("fast-delivery" in raw.extensions) {
+      expect(styled.extensions["fast-delivery"]).toEqual(raw.extensions["fast-delivery"]);
+    }
+  });
+
+  it("單張商品匯入後若經過個別編輯，優先保留該張卡設定；其餘商品跟隨區塊樣板", () => {
+    let time = 1000;
+    const store = createCardStore({ storage: null, channel: null, seed: () => createFixtures(0), now: () => time });
+    const c1 = sampleCard();
+    const r2 = goodsInfoToCard(recommend.rtnData.goodsInfoList[1]);
+    if (!r2.ok) throw new Error(r2.reason);
+    const c2 = r2.card;
+
+    // 1. 批次匯入（rev = 1）
+    time = 2000;
+    store.upsertCard(c1);
+    store.upsertCard(c2);
+
+    // 2. 個別編輯 c1（rev = 2, updatedAt = 3000）
+    time = 3000;
+    store.upsertCard({ ...c1, title: "單獨改名的商品", extensions: { ...c1.extensions, cashback: { percent: 15 } } });
+
+    // 3. 檢查樣板更新前：c1 顯示個別設定
+    const before = resolveSectionCards([c1, c2], "waterfall", store.getSnapshot().records);
+    expect(before[0]!.title).toBe("單獨改名的商品");
+    expect(before[0]!.extensions.cashback).toEqual({ percent: 15 });
+
+    // 4. 修改樣板卡 std-airfryer（updatedAt = 4000）：c2 立即套用新樣板，c1 保留改名但同步新樣板樣式
+    time = 4000;
+    const tpl = store.get("std-airfryer")!.card;
+    store.upsertCard(addPlugin(tpl, "corner-label"));
+
+    const after = resolveSectionCards([c1, c2], "waterfall", store.getSnapshot().records);
+    expect(after[1]!.extensions["corner-label"]).toEqual({ text: "momo獨家" });
+    expect(after[0]!.title).toBe("單獨改名的商品");
+    expect(after[0]!.extensions["corner-label"]).toEqual({ text: "momo獨家" });
   });
 });

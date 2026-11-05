@@ -1,12 +1,12 @@
 "use client";
 
-import { formatRemaining, remaining, type Card } from "@momo/merchant-card";
-import type { MomoHomepage, MomoSection } from "@momo/merchant-card/momo";
+import { formatRemaining, remaining, type Card, type StoreSnapshot } from "@momo/merchant-card";
+import { MOMO_SECTION_TEMPLATE_IDS, resolveSectionCards, type MomoHomepage, type MomoSection } from "@momo/merchant-card/momo";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { CardSkeleton, MomoCard } from "@/features/card-preview";
-import { useCardActions } from "@/features/card-store";
+import { useCardActions, useStoreSnapshot } from "@/features/card-store";
 import { PageHeader } from "@/shared/layout/page-header";
 import { cn } from "@/shared/lib/cn";
 import { Button, ToggleGroup } from "@/shared/ui";
@@ -101,6 +101,7 @@ export function MomoHomeView() {
 }
 
 function Homepage({ data }: { data: HomeResponse }) {
+  const snapshot = useStoreSnapshot();
   const rejected = data.sections.reduce((n, s) => n + s.rejected.length, 0);
   return (
     <div className="space-y-5">
@@ -127,13 +128,13 @@ function Homepage({ data }: { data: HomeResponse }) {
       {data.sections.map((section) => {
         switch (section.kind) {
           case "flash-sale":
-            return <FlashSaleSection key={section.id} section={section} />;
+            return <FlashSaleSection key={section.id} section={section} snapshot={snapshot} />;
           case "ranking":
-            return <RankingSection key={section.id} section={section} source={data.source} />;
+            return <RankingSection key={section.id} section={section} source={data.source} snapshot={snapshot} />;
           case "carousel":
-            return <CarouselSection key={section.id} section={section} />;
+            return <CarouselSection key={section.id} section={section} snapshot={snapshot} />;
           case "waterfall":
-            return <WaterfallSection key={section.id} section={section} />;
+            return <WaterfallSection key={section.id} section={section} snapshot={snapshot} />;
         }
       })}
     </div>
@@ -149,7 +150,7 @@ function Stat({ label, children }: { label: string; children: ReactNode }) {
   );
 }
 
-/** 區塊外框：標題列（momo 風格）+ 匯入目錄 */
+/** 區塊外框：標題列（momo 風格）+ 樣板編輯入口 + 匯入目錄 */
 function SectionFrame({
   section,
   cards,
@@ -165,6 +166,7 @@ function SectionFrame({
 }) {
   const { upsertCard } = useCardActions();
   const [imported, setImported] = useState<number | null>(null);
+  const templateId = MOMO_SECTION_TEMPLATE_IDS[section.kind];
   const importAll = () => {
     const ok = cards.filter((c) => upsertCard(c).ok).length;
     setImported(ok);
@@ -180,6 +182,9 @@ function SectionFrame({
         </span>
         <div className="ml-auto flex items-center gap-3">
           {extra}
+          <Button asChild size="sm" variant="ghost">
+            <Link href={`/cards/${templateId}`}>調整卡片樣式</Link>
+          </Button>
           {imported !== null ? (
             <Link href="/" className="text-xs text-brand underline-offset-2 hover:underline">
               已匯入 {imported} 張，前往目錄編輯 →
@@ -208,14 +213,15 @@ function SectionFrame({
   );
 }
 
-function FlashSaleSection({ section }: { section: MomoSection }) {
+function FlashSaleSection({ section, snapshot }: { section: MomoSection; snapshot: StoreSnapshot | null }) {
   const now = useNow(section.endsAt !== undefined);
   const r = section.endsAt !== undefined ? remaining(section.endsAt, now) : null;
   const [hh, mm, ss] = r ? formatRemaining(r).split(":") : [];
+  const cards = resolveSectionCards(section.cards, section.kind, snapshot?.records);
   return (
     <SectionFrame
       section={section}
-      cards={section.cards}
+      cards={cards}
       tone="pink"
       extra={
         r && (
@@ -239,17 +245,18 @@ function FlashSaleSection({ section }: { section: MomoSection }) {
         )
       }
     >
-      <CardGrid cards={section.cards.slice(0, 10)} />
+      <CardGrid cards={cards.slice(0, 10)} />
     </SectionFrame>
   );
 }
 
-function RankingSection({ section, source }: { section: MomoSection; source: Source }) {
+function RankingSection({ section, source, snapshot }: { section: MomoSection; source: Source; snapshot: StoreSnapshot | null }) {
   const [keyword, setKeyword] = useState(section.activeKeyword);
-  const [cards, setCards] = useState(section.cards);
+  const [rawCards, setRawCards] = useState(section.cards);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const keywords = section.keywords ?? [];
+  const cards = resolveSectionCards(rawCards, section.kind, snapshot?.records);
 
   const choose = async (value: string) => {
     if (value === keyword) return;
@@ -261,7 +268,7 @@ function RankingSection({ section, source }: { section: MomoSection; source: Sou
       const res = await fetch(`/api/momo/featured?${qs}`);
       const body = await res.json();
       if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
-      setCards(body.cards);
+      setRawCards(body.cards);
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -294,24 +301,26 @@ function RankingSection({ section, source }: { section: MomoSection; source: Sou
       )}
       {error && <p className="mb-2 text-xs text-danger">{error}</p>}
       <div className={cn(loading && "opacity-50 transition-opacity")}>
-        <CardRow cards={cards} width="w-[184px]" />
+        <CardRow cards={cards} />
       </div>
     </SectionFrame>
   );
 }
 
-function CarouselSection({ section }: { section: MomoSection }) {
+function CarouselSection({ section, snapshot }: { section: MomoSection; snapshot: StoreSnapshot | null }) {
+  const cards = resolveSectionCards(section.cards, section.kind, snapshot?.records);
   return (
-    <SectionFrame section={section} cards={section.cards}>
-      <CardRow cards={section.cards} width="w-[340px]" layout="list" />
+    <SectionFrame section={section} cards={cards}>
+      <CardRow cards={cards} />
     </SectionFrame>
   );
 }
 
-function WaterfallSection({ section }: { section: MomoSection }) {
+function WaterfallSection({ section, snapshot }: { section: MomoSection; snapshot: StoreSnapshot | null }) {
+  const cards = resolveSectionCards(section.cards, section.kind, snapshot?.records);
   return (
-    <SectionFrame section={section} cards={section.cards}>
-      <CardGrid cards={section.cards} />
+    <SectionFrame section={section} cards={cards}>
+      <CardGrid cards={cards} />
       {section.page && section.page.max > section.page.current && (
         <p className="mt-3 text-center text-xs text-muted">
           第 {section.page.current} / {section.page.max} 頁（momo 以捲動載入後續分頁，API：getRecommendGoods curPage）
@@ -322,8 +331,14 @@ function WaterfallSection({ section }: { section: MomoSection }) {
 }
 
 function CardGrid({ cards }: { cards: Card[] }) {
+  const isList = cards[0]?.layout === "list";
   return (
-    <ul className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <ul
+      className={cn(
+        "grid gap-2.5",
+        isList ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5",
+      )}
+    >
       {cards.map((card) => (
         <li key={card.id}>
           <MomoCard card={card} onCardClick={openProduct} className="h-full" />
@@ -333,12 +348,12 @@ function CardGrid({ cards }: { cards: Card[] }) {
   );
 }
 
-function CardRow({ cards, width, layout }: { cards: Card[]; width: string; layout?: "list" }) {
+function CardRow({ cards }: { cards: Card[] }) {
   return (
     <ul className="flex snap-x gap-2.5 overflow-x-auto pb-2">
       {cards.map((card) => (
-        <li key={card.id} className={cn("shrink-0 snap-start", width)}>
-          <MomoCard card={card} layout={layout} onCardClick={openProduct} className="h-full" />
+        <li key={card.id} className={cn("shrink-0 snap-start", card.layout === "list" ? "w-[340px]" : "w-[184px]")}>
+          <MomoCard card={card} onCardClick={openProduct} className="h-full" />
         </li>
       ))}
     </ul>

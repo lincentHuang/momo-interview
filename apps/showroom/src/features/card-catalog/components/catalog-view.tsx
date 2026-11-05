@@ -1,6 +1,7 @@
 "use client";
 
 import { VARIANTS, type CardVariant } from "@momo/merchant-card";
+import { MOMO_TEMPLATE_SECTION_LABELS } from "@momo/merchant-card/momo";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { CardSkeleton, MomoCard } from "@/features/card-preview";
@@ -70,8 +71,13 @@ export function CatalogView() {
                 const layout = filters.layout === "auto" ? r.card.layout : filters.layout;
                 return (
                   <li key={r.card.id} className={cn("space-y-2", layout === "list" && filters.layout === "auto" && "col-span-2")}>
-                    <span className="flex gap-1">
+                    <span className="flex flex-wrap gap-1">
                       <span className="rounded bg-white px-1.5 py-0.5 text-xs font-medium text-muted">{VARIANTS[r.card.variant].label}</span>
+                      {MOMO_TEMPLATE_SECTION_LABELS[r.card.id] && (
+                        <span className="rounded bg-pink-50 px-1.5 py-0.5 text-xs font-medium text-brand">
+                          首頁樣板：{MOMO_TEMPLATE_SECTION_LABELS[r.card.id]}
+                        </span>
+                      )}
                       {!SEED_CARD_IDS.has(r.card.id) && <span className="rounded bg-brand-soft px-1.5 py-0.5 text-xs font-medium text-brand">自訂</span>}
                     </span>
                     <MomoCard

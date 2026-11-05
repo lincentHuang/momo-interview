@@ -1,6 +1,7 @@
 "use client";
 
 import { VARIANTS } from "@momo/merchant-card";
+import { MOMO_TEMPLATE_SECTION_LABELS } from "@momo/merchant-card/momo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense, useState, type ReactNode } from "react";
@@ -54,6 +55,9 @@ function ShellFrame({ children }: { children: ReactNode }) {
     setTimeout(() => setCopied(false), 1500);
   };
 
+  const momoSectionLabel = MOMO_TEMPLATE_SECTION_LABELS[id];
+  const isMomoLinked = Boolean(momoSectionLabel) || id.startsWith("momo-");
+
   return (
     <div className="mx-auto max-w-[1400px]">
       <PageHeader
@@ -63,6 +67,7 @@ function ShellFrame({ children }: { children: ReactNode }) {
               商品卡目錄
             </Link>{" "}
             / {VARIANTS[record.card.variant].label}
+            {momoSectionLabel && <span className="text-brand"> · momo 首頁「{momoSectionLabel}」樣板</span>}
           </nav>
         }
         title={<span className="line-clamp-1">{record.card.title}</span>}
@@ -74,6 +79,11 @@ function ShellFrame({ children }: { children: ReactNode }) {
                   重設
                 </Button>
               </Tooltip>
+            )}
+            {isMomoLinked && (
+              <Button size="sm" asChild>
+                <Link href="/momo">在 momo 首頁檢視</Link>
+              </Button>
             )}
             <Tooltip content="設定編碼在網址中，對方開啟後可選擇套用">
               <Button size="sm" onClick={copyShare}>

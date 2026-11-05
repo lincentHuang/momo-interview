@@ -11,4 +11,5 @@ export * from "./raw";
 export * from "./map";
 export { createMomoClient, MomoApiError, type MomoClient, type MomoClientOptions } from "./client";
 export * from "./homepage";
+export * from "./template";
 export { createSnapshotClient, SNAPSHOT_RECORDED_AT } from "./snapshot";

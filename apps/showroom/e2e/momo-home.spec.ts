@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openEditor } from "./helpers";
 
 /** momo 首頁情境（錄製快照，不對 momo 發請求） */
 test.describe("momo 首頁情境", () => {
@@ -29,5 +30,25 @@ test.describe("momo 首頁情境", () => {
 
     const imported = page.locator('momo-product-card[card-id^="momo-flash-"]');
     await expect(imported.first()).toBeVisible();
+  });
+
+  test("樣板卡片設定樣式與模組後，momo 首頁情境即時同步更新", async ({ context }) => {
+    const momoPage = await context.newPage();
+    const editor = await context.newPage();
+    await momoPage.goto("/momo");
+    const waterfall = momoPage.getByRole("region", { name: "你可能會喜歡" });
+    await expect(waterfall.locator("momo-product-card").first()).toBeVisible();
+
+    // 在另一分頁編輯「你可能會喜歡」樣板卡（std-airfryer）：加入活動角標、將加入購物車改為整條按鈕
+    await openEditor(editor, "std-airfryer");
+    await editor.getByRole("tab", { name: /模組/ }).click();
+    await editor.getByRole("button", { name: "加入活動角標" }).click();
+    await editor.locator("#module-add-to-cart").click();
+    await editor.getByLabel("按鈕樣式").click();
+    await editor.getByRole("option", { name: "整條按鈕" }).click();
+
+    // momo 首頁分頁不需重新整理即同步更新
+    await expect(waterfall.locator("momo-product-card .tag--solid").first()).toHaveText("momo獨家");
+    await expect(waterfall.locator("momo-product-card .cart-bar").first()).toBeVisible();
   });
 });
