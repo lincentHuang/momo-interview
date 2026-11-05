@@ -1,4 +1,4 @@
-import { LitElement, html, nothing, type PropertyValues, type TemplateResult } from "lit";
+import { LitElement, html, nothing, svg, type PropertyValues, type TemplateResult } from "lit";
 import { discountLabel, formatCount, formatPrice } from "../core/pricing";
 import { pluginRegistry, type ResolvedPlugin } from "../plugins/registry";
 import type { CardSlot } from "../plugins/types";
@@ -7,6 +7,16 @@ import { getSharedStore } from "../store/shared-store";
 import type { CardRecord, CardRuntimeState } from "../store/types";
 import { cardStyles } from "./styles";
 import { rendererFor } from "./variants";
+
+const heartIcon = (filled: boolean) => html`<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+  ${svg`<path d="M12 20.5s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.6a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10.2-7.5 10.2z"
+    fill=${filled ? "currentColor" : "none"} stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>`}
+</svg>`;
+
+const cartIcon = html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  ${svg`<path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/>`}
+</svg>`;
 
 type Source =
   | { kind: "ok"; card: Card; state: CardRuntimeState; synced: boolean }
@@ -271,13 +281,13 @@ export class MomoProductCard extends LitElement {
                 aria-label=${state.favorite ? "取消收藏" : "加入收藏"}
                 aria-pressed=${state.favorite ? "true" : "false"}
                 @click=${(e: Event) => this.onToggleFavorite(e, card, state, synced)}
-              >${state.favorite ? "♥" : "♡"}</button>
+              >${heartIcon(state.favorite)}</button>
               <button
                 class="icon-btn icon-btn--cart"
                 aria-label="加入購物車"
                 ?disabled=${inactive}
                 @click=${(e: Event) => this.onAddToCart(e, card, state, synced)}
-              >🛒</button>
+              >${cartIcon}</button>
             </span>
           </div>
           ${this.renderSlot(card, "footer")}

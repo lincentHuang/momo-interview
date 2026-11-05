@@ -1,4 +1,8 @@
 import { z } from "zod";
+import { zhTW } from "zod/locales";
+
+// 驗證錯誤訊息使用繁體中文（會直接顯示在卡片錯誤狀態與編輯器）
+z.config(zhTW());
 
 /**
  * 商品卡領域模型（Domain Model）

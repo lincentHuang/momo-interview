@@ -19,6 +19,7 @@ export interface ResolvedPlugin {
 export class PluginRegistry {
   private plugins = new Map<string, AnyPlugin>();
   private listeners = new Set<Listener>();
+  private version = 0;
 
   register(plugin: AnyPlugin, { override = false } = {}): () => void {
     if (this.plugins.has(plugin.id) && !override) {
@@ -77,7 +78,13 @@ export class PluginRegistry {
     return () => this.listeners.delete(listener);
   }
 
+  /** 每次註冊變動遞增；供 React useSyncExternalStore 等需要穩定 snapshot 的訂閱者使用 */
+  getVersion(): number {
+    return this.version;
+  }
+
   private notify() {
+    this.version++;
     for (const l of this.listeners) l();
   }
 }
