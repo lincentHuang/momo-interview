@@ -2,7 +2,7 @@ import { LitElement, html, nothing, svg, type PropertyValues, type TemplateResul
 import { discountLabel, formatCount, formatPrice } from "../core/pricing";
 import { pluginRegistry, type ResolvedPlugin } from "../plugins/registry";
 import type { CardSlot } from "../plugins/types";
-import { parseCard, type Card, type CardLayout } from "../schema/card.schema";
+import { CARD_SLOT_LABELS, parseCard, type Card, type CardLayout } from "../schema/card.schema";
 import { getSharedStore } from "../store/shared-store";
 import type { CardRecord, CardRuntimeState } from "../store/types";
 import { cardStyles } from "./styles";
@@ -34,6 +34,10 @@ type Source =
  * 對外事件（bubbles + composed，可穿越 Shadow DOM）：
  *   momo-card:click / momo-card:favorite-change / momo-card:add-to-cart / momo-card:error / momo-card:impression(plugin)
  * 可查詢狀態：`invalid` attribute、`issues` getter
+ *
+ * 編輯模式（`editable` attribute）：供 WYSIWYG 編輯器使用。插槽以 `data-slot` 標示並顯示為放置區，
+ * 每個 plugin 輸出包在 `[data-plugin-id][draggable]` 內；拖放邏輯由宿主透過 composedPath() 實作，
+ * 卡片本身不認識「編輯器」——同一份元件在正式頁面與編輯器中渲染結果一致。
  */
 export class MomoProductCard extends LitElement {
   static override styles = cardStyles;
@@ -43,6 +47,8 @@ export class MomoProductCard extends LitElement {
     data: { type: String },
     card: { attribute: false },
     layout: { type: String },
+    editable: { type: Boolean, reflect: true },
+    selectedModule: { type: String, attribute: "selected-module" },
     _now: { state: true },
     _localState: { state: true },
     _record: { state: true },
@@ -54,6 +60,9 @@ export class MomoProductCard extends LitElement {
   declare card: unknown;
   /** 覆寫卡片自身的 layout（宿主依版面決定） */
   declare layout: CardLayout | null;
+  declare editable: boolean;
+  /** 編輯模式下高亮的 plugin id */
+  declare selectedModule: string | null;
 
   declare private _now: number;
   declare private _localState: CardRuntimeState;
@@ -72,6 +81,8 @@ export class MomoProductCard extends LitElement {
     this.data = null;
     this.card = undefined;
     this.layout = null;
+    this.editable = false;
+    this.selectedModule = null;
     this._now = Date.now();
     this._localState = { favorite: false, cartQty: 0 };
     this._record = undefined;
@@ -230,13 +241,26 @@ export class MomoProductCard extends LitElement {
 
   private renderSlot(card: Card, slot: CardSlot): Array<TemplateResult | null> {
     return pluginRegistry.resolve(card, slot).map(({ plugin, config }: ResolvedPlugin) => {
+      let out: TemplateResult | null = null;
       try {
-        return plugin.render?.({ card, config }) ?? null;
+        out = plugin.render?.({ card, config }) ?? null;
       } catch (err) {
         console.warn(`[momo-card] plugin "${plugin.id}" render 失敗`, err);
         return null; // 單一 plugin 失敗不影響卡片
       }
+      if (!out || !this.editable) return out;
+      return html`<span
+        class="module ${this.selectedModule === plugin.id ? "is-selected" : ""}"
+        data-plugin-id=${plugin.id}
+        title=${plugin.name}
+        draggable="true"
+      >${out}</span>`;
     });
+  }
+
+  /** 插槽容器的屬性：data-slot 供宿主辨識；data-label 只在編輯模式提供（空插槽的提示文字） */
+  private slotLabel(slot: CardSlot) {
+    return this.editable ? `${CARD_SLOT_LABELS[slot]}・拖曳模組到此` : nothing;
   }
 
   protected override render() {
@@ -267,18 +291,18 @@ export class MomoProductCard extends LitElement {
       >
         <div class="media" part="media">
           <img src=${card.imageUrl} alt=${card.title} loading="lazy" />
-          <div class="media-top">${renderer.mediaTop?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-top")}</div>
-          <div class="media-bottom">${renderer.mediaBottom?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-bottom")}</div>
+          <div class="media-top" data-slot="media-top" data-label=${this.slotLabel("media-top")}>${renderer.mediaTop?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-top")}</div>
+          <div class="media-bottom" data-slot="media-bottom" data-label=${this.slotLabel("media-bottom")}>${renderer.mediaBottom?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-bottom")}</div>
         </div>
         <div class="body">
           <h3 class="title" part="title" title=${card.title}>${card.title}</h3>
-          <div class="badges">${this.renderSlot(card, "badges")}</div>
+          <div class="badges" data-slot="badges" data-label=${this.slotLabel("badges")}>${this.renderSlot(card, "badges")}</div>
           <div class="price-row" part="price">
             <span class="price"><small>$</small>${formatPrice(card.price).slice(1)}</span>
             ${card.originalPrice && card.originalPrice > card.price ? html`<s class="original">${formatPrice(card.originalPrice)}</s>` : nothing}
             ${discount ? html`<span class="discount">${discount}</span>` : nothing}
           </div>
-          <div class="price-extra">${this.renderSlot(card, "price-extra")}</div>
+          <div class="price-extra" data-slot="price-extra" data-label=${this.slotLabel("price-extra")}>${this.renderSlot(card, "price-extra")}</div>
           ${renderer.body?.(card as never, this._now) ?? nothing}
           <div class="meta">
             <span>
@@ -302,7 +326,7 @@ export class MomoProductCard extends LitElement {
               >${cartIcon}</button>
             </span>
           </div>
-          ${this.renderSlot(card, "footer")}
+          <div class="footer" data-slot="footer" data-label=${this.slotLabel("footer")}>${this.renderSlot(card, "footer")}</div>
         </div>
       </article>
     `;

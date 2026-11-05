@@ -1,8 +1,16 @@
-import type { Card } from "../schema/card.schema";
+import type { Card, Placement } from "../schema/card.schema";
 import type { CardPlugin, CardSlot } from "./types";
 
 type AnyPlugin = CardPlugin<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 type Listener = () => void;
+
+/** plugin 在這張卡片上的實際版位；無 UI 的 plugin 回傳 null */
+export function effectivePlacement(plugin: AnyPlugin, placements: Record<string, Placement> | undefined): Placement | null {
+  if (!plugin.render) return null;
+  const override = placements?.[plugin.id];
+  if (override) return override;
+  return plugin.slot ? { slot: plugin.slot, order: plugin.order ?? 0 } : null;
+}
 
 export interface ResolvedPlugin {
   plugin: AnyPlugin;
@@ -53,24 +61,28 @@ export class PluginRegistry {
    * config 不合法時退回 defaults 並警告——單一 plugin 壞掉不應讓整張卡片掛掉。
    */
   resolve(card: Card, slot?: CardSlot): ResolvedPlugin[] {
-    const out: ResolvedPlugin[] = [];
+    const out: Array<ResolvedPlugin & { order: number }> = [];
     for (const [id, raw] of Object.entries(card.extensions)) {
       const plugin = this.plugins.get(id);
       if (!plugin) continue; // 未註冊的 extension 保留資料但不渲染（向前相容）
       if (plugin.variants && !plugin.variants.includes(card.variant)) continue;
-      if (slot !== undefined && plugin.slot !== slot) continue;
+      // 卡片的 placements 可覆寫 plugin 宣告的預設 slot / order（WYSIWYG 拖曳結果）
+      const placement = effectivePlacement(plugin, card.placements);
+      if (slot !== undefined && placement?.slot !== slot) continue;
+      const order = placement?.order ?? plugin.order ?? 0;
       const merged = { ...plugin.defaults, ...raw };
       if (!plugin.configSchema) {
-        out.push({ plugin, config: merged });
+        out.push({ plugin, config: merged, order });
         continue;
       }
       const parsed = plugin.configSchema.safeParse(merged);
       if (!parsed.success) {
         console.warn(`[momo-card] plugin "${id}" config 不合法，改用預設值`, parsed.error.issues);
       }
-      out.push({ plugin, config: parsed.success ? parsed.data : plugin.defaults });
+      out.push({ plugin, config: parsed.success ? parsed.data : plugin.defaults, order });
     }
-    return out.sort((a, b) => (a.plugin.order ?? 0) - (b.plugin.order ?? 0));
+    // Array.prototype.sort 為穩定排序：order 相同時維持 extensions 的插入順序
+    return out.sort((a, b) => a.order - b.order).map(({ plugin, config }) => ({ plugin, config }));
   }
 
   subscribe(listener: Listener): () => void {

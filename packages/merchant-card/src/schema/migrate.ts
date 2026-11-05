@@ -7,6 +7,9 @@ import { CARD_SCHEMA_VERSION } from "./card.schema";
  * 因此「舊版資料」一定會長期存在。每次 schema 破壞性變更都要在這裡加一個 step。
  *
  * v1 → v2：行銷標籤由 `badges: string[]` 改為 plugin 管理的 `extensions` record。
+ * v2 → v3：新增 `placements`（WYSIWYG 編輯器的版位覆寫）。
+ *          雖然欄位有預設值，仍需升版：v2 程式碼解析 v3 資料時會把 placements 當未知欄位剝除，
+ *          寫回時就會弄丟使用者的排版；升版讓舊分頁進入唯讀而不是默默覆寫。
  */
 type Raw = Record<string, unknown>;
 type MigrationStep = (card: Raw) => Raw;
@@ -30,6 +33,8 @@ const steps: Record<number, MigrationStep> = {
     }
     return { ...rest, extensions };
   },
+  // from v2
+  2: (card) => ({ ...card, placements: card.placements ?? {} }),
 };
 
 export function migrateCard(raw: unknown, fromVersion: number): unknown {

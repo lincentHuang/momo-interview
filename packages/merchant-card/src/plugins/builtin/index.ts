@@ -65,6 +65,45 @@ export const installmentPlugin = definePlugin({
   render: ({ config }) => html`<span class="tag tag--outline">${config.periods}期0利率</span>`,
 });
 
+/** 圖片左上角的活動角標（momo 獨家 / 新品 / 網路獨賣） */
+export const cornerLabelPlugin = definePlugin({
+  id: "corner-label",
+  name: "活動角標",
+  description: "商品圖角落的醒目標記",
+  slot: "media-top",
+  order: 10,
+  configSchema: z.object({ text: z.enum(["momo獨家", "新品上市", "網路獨賣", "品牌旗艦"]) }),
+  defaults: { text: "momo獨家" },
+  fields: [
+    {
+      kind: "select",
+      key: "text",
+      label: "角標文字",
+      options: [
+        { value: "momo獨家", label: "momo獨家" },
+        { value: "新品上市", label: "新品上市" },
+        { value: "網路獨賣", label: "網路獨賣" },
+        { value: "品牌旗艦", label: "品牌旗艦" },
+      ],
+    },
+  ],
+  render: ({ config }) => html`<span class="tag tag--solid">${config.text}</span>`,
+});
+
+/** 購物金回饋（以售價計算可得點數） */
+export const cashbackPlugin = definePlugin({
+  id: "cashback",
+  name: "購物金回饋",
+  description: "依售價計算回饋的 mo 幣",
+  slot: "footer",
+  order: 0,
+  configSchema: z.object({ percent: z.number().min(1).max(30) }),
+  defaults: { percent: 5 },
+  fields: [{ kind: "number", key: "percent", label: "回饋比例", min: 1, max: 30, step: 1, unit: "%" }],
+  render: ({ card, config }) =>
+    html`<span class="cashback">回饋 ${config.percent}%・約 ${formatPrice(Math.floor((card.price * config.percent) / 100))} mo幣</span>`,
+});
+
 /**
  * 無 UI 的 plugin 範例：曝光追蹤。
  * 卡片可見面積超過門檻時發出一次 `momo-card:impression` 事件，由宿主串接自己的埋點系統。
@@ -97,6 +136,8 @@ export const BUILTIN_PLUGINS = [
   couponPlugin,
   giftPlugin,
   installmentPlugin,
+  cornerLabelPlugin,
+  cashbackPlugin,
   impressionTrackerPlugin,
 ] as const;
 

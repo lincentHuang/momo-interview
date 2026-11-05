@@ -15,7 +15,7 @@ export interface VariantDefinition<V extends CardVariant = CardVariant> {
   defaults: (now: number) => Omit<CardOf<V>, keyof SharedKeys>;
 }
 
-type SharedKeys = Pick<Card, "id" | "title" | "imageUrl" | "price" | "originalPrice" | "rating" | "reviewCount" | "layout" | "extensions">;
+type SharedKeys = Pick<Card, "id" | "title" | "imageUrl" | "price" | "originalPrice" | "rating" | "reviewCount" | "layout" | "extensions" | "placements">;
 
 export const BASE_FIELDS: ReadonlyArray<FieldDescriptor> = [
   { kind: "text", key: "title", label: "商品名稱", maxLength: 80 },
@@ -98,6 +98,7 @@ export function switchVariant(card: Card, next: CardVariant, now = Date.now()): 
     reviewCount: card.reviewCount,
     layout: card.layout,
     extensions: card.extensions,
+    placements: card.placements,
   };
   return { ...shared, ...VARIANTS[next].defaults(now) } as Card;
 }

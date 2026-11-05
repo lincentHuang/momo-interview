@@ -1,23 +1,9 @@
 import type { TemplateResult } from "lit";
-import type { Card, CardVariant } from "../schema/card.schema";
+import type { Card, CardSlot, CardVariant } from "../schema/card.schema";
 import type { FieldDescriptor } from "../schema/fields";
 
-/**
- * 卡片上的可擴充插槽。核心 renderer 只負責「在哪裡放」，plugin 決定「放什麼」。
- *
- *  ┌──────────────────────┐
- *  │ media-top    (角標)   │
- *  │        [image]       │
- *  │ media-bottom (橫幅)   │
- *  ├──────────────────────┤
- *  │ title                │
- *  │ badges  (標籤列)      │
- *  │ price  + price-extra │
- *  │ footer               │
- *  └──────────────────────┘
- */
-export const CARD_SLOTS = ["media-top", "media-bottom", "badges", "price-extra", "footer"] as const;
-export type CardSlot = (typeof CARD_SLOTS)[number];
+/** 插槽定義在 schema 層（placements 需驗證 slot 名稱），這裡 re-export 維持原本的引用路徑 */
+export { CARD_SLOT_LABELS, CARD_SLOTS, type CardSlot } from "../schema/card.schema";
 
 /** 最小化的驗證介面（相容 zod 的 safeParse），讓 plugin 不被綁定在特定驗證函式庫 */
 export interface ConfigSchema<C> {
@@ -43,7 +29,7 @@ export interface CardPlugin<C extends Record<string, unknown> = Record<string, u
   description: string;
   /** 不渲染 UI 的 plugin（例如曝光追蹤）可省略 slot / render */
   slot?: CardSlot;
-  /** 同一 slot 內的排序，越小越前面 */
+  /** 預設插槽；卡片可透過 `placements` 覆寫成其他插槽 */
   order?: number;
   /** 限定可用的 variant；省略代表全部可用 */
   variants?: ReadonlyArray<CardVariant>;

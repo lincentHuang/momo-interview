@@ -48,7 +48,9 @@ export const cardStyles = css`
     min-height: 2.8em;
   }
   .badges, .price-extra { display: flex; flex-wrap: wrap; gap: 4px; }
-  .badges:empty, .price-extra:empty, .media-top:empty { display: none; }
+  .badges:empty, .price-extra:empty, .media-top:empty, .footer:empty { display: none; }
+  .footer { display: flex; flex-wrap: wrap; gap: 4px; }
+  .cashback { font-size: 11px; color: #b26a00; background: #fff8e6; border-radius: 4px; padding: 2px 6px; }
 
   .price-row { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
   .price { color: var(--_primary); font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
@@ -103,6 +105,29 @@ export const cardStyles = css`
   .rank-category { font-size: 11px; color: var(--_muted); }
 
   .expired { filter: grayscale(0.8); }
+
+  /*
+   * editable：WYSIWYG 編輯模式。插槽顯示為放置區、模組可拖曳 / 選取。
+   * 只影響呈現，不改變資料；宿主透過 composedPath() 讀取 data-slot / data-plugin-id 做拖放判斷。
+   */
+  :host([editable]) .card { cursor: default; overflow: visible; }
+  :host([editable]) .card:hover { transform: none; box-shadow: none; }
+  :host([editable]) .media { overflow: visible; }
+  :host([editable]) [data-slot] {
+    outline: 1px dashed var(--momo-card-edit-outline, #c9c9d2); outline-offset: 2px; border-radius: 4px;
+  }
+  :host([editable]) [data-slot]:empty {
+    display: flex; align-items: center; justify-content: center; min-height: 22px;
+  }
+  :host([editable]) [data-slot]:empty::after {
+    content: attr(data-label); font-size: 10px; color: var(--_muted); letter-spacing: 0.02em; pointer-events: none;
+  }
+  :host([editable]) .media-top:empty, :host([editable]) .media-bottom:empty { background: rgb(255 255 255 / 0.75); }
+  :host([editable]) .media-bottom:empty { inset: auto 8px 8px 8px; }
+  .module { display: inline-flex; border-radius: 4px; cursor: grab; outline: 1px solid transparent; outline-offset: 1px; }
+  .module:hover { outline-color: var(--_primary); }
+  .module.is-selected { outline: 2px solid var(--_primary); }
+  .module.is-dragging { opacity: 0.35; }
 
   .card--error, .card--empty { cursor: default; padding: 16px; font-size: 13px; color: var(--_muted); border-style: dashed; min-height: 120px; place-content: center; text-align: center; }
   .card--error { color: #c62828; border-color: #f2b8b5; background: #fff8f7; }

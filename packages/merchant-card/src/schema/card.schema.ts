@@ -18,13 +18,42 @@ z.config(zhTW());
  *
  * layout（grid / list）屬於「呈現」維度，與 variant 正交。
  */
-export const CARD_SCHEMA_VERSION = 2;
+export const CARD_SCHEMA_VERSION = 3;
 
 export const CARD_VARIANTS = ["standard", "flash-sale", "live", "ranking"] as const;
 export type CardVariant = (typeof CARD_VARIANTS)[number];
 
 export const CARD_LAYOUTS = ["grid", "list"] as const;
 export type CardLayout = (typeof CARD_LAYOUTS)[number];
+
+/**
+ * 卡片上的可擴充插槽（定義於 schema 層：placements 需要驗證 slot 名稱）。
+ *
+ *  ┌──────────────────────┐
+ *  │ media-top    (角標)   │
+ *  │        [image]       │
+ *  │ media-bottom (橫幅)   │
+ *  ├──────────────────────┤
+ *  │ title                │
+ *  │ badges  (標籤列)      │
+ *  │ price  + price-extra │
+ *  │ footer               │
+ *  └──────────────────────┘
+ */
+export const CARD_SLOTS = ["media-top", "media-bottom", "badges", "price-extra", "footer"] as const;
+export type CardSlot = (typeof CARD_SLOTS)[number];
+
+export const CARD_SLOT_LABELS: Record<CardSlot, string> = {
+  "media-top": "圖片角標",
+  "media-bottom": "圖片底部",
+  badges: "標籤列",
+  "price-extra": "價格旁",
+  footer: "卡片底部",
+};
+
+/** 單張卡片對某個 plugin 的版位覆寫（WYSIWYG 拖曳的結果）；省略時用 plugin 宣告的 slot / order */
+export const PlacementSchema = z.object({ slot: z.enum(CARD_SLOTS), order: z.number().int() });
+export type Placement = z.output<typeof PlacementSchema>;
 
 const money = z.number().int().nonnegative();
 
@@ -39,6 +68,8 @@ const baseShape = {
   layout: z.enum(CARD_LAYOUTS).default("grid"),
   /** pluginId → plugin config；key 存在即代表啟用該 plugin */
   extensions: z.record(z.string(), z.record(z.string(), z.unknown())).default({}),
+  /** pluginId → 版位覆寫。與 extensions 分開：「啟用與設定」和「擺在哪」是兩件事，plugin 不需要知道自己被搬到哪 */
+  placements: z.record(z.string(), PlacementSchema).default({}),
 };
 
 export const StandardCardSchema = z.object({
