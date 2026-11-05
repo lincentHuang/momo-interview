@@ -1,0 +1,682 @@
+{
+ "success": true,
+ "resultCode": "200",
+ "resultMessage": "",
+ "resultException": "",
+ "rtnData": {
+  "mdiv": "8199800000-bt_r_waterfall_01",
+  "goodsInfoList": [
+   {
+    "imgUrl": "https://i1.momoshop.com.tw/1787629592/goodsimg/0015/627/675/15627675_OL_m.webp",
+    "imgUrlArray": [
+     "https://i3.momoshop.com.tw/1787629592/goodsimg/0015/627/675/15627675_OR_m.webp",
+     "https://i1.momoshop.com.tw/1787629592/goodsimg/0015/627/675/15627675_L_m.webp"
+    ],
+    "imgTypeUrlArray": [
+     "https://i3.momoshop.com.tw/1787629592/goodsimg/0015/627/675/15627675_OR_m.webp",
+     "https://i1.momoshop.com.tw/1787629592/goodsimg/0015/627/675/15627675_L_m.webp"
+    ],
+    "imgTagUrl": "",
+    "imgBottomTagUrl": "https://img4.momoshop.com.tw/ecm/img/online/341/2026/10/27/173003331/2026102717300333103.png?t=20261028134059",
+    "imgLongTagUrl": "",
+    "goodsName": "【Hi-Life 萊爾富】茶葉蛋好禮即享券",
+    "goodsSubName": "限時優惠★即買即用",
+    "marketPrice": "",
+    "goodsPrice": "$13",
+    "goodsPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "13",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsStock": "1008",
+    "goodsCode": "15627675",
+    "action": {
+     "actionType": 11,
+     "actionValue": "15627675",
+     "useDefault": false,
+     "extraValue": {
+      "urlParameter": "mdiv=8199800000-bt_r_waterfall&cc1=",
+      "cateType": "",
+      "isWebPage": "0",
+      "categoryCode": "",
+      "mdiv": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_0"
+     }
+    },
+    "goodsTag": [],
+    "isLimitBuyGoods": false,
+    "blockItem": {
+     "itemType": "imgGoods",
+     "snapshotId": "mods3pRecomd",
+     "itemAttrs": {
+      "itemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_0-15627675-1793845165376",
+      "goodsCode": "15627675",
+      "goodsName": "%E3%80%90Hi-Life+%E8%90%8A%E7%88%BE%E5%AF%8C%E3%80%91%E8%8C%B6%E8%91%89%E8%9B%8B%E5%A5%BD%E7%A6%AE%E5%8D%B3%E4%BA%AB%E5%88%B8",
+      "url": "",
+      "methodName": "product",
+      "relatedTagsList": [
+       "雙11必買"
+      ]
+     },
+     "blockItemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_0",
+     "adAttrs": {
+      "adRequestId": "",
+      "adCampaignId": "",
+      "adCreativeId": ""
+     }
+    },
+    "externalImgUrlArray": [
+     "https://i3.momoshop.com.tw/1787629592/goodsimg/0015/627/675/15627675_OR_m.webp"
+    ],
+    "icon": [
+     {
+      "iconContent": "雙11必買",
+      "iconImgUrl": "https://m.momoshop.com.tw/ecm/img/online/images/雙11必買_20261102210517151.png",
+      "displayLayer": "1"
+     }
+    ],
+    "goodsFeatureUrl": "https://m.momoshop.com.tw/describe.momo?goodsCode=15627675&timeStamp=1787629592",
+    "onSaleDescription": "",
+    "isAdGoods": false
+   },
+   {
+    "imgUrl": "https://i4.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_OL_m.webp",
+    "imgUrlArray": [
+     "https://i4.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_OR_m.webp",
+     "https://i3.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L_m.webp",
+     "https://i1.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L1_m.webp",
+     "https://i2.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L2_m.webp",
+     "https://i3.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L3_m.webp",
+     "https://i3.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L4_m.webp",
+     "https://i1.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L5_m.webp"
+    ],
+    "imgTypeUrlArray": [
+     "https://i4.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_OR_m.webp",
+     "https://i3.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L_m.webp",
+     "https://i1.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L1_m.webp",
+     "https://i2.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L2_m.webp",
+     "https://i3.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L3_m.webp",
+     "https://i3.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L4_m.webp",
+     "https://i1.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_L5_m.webp",
+     "https://img3.momoshop.com.tw/goodsimg/0013/239/915/spec/13239915_01_001_R.jpg?t=?t=1793808085",
+     "https://img3.momoshop.com.tw/goodsimg/0013/239/915/spec/13239915_01_002_R.jpg?t=?t=1793808085",
+     "https://img3.momoshop.com.tw/goodsimg/0013/239/915/spec/13239915_01_003_R.jpg?t=?t=1793808085",
+     "https://img3.momoshop.com.tw/goodsimg/0013/239/915/spec/13239915_01_005_R.jpg?t=?t=1793808085"
+    ],
+    "imgTagUrl": "https://img4.momoshop.com.tw/ecm/img/online/341/2026/11/04/163852446/2026110416385244601.png?t=20261104163852",
+    "imgBottomTagUrl": "https://img2.momoshop.com.tw/ecm/img/online/341/2026/11/04/163852446/2026110416385244603.png?t=20261104163852",
+    "imgLongTagUrl": "",
+    "goodsName": "【ARIEL】雙11必買 4D抗菌洗衣膠囊/洗衣球 240/196顆(抗菌去漬/室內晾衣/自然微香/抗菌除螨/買一送一)",
+    "goodsSubName": "售完不補★穿著中持續抗臭",
+    "marketPrice": "$2,316",
+    "marketPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "2,316",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsPrice": "$1,299",
+    "goodsPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "1,299",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsStock": "49580",
+    "goodsCode": "13239915",
+    "action": {
+     "actionType": 11,
+     "actionValue": "13239915",
+     "useDefault": false,
+     "extraValue": {
+      "urlParameter": "mdiv=8199800000-bt_r_waterfall&cc1=",
+      "cateType": "",
+      "isWebPage": "0",
+      "categoryCode": "",
+      "mdiv": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_1"
+     }
+    },
+    "goodsTag": [
+     {
+      "bgColor": "#DD2222",
+      "content": "限時搶購",
+      "displayLayer": "1",
+      "frameLineColor": "",
+      "imgUrl": "https://img4.momoshop.com.tw/ecm/img/cmm/goodsdetail/LimitBuy.png?t=20250313001",
+      "tagDesc": "",
+      "tagDescTitle": "",
+      "textColor": "#FFFFFF"
+     }
+    ],
+    "isLimitBuyGoods": false,
+    "blockItem": {
+     "itemType": "imgGoods",
+     "snapshotId": "mods3pRecomd",
+     "itemAttrs": {
+      "itemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_1-13239915-1793845165376",
+      "goodsCode": "13239915",
+      "goodsName": "%E3%80%90ARIEL%E3%80%91%E9%9B%9911%E5%BF%85%E8%B2%B7+4D%E6%8A%97%E8%8F%8C%E6%B4%97%E8%A1%A3%E8%86%A0%E5%9B%8A%2F%E6%B4%97%E8%A1%A3%E7%90%83+240%2F196%E9%A1%86%28%E6%8A%97%E8%8F%8C%E5%8E%BB%E6%BC%AC%2F%E5%AE%A4%E5%85%A7%E6%99%BE%E8%A1%A3%2F%E8%87%AA%E7%84%B6%E5%BE%AE%E9%A6%99%2F%E6%8A%97%E8%8F%8C%E9%99%A4%E8%9E%A8%2F%E8%B2%B7%E4%B8%80%E9%80%81%E4%B8%80%29",
+      "url": "",
+      "methodName": "product",
+      "relatedTagsList": [
+       "雙11必買",
+       "速",
+       "登記",
+       "贈品"
+      ]
+     },
+     "blockItemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_1",
+     "adAttrs": {
+      "adRequestId": "",
+      "adCampaignId": "",
+      "adCreativeId": ""
+     }
+    },
+    "externalImgUrlArray": [
+     "https://i4.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_OR_m.webp"
+    ],
+    "icon": [
+     {
+      "iconContent": "雙11必買",
+      "iconImgUrl": "https://m.momoshop.com.tw/ecm/img/online/images/雙11必買_20261102210353317.png",
+      "displayLayer": "1"
+     },
+     {
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "速",
+      "iconImgUrl": "https://img2.momoshop.com.tw/ecm/img/cmm/goodsdetail/fastDely_earliest_today_s.png?t=20260921001",
+      "displayLayer": "0"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "登記",
+      "iconContentType": "isRegister",
+      "displayLayer": "1"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "贈品",
+      "iconContentType": "isGift",
+      "displayLayer": "1"
+     }
+    ],
+    "goodsFeatureUrl": "https://m.momoshop.com.tw/describe.momo?goodsCode=13239915&timeStamp=1793808085",
+    "onSaleDescription": "",
+    "isAdGoods": false
+   },
+   {
+    "imgUrl": "https://i1.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_OL_m.webp",
+    "imgUrlArray": [
+     "https://i3.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_OR_m.webp",
+     "https://i3.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L_m.webp",
+     "https://i1.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L1_m.webp",
+     "https://i3.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L2_m.webp",
+     "https://i2.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L3_m.webp",
+     "https://i1.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L4_m.webp",
+     "https://i2.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L5_m.webp"
+    ],
+    "imgTypeUrlArray": [
+     "https://i3.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_OR_m.webp",
+     "https://i3.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L_m.webp",
+     "https://i1.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L1_m.webp",
+     "https://i3.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L2_m.webp",
+     "https://i2.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L3_m.webp",
+     "https://i1.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L4_m.webp",
+     "https://i2.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_L5_m.webp",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_001_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_002_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_003_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_004_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_005_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_006_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_007_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_008_R.jpg?t=?t=1793330277",
+     "https://img2.momoshop.com.tw/goodsimg/0014/823/433/spec/14823433_01_009_R.jpg?t=?t=1793330277"
+    ],
+    "imgTagUrl": "",
+    "imgLongTagUrl": "",
+    "imgBottomTagUrl": "",
+    "goodsName": "【Hair Recipe】髮的食譜 1111單瓶任選組 洗髮精/潤髮乳510g(柑茶/梨茶/無花果/玫瑰/柚子/薑根)",
+    "goodsSubName": "銷量NO1天然洗髮!",
+    "marketPrice": "$489",
+    "marketPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "489",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsPrice": "$279",
+    "goodsPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "279",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsStock": "42002",
+    "goodsCode": "14823433",
+    "action": {
+     "actionType": 11,
+     "actionValue": "14823433",
+     "useDefault": false,
+     "extraValue": {
+      "urlParameter": "mdiv=8199800000-bt_r_waterfall&cc1=",
+      "cateType": "",
+      "isWebPage": "0",
+      "categoryCode": "",
+      "mdiv": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_2"
+     }
+    },
+    "goodsTag": [],
+    "isLimitBuyGoods": false,
+    "blockItem": {
+     "itemType": "imgGoods",
+     "snapshotId": "mods3pRecomd",
+     "itemAttrs": {
+      "itemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_2-14823433-1793845165376",
+      "goodsCode": "14823433",
+      "goodsName": "%E3%80%90Hair+Recipe%E3%80%91%E9%AB%AE%E7%9A%84%E9%A3%9F%E8%AD%9C+1111%E5%96%AE%E7%93%B6%E4%BB%BB%E9%81%B8%E7%B5%84+%E6%B4%97%E9%AB%AE%E7%B2%BE%2F%E6%BD%A4%E9%AB%AE%E4%B9%B3510g%28%E6%9F%91%E8%8C%B6%2F%E6%A2%A8%E8%8C%B6%2F%E7%84%A1%E8%8A%B1%E6%9E%9C%2F%E7%8E%AB%E7%91%B0%2F%E6%9F%9A%E5%AD%90%2F%E8%96%91%E6%A0%B9%29",
+      "url": "",
+      "methodName": "product",
+      "relatedTagsList": [
+       "速",
+       "登記"
+      ]
+     },
+     "blockItemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_2",
+     "adAttrs": {
+      "adRequestId": "",
+      "adCampaignId": "",
+      "adCreativeId": ""
+     }
+    },
+    "externalImgUrlArray": [
+     "https://i3.momoshop.com.tw/1793330277/goodsimg/0014/823/433/14823433_OR_m.webp"
+    ],
+    "icon": [
+     {
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "速",
+      "iconImgUrl": "https://img3.momoshop.com.tw/ecm/img/cmm/goodsdetail/fastDely_earliest_today_s.png?t=20260921001",
+      "displayLayer": "0"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "登記",
+      "iconContentType": "isRegister",
+      "displayLayer": "1"
+     }
+    ],
+    "goodsFeatureUrl": "https://m.momoshop.com.tw/describe.momo?goodsCode=14823433&timeStamp=1793330277",
+    "onSaleDescription": "",
+    "isAdGoods": false
+   },
+   {
+    "imgUrl": "https://i3.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_OL_m.webp",
+    "imgUrlArray": [
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_OR_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L_m.webp",
+     "https://i1.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L1_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L2_m.webp",
+     "https://i1.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L3_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L4_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L5_m.webp"
+    ],
+    "imgTypeUrlArray": [
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_OR_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L_m.webp",
+     "https://i1.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L1_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L2_m.webp",
+     "https://i1.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L3_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L4_m.webp",
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_L5_m.webp"
+    ],
+    "imgTagUrl": "",
+    "imgLongTagUrl": "https://img2.momoshop.com.tw/ecm/img/online/341/2026/10/29/204652106/2026102920465210602.png?t=20261029204652",
+    "imgBottomTagUrl": "",
+    "goodsName": "【OLAY 歐蕾】全新水光小白瓶30ml(美白/精華)",
+    "goodsSubName": "滿1件折230",
+    "marketPrice": "$1,379",
+    "marketPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "1,379",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsPrice": "$969",
+    "goodsPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "969",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsStock": "18970",
+    "goodsCode": "14211989",
+    "action": {
+     "actionType": 11,
+     "actionValue": "14211989",
+     "useDefault": false,
+     "extraValue": {
+      "urlParameter": "mdiv=8199800000-bt_r_waterfall&cc1=",
+      "cateType": "",
+      "isWebPage": "0",
+      "categoryCode": "",
+      "mdiv": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_3"
+     }
+    },
+    "goodsTag": [],
+    "isLimitBuyGoods": false,
+    "blockItem": {
+     "itemType": "imgGoods",
+     "snapshotId": "mods3pRecomd",
+     "itemAttrs": {
+      "itemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_3-14211989-1793845165376",
+      "goodsCode": "14211989",
+      "goodsName": "%E3%80%90OLAY+%E6%AD%90%E8%95%BE%E3%80%91%E5%85%A8%E6%96%B0%E6%B0%B4%E5%85%89%E5%B0%8F%E7%99%BD%E7%93%B630ml%28%E7%BE%8E%E7%99%BD%2F%E7%B2%BE%E8%8F%AF%29",
+      "url": "",
+      "methodName": "product",
+      "relatedTagsList": [
+       "速",
+       "折價券",
+       "登記"
+      ]
+     },
+     "blockItemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_3",
+     "adAttrs": {
+      "adRequestId": "",
+      "adCampaignId": "",
+      "adCreativeId": ""
+     }
+    },
+    "externalImgUrlArray": [
+     "https://i4.momoshop.com.tw/1793324617/goodsimg/0014/211/989/14211989_OR_m.webp"
+    ],
+    "icon": [
+     {
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "速",
+      "iconImgUrl": "https://img3.momoshop.com.tw/ecm/img/cmm/goodsdetail/fastDely_earliest_today_s.png?t=20260921001",
+      "displayLayer": "0"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "折價券",
+      "iconContentType": "isCp",
+      "displayLayer": "1"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "登記",
+      "iconContentType": "isRegister",
+      "displayLayer": "1"
+     }
+    ],
+    "goodsFeatureUrl": "https://m.momoshop.com.tw/describe.momo?goodsCode=14211989&timeStamp=1793324617",
+    "onSaleDescription": "",
+    "isAdGoods": false
+   },
+   {
+    "imgUrl": "https://i1.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_OL_m.webp",
+    "imgUrlArray": [
+     "https://i2.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_OR_m.webp",
+     "https://i3.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L_m.webp",
+     "https://i3.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L1_m.webp",
+     "https://i2.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L2_m.webp",
+     "https://i2.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L3_m.webp",
+     "https://i1.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L4_m.webp",
+     "https://i4.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L5_m.webp"
+    ],
+    "imgTypeUrlArray": [
+     "https://i2.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_OR_m.webp",
+     "https://i3.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L_m.webp",
+     "https://i3.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L1_m.webp",
+     "https://i2.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L2_m.webp",
+     "https://i2.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L3_m.webp",
+     "https://i1.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L4_m.webp",
+     "https://i4.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_L5_m.webp"
+    ],
+    "imgTagUrl": "",
+    "imgLongTagUrl": "https://img3.momoshop.com.tw/ecm/img/online/341/2026/10/28/201329724/2026102820132972402.png?t=20261028201329",
+    "imgBottomTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/10/28/201329724/2026102820132972403.png?t=20261028201329",
+    "goodsName": "【滿意寶寶】日本製 極上呵護輕巧褲M-XXL(紙尿褲/尿布/日本白金/日本尿布)",
+    "goodsSubName": "最高折540",
+    "marketPrice": "$1,899",
+    "marketPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "1,899",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsPrice": "$1,499",
+    "goodsPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "1,499",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsStock": "16947",
+    "goodsCode": "10242345",
+    "vodUrl": "https://www.youtube.com/watch?v=q2z0RDrWIg8",
+    "action": {
+     "actionType": 11,
+     "actionValue": "10242345",
+     "useDefault": false,
+     "extraValue": {
+      "urlParameter": "mdiv=8199800000-bt_r_waterfall&cc1=",
+      "cateType": "",
+      "isWebPage": "0",
+      "categoryCode": "",
+      "mdiv": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_4"
+     }
+    },
+    "goodsTag": [
+     {
+      "imgUrl": "https://img2.momoshop.com.tw/ecm/img/cmm/goodsdetail/PreOrder_16px.png?t=20231113001",
+      "bgColor": "#FF960A",
+      "textColor": "#FFFFFF",
+      "content": "預",
+      "displayLayer": "1"
+     }
+    ],
+    "isLimitBuyGoods": false,
+    "blockItem": {
+     "itemType": "videoGoods",
+     "snapshotId": "mods3pRecomd",
+     "itemAttrs": {
+      "itemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_4-10242345-1793845165376",
+      "goodsCode": "10242345",
+      "goodsName": "%E3%80%90%E6%BB%BF%E6%84%8F%E5%AF%B6%E5%AF%B6%E3%80%91%E6%97%A5%E6%9C%AC%E8%A3%BD+%E6%A5%B5%E4%B8%8A%E5%91%B5%E8%AD%B7%E8%BC%95%E5%B7%A7%E8%A4%B2M-XXL%28%E7%B4%99%E5%B0%BF%E8%A4%B2%2F%E5%B0%BF%E5%B8%83%2F%E6%97%A5%E6%9C%AC%E7%99%BD%E9%87%91%2F%E6%97%A5%E6%9C%AC%E5%B0%BF%E5%B8%83%29",
+      "url": "",
+      "methodName": "product",
+      "relatedTagsList": [
+       "折價券",
+       "登記",
+       "贈品"
+      ]
+     },
+     "blockItemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_4",
+     "adAttrs": {
+      "adRequestId": "",
+      "adCampaignId": "",
+      "adCreativeId": ""
+     }
+    },
+    "externalImgUrlArray": [
+     "https://i2.momoshop.com.tw/1793610544/goodsimg/0010/242/345/10242345_OR_m.webp"
+    ],
+    "icon": [
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "折價券",
+      "iconContentType": "isCp",
+      "displayLayer": "1"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "登記",
+      "iconContentType": "isRegister",
+      "displayLayer": "1"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "贈品",
+      "iconContentType": "isGift",
+      "displayLayer": "1"
+     }
+    ],
+    "goodsFeatureUrl": "https://m.momoshop.com.tw/describe.momo?goodsCode=10242345&timeStamp=1793610544",
+    "onSaleDescription": "",
+    "isAdGoods": false
+   },
+   {
+    "imgUrl": "https://i4.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_OL_m.webp",
+    "imgUrlArray": [
+     "https://i3.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_OR_m.webp",
+     "https://i2.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L_m.webp",
+     "https://i4.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L1_m.webp",
+     "https://i2.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L2_m.webp",
+     "https://i2.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L3_m.webp",
+     "https://i4.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L4_m.webp",
+     "https://i1.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L5_m.webp"
+    ],
+    "imgTypeUrlArray": [
+     "https://i3.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_OR_m.webp",
+     "https://i2.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L_m.webp",
+     "https://i4.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L1_m.webp",
+     "https://i2.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L2_m.webp",
+     "https://i2.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L3_m.webp",
+     "https://i4.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L4_m.webp",
+     "https://i1.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_L5_m.webp",
+     "https://img4.momoshop.com.tw/goodsimg/0010/983/050/spec/10983050_02_002_R.jpg?t=?t=1793843485"
+    ],
+    "imgTagUrl": "",
+    "imgBottomTagUrl": "https://img4.momoshop.com.tw/ecm/img/online/341/2026/11/03/154806915/2026110315480691503.png?t=20261103154806",
+    "imgLongTagUrl": "",
+    "goodsName": "【STARBUCKS 星巴克】特選系列-太妃核果風味拿鐵 4入X 4盒組 雙11",
+    "goodsSubName": "官方直營星巴克門市冬季限定風味",
+    "marketPrice": "$845",
+    "marketPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "845",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsPrice": "$499",
+    "goodsPriceModel": {
+     "basePrice": {
+      "goodsStatus": "",
+      "price": "499",
+      "sign": "$",
+      "strPrice": ""
+     }
+    },
+    "goodsStock": "10301",
+    "goodsCode": "10983050",
+    "action": {
+     "actionType": 11,
+     "actionValue": "10983050",
+     "useDefault": false,
+     "extraValue": {
+      "urlParameter": "mdiv=8199800000-bt_r_waterfall&cc1=",
+      "cateType": "",
+      "isWebPage": "0",
+      "categoryCode": "",
+      "mdiv": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_5"
+     }
+    },
+    "goodsTag": [],
+    "isLimitBuyGoods": false,
+    "blockItem": {
+     "itemType": "imgGoods",
+     "snapshotId": "mods3pRecomd",
+     "itemAttrs": {
+      "itemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_5-10983050-1793845165376",
+      "goodsCode": "10983050",
+      "goodsName": "%E3%80%90STARBUCKS+%E6%98%9F%E5%B7%B4%E5%85%8B%E3%80%91%E7%89%B9%E9%81%B8%E7%B3%BB%E5%88%97-%E5%A4%AA%E5%A6%83%E6%A0%B8%E6%9E%9C%E9%A2%A8%E5%91%B3%E6%8B%BF%E9%90%B5+4%E5%85%A5X+4%E7%9B%92%E7%B5%84+%E9%9B%9911",
+      "url": "",
+      "methodName": "product",
+      "relatedTagsList": [
+       "雙11必買",
+       "速",
+       "登記",
+       "贈品"
+      ]
+     },
+     "blockItemId": "8199800000-bt_r_waterfall_01-bt_r_waterfall_01_5",
+     "adAttrs": {
+      "adRequestId": "",
+      "adCampaignId": "",
+      "adCreativeId": ""
+     }
+    },
+    "externalImgUrlArray": [
+     "https://i3.momoshop.com.tw/1793843485/goodsimg/0010/983/050/10983050_OR_m.webp"
+    ],
+    "icon": [
+     {
+      "iconContent": "雙11必買",
+      "iconImgUrl": "https://m.momoshop.com.tw/ecm/img/online/images/雙11必買_20261102210353317.png",
+      "displayLayer": "1"
+     },
+     {
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "速",
+      "iconImgUrl": "https://img1.momoshop.com.tw/ecm/img/cmm/goodsdetail/fastDely_earliest_today_s.png?t=20260921001",
+      "displayLayer": "0"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "登記",
+      "iconContentType": "isRegister",
+      "displayLayer": "1"
+     },
+     {
+      "iconBgColor": "#FF4C76",
+      "iconContentColor": "#FFFFFF",
+      "iconContent": "贈品",
+      "iconContentType": "isGift",
+      "displayLayer": "1"
+     }
+    ],
+    "goodsFeatureUrl": "https://m.momoshop.com.tw/describe.momo?goodsCode=10983050&timeStamp=1793700855",
+    "onSaleDescription": "",
+    "isAdGoods": false
+   }
+  ],
+  "recomd_id": "recomd-nginxrecomd-group-n8k7_1793845164_596480740",
+  "blockName": "%E4%BD%A0%E5%8F%AF%E8%83%BD%E6%9C%83%E5%96%9C%E6%AD%A1",
+  "blockTypeId": "bt_r_waterfall",
+  "blockTypeName": "%E4%BD%A0%E5%8F%AF%E8%83%BD%E6%9C%83%E5%96%9C%E6%AD%A1",
+  "curPage": 1,
+  "maxPage": 50
+ },
+ "MOMOMSGID": "20261105101924949G3mf1G7Mvy"
+}

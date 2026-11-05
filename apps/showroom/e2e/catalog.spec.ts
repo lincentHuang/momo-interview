@@ -8,7 +8,7 @@ test.describe("商品卡目錄", () => {
     await expect(page.locator("momo-product-card")).toHaveCount(5);
     await expect(card(page, "flash-earbuds").locator(".flash-banner time")).toHaveText(/^\d{2}:\d{2}:\d{2}$/);
     await expect(card(page, "live-skincare").locator(".tag--live")).toBeVisible();
-    await expect(card(page, "rank-rice").locator(".rank")).toHaveText("1");
+    await expect(card(page, "rank-rice").locator(".rank-flag")).toHaveAttribute("aria-label", "第 1 名");
   });
 
   test("篩選條件存在 URL，重新整理後保留", async ({ page }) => {

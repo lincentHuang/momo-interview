@@ -3,7 +3,7 @@ import { BUILTIN_PLUGINS, PluginRegistry, addPlugin, createFixtures, migrateCard
 function setup() {
   const reg = new PluginRegistry();
   BUILTIN_PLUGINS.forEach((p) => reg.register(p));
-  const base = parseCard({ ...createFixtures(0)[0], extensions: { "fast-delivery": {}, gift: {}, coupon: {} } });
+  const base = parseCard({ ...createFixtures(0)[0], extensions: { "fast-delivery": {}, gift: {}, installment: {} } });
   if (!base.ok) throw new Error();
   return { reg, card: base.card };
 }
@@ -12,7 +12,7 @@ describe("placement（WYSIWYG 版位）", () => {
   it("未覆寫時沿用 plugin 宣告的 slot / order", () => {
     const { reg, card } = setup();
     expect(slotOrder(card, "badges", reg)).toEqual(["fast-delivery", "gift"]);
-    expect(slotOrder(card, "price-extra", reg)).toEqual(["coupon"]);
+    expect(slotOrder(card, "price-extra", reg)).toEqual(["installment"]);
   });
 
   it("拖到同插槽的指定位置會重排，且 registry.resolve 依相同順序渲染", () => {
@@ -26,9 +26,9 @@ describe("placement（WYSIWYG 版位）", () => {
 
   it("跨插槽移動：從原插槽消失、出現在目標插槽", () => {
     const { reg, card } = setup();
-    const next = placePlugin(card, "coupon", "badges", 1, reg);
+    const next = placePlugin(card, "installment", "badges", 1, reg);
     expect(slotOrder(next, "price-extra", reg)).toEqual([]);
-    expect(slotOrder(next, "badges", reg)).toEqual(["fast-delivery", "coupon", "gift"]);
+    expect(slotOrder(next, "badges", reg)).toEqual(["fast-delivery", "installment", "gift"]);
   });
 
   it("拖入未啟用的模組會以預設值啟用；行為模組沒有版位", () => {

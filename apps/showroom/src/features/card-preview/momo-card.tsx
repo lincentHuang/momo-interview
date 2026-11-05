@@ -1,6 +1,6 @@
 "use client";
 
-import type { CardLayout } from "@momo/merchant-card";
+import type { Card, CardLayout } from "@momo/merchant-card";
 import type { MomoProductCard } from "@momo/merchant-card/element";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
@@ -27,14 +27,17 @@ function ensureElement() {
 }
 
 export interface MomoCardEvents {
-  onCardClick?: (detail: { cardId: string }) => void;
+  onCardClick?: (detail: { cardId: string; url: string | null }) => void;
   onFavoriteChange?: (detail: { cardId: string; favorite: boolean }) => void;
   onAddToCart?: (detail: { cardId: string; cartQty: number }) => void;
   onImpression?: (detail: { cardId: string }) => void;
 }
 
 export interface MomoCardProps extends MomoCardEvents {
-  cardId: string;
+  /** 從共享 Store 讀取並跨分頁同步（Showroom 目錄 / 編輯器） */
+  cardId?: string;
+  /** 直接給卡片資料（例如 momo API 轉出的卡片）；不進 Store，收藏 / 購物車為卡片內部狀態 */
+  card?: Card;
   layout?: CardLayout;
   /** WYSIWYG 編輯模式：顯示插槽放置區、模組可拖曳 */
   editable?: boolean;
@@ -48,7 +51,7 @@ export interface MomoCardProps extends MomoCardEvents {
  * React 包裝：Showroom 使用的是與 sample.html 完全相同的 Web Component，
  * 確保「在 Showroom 看到的」= 「宿主頁面嵌入後看到的」。
  */
-export function MomoCard({ cardId, layout, editable, selectedModule, className, style, ...events }: MomoCardProps) {
+export function MomoCard({ cardId, card, layout, editable, selectedModule, className, style, ...events }: MomoCardProps) {
   const ref = useRef<MomoProductCard>(null);
   const [ready, setReady] = useState(false);
   const handlers = useRef(events);
@@ -81,6 +84,11 @@ export function MomoCard({ cardId, layout, editable, selectedModule, className, 
     });
     return () => listeners.forEach((off) => off());
   }, [ready]);
+
+  // 物件只能用 property 傳遞（attribute 只接受字串）
+  useEffect(() => {
+    if (ready && ref.current && card) ref.current.card = card;
+  }, [ready, card]);
 
   return (
     <div className={className} style={style}>

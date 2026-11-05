@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { VariantAnalysis } from "@/features/card-catalog";
+import { MomoDataFormat } from "@/features/momo-home";
 import { PageHeader } from "@/shared/layout/page-header";
 
 export const metadata: Metadata = { title: "類型分析 · Merchant Card Showroom" };
@@ -9,9 +10,10 @@ export default function AnalysisPage() {
     <div className="mx-auto max-w-7xl">
       <PageHeader
         title="商品卡類型分析"
-        description="分析 momo 搜尋、分類、直播與排行榜頁面後，歸納出「業務型態（variant）」與「行銷附加資訊（plugin）」兩個正交維度。"
+        description="實測 momo 首頁各商品區塊後，歸納出「業務型態（variant）」與「行銷附加資訊（plugin）」兩個正交維度，並整理真實資料格式。"
       />
       <VariantAnalysis />
+      <MomoDataFormat />
     </div>
   );
 }

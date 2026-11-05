@@ -28,12 +28,12 @@ test.describe("所見即所得模組編輯器", () => {
   test("卡片上的模組可拖曳重新排序", async ({ page }) => {
     await openEditor(page, "std-airfryer");
     await page.getByRole("button", { name: "加入贈品" }).click();
-    await expect.poll(() => slotIds(page, "std-airfryer", "badges")).toEqual(["fast-delivery", "gift"]);
+    await expect.poll(() => slotIds(page, "std-airfryer", "badges")).toEqual(["fast-delivery", "campaign-tag", "coupon", "register", "gift"]);
 
     const target = canvasCard(page, "std-airfryer").locator('[data-plugin-id="fast-delivery"]');
     await canvasCard(page, "std-airfryer").locator('[data-plugin-id="gift"]').dragTo(target, { targetPosition: { x: 2, y: 8 } });
 
-    await expect.poll(() => slotIds(page, "std-airfryer", "badges")).toEqual(["gift", "fast-delivery"]);
+    await expect.poll(() => slotIds(page, "std-airfryer", "badges")).toEqual(["gift", "fast-delivery", "campaign-tag", "coupon", "register"]);
   });
 
   test("把卡片上的模組拖回模組面板即移除", async ({ page }) => {

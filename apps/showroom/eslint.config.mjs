@@ -13,7 +13,11 @@ const eslintConfig = defineConfig([
         "error",
         {
           patterns: [
-            { group: ["@/features/*/*"], message: "請從 feature 的 index（@/features/<name>）引用，不要深入內部檔案。" },
+            {
+              // 例外：feature 的 server 入口（僅供 Route Handler 使用，與含 client component 的 index 分開）
+              group: ["@/features/*/*", "!@/features/*/server"],
+              message: "請從 feature 的 index（@/features/<name>）引用，不要深入內部檔案。",
+            },
             { group: ["radix-ui", "@radix-ui/*"], message: "請使用 @/shared/ui 的封裝元件。" },
             { group: ["@momo/merchant-card/element"], message: "Web Component 只能由 card-preview feature 載入。" },
           ],

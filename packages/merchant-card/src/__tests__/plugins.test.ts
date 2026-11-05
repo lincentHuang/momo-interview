@@ -13,15 +13,15 @@ describe("PluginRegistry", () => {
     const reg = new PluginRegistry();
     BUILTIN_PLUGINS.forEach((p) => reg.register(p));
     const resolved = reg.resolve(card({ gift: {}, "fast-delivery": {}, coupon: { amount: 50 } }), "badges");
-    expect(resolved.map((r) => r.plugin.id)).toEqual(["fast-delivery", "gift"]);
+    expect(resolved.map((r) => r.plugin.id)).toEqual(["fast-delivery", "coupon", "gift"]);
   });
 
   it("config 不合法時退回預設值，而非拋錯", () => {
     const reg = new PluginRegistry();
     BUILTIN_PLUGINS.forEach((p) => reg.register(p));
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    const [r] = reg.resolve(card({ coupon: { amount: -1 } }), "price-extra");
-    expect(r?.config).toEqual({ amount: 100 });
+    const [r] = reg.resolve(card({ installment: { periods: 1 } }), "price-extra");
+    expect(r?.config).toEqual({ periods: 12 });
     warn.mockRestore();
   });
 

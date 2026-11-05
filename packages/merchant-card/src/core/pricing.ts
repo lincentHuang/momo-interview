@@ -15,3 +15,8 @@ export function formatCount(value: number): string {
   if (value >= 10_000) return `${(value / 10_000).toFixed(1).replace(/\.0$/, "")}萬`;
   return twd.format(value);
 }
+
+/** momo 列表的銷量呈現：只給區間下限，例如 15000 →「總銷量>1.5萬」 */
+export function formatSoldCount(value: number): string {
+  return `總銷量>${formatCount(value)}`;
+}

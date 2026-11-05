@@ -20,17 +20,19 @@ npm run dev        # 先建置 card bundle，再啟動 Next.js（http://localhos
 | `/` | 商品卡類型分析 + 目錄（可依類型 / 版型篩選，條件存在 URL） |
 | `/cards/[id]` | Schema 驅動的編輯器 + 即時預覽 + 事件紀錄 |
 | `/sample.html` | 純 HTML 宿主頁面，一行 `<script>` 嵌入商品卡 |
+| `/momo` | momo 首頁情境：以 momo 首頁 API 真實資料（錄製快照 / 即時）渲染限時搶購、精選好物榜、橫式輪播、你可能會喜歡，可一鍵匯入目錄 |
+| `/analysis#data-format` | momo 首頁資料格式摘要（完整版：[`docs/momo-data-format.md`](docs/momo-data-format.md)） |
 
 **建議的 Demo 路徑**：開 `/cards/flash-earbuds`，再按「在 sample.html 開啟 ↗」並排兩個視窗——在編輯器改價格 / 開關插件，sample.html 即時更新；在 sample.html 按 ♡ / 🛒，編輯器的互動狀態同步改變。
 
 其他指令：
 
 ```bash
-npm test           # merchant-card 單元測試（vitest，18 個）
+npm test           # merchant-card 單元測試（vitest，41 個）
 ```
 
 ```bash
-npm run test:e2e   # Playwright E2E（18 個；自動 build 並以 next start 在 3100 埠啟動）
+npm run test:e2e   # Playwright E2E（30 個；自動 build 並以 next start 在 3100 埠啟動）
 ```
 
 首次執行 E2E 前需安裝瀏覽器：
@@ -51,11 +53,13 @@ npm run typecheck && npm run lint && npm run build
 flowchart LR
   subgraph pkg["packages/merchant-card（框架無關，Lit + zod）"]
     schema["schema/<br/>Card discriminated union<br/>FieldDescriptor / variants / migrate"]
-    plugins["plugins/<br/>PluginRegistry（globalThis 單例）<br/>內建 5 個 plugin"]
+    plugins["plugins/<br/>PluginRegistry（globalThis 單例）<br/>內建 13 個 plugin"]
     store["store/<br/>CardStore<br/>localStorage + BroadcastChannel + LWW"]
+    momo["adapters/momo<br/>momo API → Card<br/>raw schema / mapper / client / 快照"]
     element["element/<br/>&lt;momo-product-card&gt;<br/>Shadow DOM + variant renderers"]
     schema --> plugins --> element
     schema --> store --> element
+    momo --> schema
   end
 
   subgraph app["apps/showroom（Next.js 16 App Router）"]
@@ -66,7 +70,9 @@ flowchart LR
     editor["features/card-editor<br/>WYSIWYG 拖曳設計器 / SchemaForm"]
     library["features/module-library"]
     settings["features/settings"]
+    momohome["features/momo-home<br/>/momo 首頁情境 + /api/momo 代理"]
     catalog --> preview & fstore
+    momohome --> preview & fstore
     editor --> preview & fstore & shared
     library & settings --> fstore
     catalog --> shared
@@ -77,6 +83,7 @@ flowchart LR
   pkg -- "TS 原始碼（transpilePackages）" --> app
   pkg -- "vite lib build → ES / IIFE bundle" --> sample
   app <-. "BroadcastChannel / storage event<br/>（同源跨分頁）" .-> sample
+  momoapi[("momo 首頁 API<br/>（伺服器端呼叫）")] -.-> momohome
 ```
 
 ### Repo 結構
@@ -199,6 +206,28 @@ plugin 宣告的 `slot / order` 只是**預設值**；每張卡片可用 `placem
 | 目錄篩選條件 | URL search params | 可分享、可上一頁，不該汙染共享狀態 |
 | 分享特定設定 | URL `?config=`（base64url） | 開啟時**先驗證、再詢問**是否套用，不默默覆蓋本地 |
 | 編輯中的不合法草稿 | React local state | 不寫入、不廣播，避免壞資料擴散 |
+
+---
+
+### 7. momo 真實資料串接
+
+實測 momo 首頁的商品區塊與 API 後（[`docs/momo-data-format.md`](docs/momo-data-format.md)），以 `@momo/merchant-card/momo` 提供可直接使用的串接層：
+
+```ts
+import { createMomoClient, loadMomoHomepage } from "@momo/merchant-card/momo";
+const page = await loadMomoHomepage(createMomoClient()); // 伺服器端（CORS）
+cardElement.card = page.sections[0].cards[0];            // 已通過 CardSchema 驗證
+```
+
+| 層 | 檔案 | 職責 |
+| --- | --- | --- |
+| raw schema | `adapters/momo/raw.ts` | momo 回應的形狀（looseObject：加欄位不壞、改欄位明確報錯） |
+| mapper | `adapters/momo/map.ts` | 清洗（千分位字串、HTML entity、「總銷量>1.5萬」）、行銷標 → plugin、兩種商品形狀收斂成 Card |
+| client | `adapters/momo/client.ts` | 5 支 POST API，只依賴 fetch；不做任何防護規避 |
+| 組合 | `adapters/momo/homepage.ts` | 區塊 → `MomoSection { kind, cards, rejected }`，次要 API 失敗只影響該區塊 |
+| 快照 | `adapters/momo/snapshot/` | 2026-11-05 錄製的真實回應，供測試與離線展示 |
+
+正式上線應改接 momo 商品 feed / 合作 API：只需替換 client，mapper 與卡片元件不必改。
 
 ---
 

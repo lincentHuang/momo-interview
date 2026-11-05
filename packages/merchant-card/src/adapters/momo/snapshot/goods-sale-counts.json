@@ -1,0 +1,59 @@
+{
+ "success": true,
+ "resultCode": "200",
+ "resultMessage": "",
+ "resultException": "",
+ "saleInfo": {
+  "15559818": {
+   "ratingTimes": "(188)",
+   "saleCount": "總銷量>3,000",
+   "rating": "4.9"
+  },
+  "14211989": {
+   "ratingTimes": "(22)",
+   "saleCount": "總銷量>3萬",
+   "rating": "4.8"
+  },
+  "10983050": {
+   "ratingTimes": "(6,781)",
+   "saleCount": "總銷量>5萬",
+   "rating": "4.9"
+  },
+  "13239915": {
+   "ratingTimes": "(13,968)",
+   "saleCount": "總銷量>15萬",
+   "rating": "4.9"
+  },
+  "10242345": {
+   "ratingTimes": "(4,050)",
+   "saleCount": "總銷量>30萬",
+   "rating": "5.0"
+  },
+  "14823433": {
+   "ratingTimes": "(365)",
+   "saleCount": "總銷量>10萬",
+   "rating": "4.9"
+  },
+  "8150715": {
+   "ratingTimes": "(7,848)",
+   "saleCount": "總銷量>3萬",
+   "rating": "4.8"
+  },
+  "15627675": {
+   "ratingTimes": "(0)",
+   "saleCount": "總銷量>10萬",
+   "rating": "0.00"
+  },
+  "8141534": {
+   "ratingTimes": "(4,981)",
+   "saleCount": "總銷量>5萬",
+   "rating": "4.9"
+  },
+  "14575760": {
+   "ratingTimes": "(0)",
+   "saleCount": "總銷量>5,000",
+   "rating": "0.00"
+  }
+ },
+ "saleCountColor": "#454545"
+}

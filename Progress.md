@@ -10,3 +10,5 @@
 - 2026-11-05：Playwright E2E 18 個（跨分頁同步、驗證、分享連結、Shadow DOM、執行期 plugin）；修正首次渲染時 momo-card:error 事件遺失（`apps/showroom/e2e`、`element/momo-product-card.ts`）
 - 2026-11-05：Showroom sidebar App Shell（桌機可收合、手機抽屜），拆出模組庫 / 類型分析 / 嵌入指南 / 設定與同步頁，編輯器分「設計 / 檢視器」子頁（`shared/layout/app-shell.tsx`、`app/*`、`features/module-library`、`features/settings`）
 - 2026-11-05：商品卡 WYSIWYG 拖曳模組編輯：schema v3 `placements`、`editable` 模式、版位純函式＋8 個單元測試、新增 2 個內建模組；設計器（模組面板 / 畫布 / 屬性面板）與 8 個 E2E（`packages/merchant-card/src/plugins/placement.ts`、`features/card-editor`、`e2e/designer.spec.ts`）
+- 2026-11-05：實測 momo 首頁（getMainPageV5 / 精選好物榜 / 推薦 / 評分銷量 API）並錄製真實回應快照；卡片樣式依實測 tokens 重做（促銷短語、「起」價、星等、總銷量、TOP 旗標、限搶價 / 最後 N 組 /「搶」、多圖圓點、影片鈕），新增 7 個 momo 行銷標 plugin，schema 升 v4（`packages/merchant-card/src/element`、`plugins/builtin`、`schema`）
+- 2026-11-05：momo 真實資料 adapter（raw schema → Card、client、首頁組合、快照 client）＋ 12 個單元測試；Showroom `/momo` 首頁情境頁（快照 / 即時切換、區塊匯入目錄）、`/api/momo/*` 伺服器端代理、類型分析頁資料格式摘要、`docs/momo-data-format.md`（`packages/merchant-card/src/adapters/momo`、`features/momo-home`、`app/api/momo`）

@@ -6,6 +6,7 @@
   "description": "框架無關的 momo 商品卡核心：Schema、Plugin Registry、跨宿主狀態同步與 <momo-product-card> Web Component",
   "exports": {
     ".": "./src/index.ts",
+    "./momo": "./src/adapters/momo/index.ts",
     "./element": "./src/element/index.ts"
   },
   "sideEffects": [

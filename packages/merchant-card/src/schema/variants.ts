@@ -15,14 +15,35 @@ export interface VariantDefinition<V extends CardVariant = CardVariant> {
   defaults: (now: number) => Omit<CardOf<V>, keyof SharedKeys>;
 }
 
-type SharedKeys = Pick<Card, "id" | "title" | "imageUrl" | "price" | "originalPrice" | "rating" | "reviewCount" | "layout" | "extensions" | "placements">;
+type SharedKeys = Pick<
+  Card,
+  | "id"
+  | "title"
+  | "subtitle"
+  | "imageUrl"
+  | "images"
+  | "videoUrl"
+  | "url"
+  | "price"
+  | "priceFrom"
+  | "originalPrice"
+  | "rating"
+  | "reviewCount"
+  | "soldCount"
+  | "layout"
+  | "extensions"
+  | "placements"
+>;
 
 export const BASE_FIELDS: ReadonlyArray<FieldDescriptor> = [
-  { kind: "text", key: "title", label: "商品名稱", maxLength: 80 },
+  { kind: "text", key: "title", label: "商品名稱", maxLength: 150 },
+  { kind: "text", key: "subtitle", label: "促銷短語", maxLength: 40, placeholder: "例：滿1件享95折" },
   { kind: "number", key: "price", label: "售價", min: 0, step: 10, unit: "元" },
+  { kind: "boolean", key: "priceFrom", label: "多規格最低價（顯示「起」）" },
   { kind: "number", key: "originalPrice", label: "原價（劃線價）", min: 0, step: 10, unit: "元" },
   { kind: "number", key: "rating", label: "評分", min: 0, max: 5, step: 0.1 },
   { kind: "number", key: "reviewCount", label: "評價數", min: 0, step: 1 },
+  { kind: "number", key: "soldCount", label: "總銷量", min: 0, step: 100 },
   {
     kind: "select",
     key: "layout",
@@ -38,25 +59,25 @@ export const VARIANTS: { [V in CardVariant]: VariantDefinition<V> } = {
   standard: {
     variant: "standard",
     label: "一般商品卡",
-    foundIn: "搜尋結果、分類列表、推薦商品",
-    fields: [{ kind: "number", key: "soldCount", label: "已售出", min: 0, step: 1 }],
-    defaults: () => ({ variant: "standard", soldCount: 0 }),
+    foundIn: "首頁「你可能會喜歡」瀑布流、「超取$190 免運」橫式輪播、搜尋結果、分類列表",
+    fields: [],
+    defaults: () => ({ variant: "standard" }),
   },
   "flash-sale": {
     variant: "flash-sale",
     label: "限時搶購卡",
-    foundIn: "限時瘋搶、整點特賣、首頁活動區塊",
+    foundIn: "首頁「超級限搶」區塊（整點檔次倒數）、限時搶購頻道",
     fields: [
       { kind: "countdown", key: "endsAt", label: "距離結束", maxMinutes: 24 * 60 },
-      { kind: "number", key: "stockTotal", label: "活動總量", min: 1, step: 1 },
-      { kind: "number", key: "stockSold", label: "已搶購", min: 0, step: 1 },
+      { kind: "number", key: "stockRemaining", label: "剩餘組數", min: 0, step: 1, unit: "組" },
+      { kind: "number", key: "stockTotal", label: "活動總量（選填）", min: 1, step: 1 },
     ],
-    defaults: (now) => ({ variant: "flash-sale", endsAt: now + 3 * 60 * 60 * 1000, stockTotal: 100, stockSold: 0 }),
+    defaults: (now) => ({ variant: "flash-sale", endsAt: now + 3 * 60 * 60 * 1000, stockRemaining: 100 }),
   },
   live: {
     variant: "live",
     label: "直播商品卡",
-    foundIn: "momo 直播、影音導購",
+    foundIn: "首頁「十合一看板_直播」（開播時段才出現）、momo 直播頻道",
     fields: [
       {
         kind: "select",
@@ -76,7 +97,7 @@ export const VARIANTS: { [V in CardVariant]: VariantDefinition<V> } = {
   ranking: {
     variant: "ranking",
     label: "排行榜卡",
-    foundIn: "熱銷排行、分類 TOP 榜",
+    foundIn: "首頁「你的精選好物榜」（關鍵字分頁 + TOP 旗標）、即時熱銷榜",
     fields: [
       { kind: "number", key: "rank", label: "名次", min: 1, max: 100, step: 1 },
       { kind: "text", key: "rankCategory", label: "榜單分類", maxLength: 20 },
@@ -91,11 +112,17 @@ export function switchVariant(card: Card, next: CardVariant, now = Date.now()): 
   const shared: SharedKeys = {
     id: card.id,
     title: card.title,
+    subtitle: card.subtitle,
     imageUrl: card.imageUrl,
+    images: card.images,
+    videoUrl: card.videoUrl,
+    url: card.url,
     price: card.price,
+    priceFrom: card.priceFrom,
     originalPrice: card.originalPrice,
     rating: card.rating,
     reviewCount: card.reviewCount,
+    soldCount: card.soldCount,
     layout: card.layout,
     extensions: card.extensions,
     placements: card.placements,

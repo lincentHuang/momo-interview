@@ -17,6 +17,7 @@ import {
   PuzzleIcon,
   SettingsIcon,
   SidebarIcon,
+  StoreIcon,
   Tooltip,
 } from "@/shared/ui";
 
@@ -33,6 +34,7 @@ const NAV: Array<{ heading: string; items: NavItem[] }> = [
     heading: "工作區",
     items: [
       { href: "/", label: "商品卡目錄", icon: GridIcon, match: ["/cards"] },
+      { href: "/momo", label: "momo 首頁情境", icon: StoreIcon },
       { href: "/modules", label: "模組庫", icon: PuzzleIcon },
     ],
   },

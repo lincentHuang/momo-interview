@@ -11,7 +11,7 @@ test.describe("編輯器 ↔ sample.html 跨宿主同步", () => {
     await fillNumber(editor, "售價", "999");
 
     await expect(card(sample, "flash-earbuds").locator(".price")).toHaveText("$999");
-    await expect(card(sample, "flash-earbuds").locator(".discount")).toHaveText("3.3折");
+    await expect(card(sample, "flash-earbuds").locator(".original")).toHaveText("$2,990");
   });
 
   test("sample.html 收藏 / 加入購物車，編輯器的互動狀態同步", async ({ context }) => {
@@ -42,7 +42,8 @@ test.describe("編輯器 ↔ sample.html 跨宿主同步", () => {
 
     await editor.getByRole("button", { name: "加入折價券" }).click();
 
-    await expect(card(sample, "rank-rice").locator(".tag--coupon")).toHaveText("券 $100");
+    // momo 列表上的折價券只標示「折價券」，金額為選填設定
+    await expect(card(sample, "rank-rice").locator(".tag--coupon")).toHaveText("折價券");
   });
 
   test("不合法的修改不寫入、不廣播，並標示錯誤", async ({ context }) => {

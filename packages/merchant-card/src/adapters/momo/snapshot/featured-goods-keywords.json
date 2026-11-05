@@ -1,0 +1,49 @@
+{
+ "success": true,
+ "resultCode": "200",
+ "resultMessage": "",
+ "resultException": "",
+ "resultList": [
+  {
+   "value": "小烤箱",
+   "contents": "",
+   "methodName": "",
+   "sourceOrigin": "%E5%B0%8F%E7%83%A4%E7%AE%B1"
+  },
+  {
+   "value": "液體衛生棉",
+   "contents": "",
+   "methodName": "",
+   "sourceOrigin": "%E6%B6%B2%E9%AB%94%E8%A1%9B%E7%94%9F%E6%A3%89"
+  },
+  {
+   "value": "宏裕行",
+   "contents": "",
+   "methodName": "",
+   "sourceOrigin": "%E5%AE%8F%E8%A3%95%E8%A1%8C"
+  },
+  {
+   "value": "蔓越莓益生菌",
+   "contents": "",
+   "methodName": "",
+   "sourceOrigin": "%E8%94%93%E8%B6%8A%E8%8E%93%E7%9B%8A%E7%94%9F%E8%8F%8C"
+  },
+  {
+   "value": "puma 女鞋",
+   "contents": "",
+   "methodName": "",
+   "sourceOrigin": "puma%20%E5%A5%B3%E9%9E%8B"
+  },
+  {
+   "value": "蘭蔻小黑瓶",
+   "contents": "",
+   "methodName": "",
+   "sourceOrigin": "%E8%98%AD%E8%94%BB%E5%B0%8F%E9%BB%91%E7%93%B6"
+  }
+ ],
+ "blockRequestId": "7aa3e046ed374847b0c822d0ab4a5497",
+ "blockId": "8199800000-bt_r_chart_01",
+ "blockName": "你的精選好物榜",
+ "blockTypeId": "bt_r_chart",
+ "blockTypeName": "你的精選好物榜"
+}

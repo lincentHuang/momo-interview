@@ -1,0 +1,1246 @@
+{
+ "resultException": "",
+ "success": true,
+ "resultCode": "200",
+ "resultMessage": "",
+ "mainInfo": [
+  {
+   "columnType": "81",
+   "headerInfo": {
+    "headerHeightRatio": "55",
+    "headerWidthRatio": "375",
+    "headerImage": "https://img2.momoshop.com.tw/ecm/img/online/81/997/00/000/mobile/bt_7_741_01/bt_7_741_01_e3.png?t=1793252397988",
+    "serverTime": 1793844864493,
+    "blockItem": {
+     "itemType": "banner",
+     "snapshotId": "20261102000007373",
+     "itemAttrs": {
+      "itemId": "bt_7_741_01_e7-1793548807373",
+      "itemName": "momobanner+MB+%E5%8D%80%E6%A8%99+2026-10-29+%E4%B8%8B%E5%8D%881-39-33",
+      "url": "https%3A%2F%2Fimg1.momoshop.com.tw%2F%23"
+     },
+     "itemAttrsV2": {
+      "itemId": "bt_7_741_01_e7-1793548807373",
+      "itemName": "momobanner+MB+%E5%8D%80%E6%A8%99+2026-10-29+%E4%B8%8B%E5%8D%881-39-33",
+      "url": "https%3A%2F%2Fimg1.momoshop.com.tw%2F%23"
+     },
+     "blockItemId": "8199700000-bt_7_741_01-bt_7_741_01_e7"
+    }
+   },
+   "blockName": "%E4%BD%A0%E7%9A%84%E7%B2%BE%E9%81%B8%E5%A5%BD%E7%89%A9%E6%A6%9C",
+   "mdiv": "8199700000-bt_r_chart_01",
+   "randomDisplay": "0",
+   "blockTypeId": "bt_r_chart",
+   "columnBgColor": "#FFFFFF",
+   "blockTypeName": "%E4%BD%A0%E7%9A%84%E7%B2%BE%E9%81%B8%E5%A5%BD%E7%89%A9%E6%A6%9C",
+   "underSpace": "1"
+  },
+  {
+   "columnType": "56",
+   "headerInfo": {
+    "headerHeightRatio": "55",
+    "headerWidthRatio": "375",
+    "headerImage": "https://img1.momoshop.com.tw/ecm/img/online/81/997/00/000/mobile/bt_7_620_01/bt_7_620_01_e3.png?t=1793353650347",
+    "serverTime": 1793844864523,
+    "blockItem": {
+     "itemType": "banner",
+     "snapshotId": "20261102000004843",
+     "itemAttrs": {
+      "itemId": "-1793548804841",
+      "itemName": "",
+      "url": "https%3A%2F%2Fwww.momoshop.com.tw%2Fedm%2Fcmmedm.jsp%3Flpn%3DO6UFnvlgRVW%26n%3D1%26mdiv%3D8199700000-bt_7_620_01-bt_7_620_01_e4%26ctype%3DB"
+     },
+     "itemAttrsV2": {
+      "itemId": "-1793548804841",
+      "itemName": "",
+      "url": "https%3A%2F%2Fwww.momoshop.com.tw%2Fedm%2Fcmmedm.jsp%3Flpn%3DO6UFnvlgRVW%26n%3D1%26mdiv%3D8199700000-bt_7_620_01-bt_7_620_01_e4%26ctype%3DB"
+     },
+     "blockItemId": "8199700000-bt_7_620_01-"
+    }
+   },
+   "blockName": "%E5%8D%81%E5%90%88%E4%B8%80%E7%9C%8B%E6%9D%BF_%E7%9B%B4%E6%92%AD",
+   "mdiv": "8199700000-bt_7_620_01",
+   "randomDisplay": "0",
+   "blockTypeId": "bt_7_620",
+   "moreAction": {
+    "actionType": 1,
+    "actionValue": "https://www.momoshop.com.tw/edm/cmmedm.jsp?lpn=O6UFnvlgRVW&n=1&mdiv=8199700000-bt_7_620_01-bt_7_620_01_e4&ctype=B",
+    "actionUrl": "https://www.momoshop.com.tw/edm/cmmedm.jsp?lpn=O6UFnvlgRVW&n=1&mdiv=8199700000-bt_7_620_01-bt_7_620_01_e4&ctype=B",
+    "extraValue": {
+     "mdiv": "8199700000-bt_7_620_01-bt_7_620_01_e4"
+    }
+   },
+   "columnBgColor": "#FFFFFF",
+   "blockTypeName": "%E5%8D%81%E5%90%88%E4%B8%80%E7%9C%8B%E6%9D%BF_%E7%9B%B4%E6%92%AD",
+   "underSpace": "1"
+  },
+  {
+   "columnType": "58",
+   "headerInfo": {
+    "headerHeightRatio": "55",
+    "headerWidthRatio": "375",
+    "headerImage": "https://img3.momoshop.com.tw/ecm/img/online/81/997/00/000/mobile/bt_7_777_02/bt_7_777_02_e3.png?t=1793582193589",
+    "action": {
+     "actionType": 41,
+     "actionValue": "免運",
+     "actionUrl": "https://www.momoshop.com.tw/search/%E5%85%8D%E9%81%8B?_isFuzzy=0&searchType=1&_advSuperstoreFree=Y&curPage=1&mdiv=8199700000-bt_7_777_02-bt_7_777_02_e10&ctype=B",
+     "extraValue": {
+      "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e10",
+      "urlParameter": "searchType=1&_advSuperstoreFree=Y&curPage=1&mdiv=8199700000-bt_7_777_02-bt_7_777_02_e10&ctype=B"
+     }
+    },
+    "serverTime": 1793844864542,
+    "blockItem": {
+     "itemType": "banner",
+     "snapshotId": "20261105000005430",
+     "itemAttrs": {
+      "itemId": "bt_7_777_02_e8-1793685252698",
+      "itemName": "momobanner+MB+%E5%8D%80%E6%A8%99+2026-11-2+%E4%B8%8A%E5%8D%889-15-28",
+      "url": "https%3A%2F%2Fwww.momoshop.com.tw%2Fsearch%2F%25E5%2585%258D%25E9%2581%258B%3F_isFuzzy%3D0%26searchType%3D1%26_advSuperstoreFree%3DY%26curPage%3D1%26mdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e10%26ctype%3DB"
+     },
+     "itemAttrsV2": {
+      "itemId": "bt_7_777_02_e8-1793685252698",
+      "itemName": "momobanner+MB+%E5%8D%80%E6%A8%99+2026-11-2+%E4%B8%8A%E5%8D%889-15-28",
+      "url": "https%3A%2F%2Fwww.momoshop.com.tw%2Fsearch%2F%25E5%2585%258D%25E9%2581%258B%3F_isFuzzy%3D0%26searchType%3D1%26_advSuperstoreFree%3DY%26curPage%3D1%26mdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e10%26ctype%3DB"
+     },
+     "blockItemId": "8199700000-bt_7_777_02-bt_7_777_02_e8"
+    },
+    "titleUrl": "https://www.momoshop.com.tw/search/%E5%85%8D%E9%81%8B?_isFuzzy=0&searchType=1&_advSuperstoreFree=Y&curPage=1&mdiv=8199700000-bt_7_777_02-bt_7_777_02_e10&ctype=B"
+   },
+   "blockName": "%E8%BC%AA%E6%92%AD%E5%95%86%E5%93%81100%E5%93%81",
+   "mdiv": "8199700000-bt_7_777_02",
+   "randomDisplay": "0",
+   "blockTypeId": "bt_7_777",
+   "moreAction": {
+    "actionType": 41,
+    "actionValue": "免運",
+    "actionUrl": "https://www.momoshop.com.tw/search/%E5%85%8D%E9%81%8B?_isFuzzy=0&searchType=1&_advSuperstoreFree=Y&curPage=1&mdiv=8199700000-bt_7_777_02-bt_7_777_02_e10&ctype=B",
+    "extraValue": {
+     "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e10",
+     "urlParameter": "searchType=1&_advSuperstoreFree=Y&curPage=1&mdiv=8199700000-bt_7_777_02-bt_7_777_02_e10&ctype=B"
+    }
+   },
+   "adInfo": [
+    {
+     "adImage": "https://img3.momoshop.com.tw/ecm/img/online/81/997/00/000/mobile/bt_7_777_02/bt_7_777_02_e3.png?t=1793582193589",
+     "adWidthRatio": "375",
+     "adHeightRatio": "55"
+    }
+   ],
+   "columnBgColor": "#FFFFFF",
+   "blockTypeName": "%E8%BC%AA%E6%92%AD%E5%95%86%E5%93%81100%E5%93%81",
+   "contentInfo": [
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "$1,090",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "1,090",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "811",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "goodsTag": [
+      {
+       "imgUrl": "https://image.momoshop.com.tw/ecm/img/cmm/goodsdetail/Shop_16px.png?t=1793844864615",
+       "bgColor": "#5E6999",
+       "textColor": "#FFFFFF",
+       "content": "&#24215;&#8314;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "【Samsung 三星】SAMSUNG 45W極速快充旅充組T4511(附C to C 5A線)",
+     "imgBottomTagUrl": "",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844864544",
+     "subTitle": "原廠配件公司貨/保護手機有保障",
+     "contentImage": "https://i8.momoshop.com.tw/1793185611/goodsimg/TP000/5828/0000/419/TP00058280000419_OR.webp",
+     "action": {
+      "actionType": "10002",
+      "actionValue": "TP00058280000419",
+      "actionUrl": "https://www.momoshop.com.tw/TP/TP0005828/goodsDetail/TP00058280000419?mdiv=8199700000-bt_7_777_02-bt_7_777_02_e11&ctype=B",
+      "extraValue": {
+       "entpCode": "",
+       "lastPathName": "TP00058280000419",
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e11",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "TP00058280000419",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105000005430",
+      "itemAttrs": {
+       "itemId": "bt_7_777_02-TP00058280000419-1793844190122",
+       "goodsCode": "TP00058280000419",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0005828%2FgoodsDetail%2FTP00058280000419%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e11%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_02-TP00058280000419-1793844190122",
+       "goodsCode": "TP00058280000419",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0005828%2FgoodsDetail%2FTP00058280000419%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e11%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_02-bt_7_777_02_e15"
+     },
+     "adPriceString": [
+      "$",
+      "811"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "830",
+       "strPrice": "起",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "499",
+       "strPrice": "起",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "goodsTag": [
+      {
+       "imgUrl": "https://image.momoshop.com.tw/ecm/img/cmm/goodsdetail/Shop_16px.png?t=1793844864747",
+       "bgColor": "#5E6999",
+       "textColor": "#FFFFFF",
+       "content": "&#24215;&#8314;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "【巴弟蛋白】微粉化一水肌酸 500g｜Creatine Monohydrate 全素 無麩質",
+     "imgBottomTagUrl": "",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844864675",
+     "subTitle": "快速增加運動高強度表現與力量",
+     "contentImage": "https://i6.momoshop.com.tw/1792578136/goodsimg/TP000/9482/0000/004/TP00094820000004_OR.webp",
+     "action": {
+      "actionType": "10002",
+      "actionValue": "TP00094820000004",
+      "actionUrl": "https://www.momoshop.com.tw/TP/TP0009482/goodsDetail/TP00094820000004?mdiv=8199700000-bt_7_777_02-bt_7_777_02_e21&ctype=B",
+      "extraValue": {
+       "entpCode": "",
+       "lastPathName": "TP00094820000004",
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e21",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "TP00094820000004",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105000005430",
+      "itemAttrs": {
+       "itemId": "bt_7_777_02-TP00094820000004-1793844190124",
+       "goodsCode": "TP00094820000004",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0009482%2FgoodsDetail%2FTP00094820000004%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e21%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_02-TP00094820000004-1793844190124",
+       "goodsCode": "TP00094820000004",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0009482%2FgoodsDetail%2FTP00094820000004%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e21%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_02-bt_7_777_02_e25"
+     },
+     "adPriceString": [
+      "$",
+      "499起"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "359",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "116",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "goodsTag": [
+      {
+       "imgUrl": "https://image.momoshop.com.tw/ecm/img/cmm/goodsdetail/Shop_16px.png?t=1793844864882",
+       "bgColor": "#5E6999",
+       "textColor": "#FFFFFF",
+       "content": "&#24215;&#8314;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "【SCT】中國大陸網卡吃到飽 免翻墻支援LINE 熱點分享 雙電信網絡無限流量吃到飽大陸上網卡(包含西藏 新疆)",
+     "imgBottomTagUrl": "",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844864815",
+     "subTitle": "免翻墻，中國聯通/電信高速連線",
+     "contentImage": "https://i8.momoshop.com.tw/1789404968/goodsimg/TP000/2536/0000/089/TP00025360000089_OR_m.jpg",
+     "action": {
+      "actionType": "10002",
+      "actionValue": "TP00025360000089",
+      "actionUrl": "https://www.momoshop.com.tw/TP/TP0002536/goodsDetail/TP00025360000089?mdiv=8199700000-bt_7_777_02-bt_7_777_02_e31&ctype=B",
+      "extraValue": {
+       "entpCode": "",
+       "lastPathName": "TP00025360000089",
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e31",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "TP00025360000089",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105000005430",
+      "itemAttrs": {
+       "itemId": "bt_7_777_02-TP00025360000089-1793844190124",
+       "goodsCode": "TP00025360000089",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0002536%2FgoodsDetail%2FTP00025360000089%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e31%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_02-TP00025360000089-1793844190124",
+       "goodsCode": "TP00025360000089",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0002536%2FgoodsDetail%2FTP00025360000089%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e31%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_02-bt_7_777_02_e35"
+     },
+     "adPriceString": [
+      "$",
+      "116起"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "$3,960",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "3,960",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "1,399",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "goodsTag": [
+      {
+       "imgUrl": "https://image.momoshop.com.tw/ecm/img/cmm/goodsdetail/Shop_16px.png?t=1793844864948",
+       "bgColor": "#5E6999",
+       "textColor": "#FFFFFF",
+       "content": "&#24215;&#8314;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "整箱6桶販售 宣威 75%酒精消毒液 食器清潔用酒精 4000ml 食用酒精等級",
+     "imgBottomTagUrl": "",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844864882",
+     "subTitle": "",
+     "contentImage": "https://i8.momoshop.com.tw/1793560389/goodsimg/TP000/1136/0000/315/TP00011360000315_OR.webp",
+     "action": {
+      "actionType": "10002",
+      "actionValue": "TP00011360000315",
+      "actionUrl": "https://www.momoshop.com.tw/TP/TP0001136/goodsDetail/TP00011360000315?mdiv=8199700000-bt_7_777_02-bt_7_777_02_e41&ctype=B",
+      "extraValue": {
+       "entpCode": "",
+       "lastPathName": "TP00011360000315",
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e41",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "TP00011360000315",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105000005430",
+      "itemAttrs": {
+       "itemId": "bt_7_777_02-TP00011360000315-1793844190124",
+       "goodsCode": "TP00011360000315",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0001136%2FgoodsDetail%2FTP00011360000315%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e41%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_02-TP00011360000315-1793844190124",
+       "goodsCode": "TP00011360000315",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0001136%2FgoodsDetail%2FTP00011360000315%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e41%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_02-bt_7_777_02_e45"
+     },
+     "adPriceString": [
+      "$",
+      "1,399"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "$1,090",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "1,090",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "811",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "goodsTag": [
+      {
+       "imgUrl": "https://image.momoshop.com.tw/ecm/img/cmm/goodsdetail/Shop_16px.png?t=1793844864615",
+       "bgColor": "#5E6999",
+       "textColor": "#FFFFFF",
+       "content": "&#24215;&#8314;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "【Samsung 三星】SAMSUNG 45W極速快充旅充組T4511(附C to C 5A線)",
+     "imgBottomTagUrl": "",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844864544",
+     "subTitle": "原廠配件公司貨/保護手機有保障",
+     "contentImage": "https://i8.momoshop.com.tw/1793185611/goodsimg/TP000/5828/0000/419/TP00058280000419_OR.webp",
+     "action": {
+      "actionType": "10002",
+      "actionValue": "TP00058280000419",
+      "actionUrl": "https://www.momoshop.com.tw/TP/TP0005828/goodsDetail/TP00058280000419?mdiv=8199700000-bt_7_777_02-bt_7_777_02_e11&ctype=B",
+      "extraValue": {
+       "entpCode": "",
+       "lastPathName": "TP00058280000419",
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e11",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "TP00058280000419",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105000005430",
+      "itemAttrs": {
+       "itemId": "bt_7_777_02-TP00058280000419-1793844190122",
+       "goodsCode": "TP00058280000419",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0005828%2FgoodsDetail%2FTP00058280000419%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e11%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_02-TP00058280000419-1793844190122",
+       "goodsCode": "TP00058280000419",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0005828%2FgoodsDetail%2FTP00058280000419%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e11%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_02-bt_7_777_02_e15"
+     },
+     "adPriceString": [
+      "$",
+      "811"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "830",
+       "strPrice": "起",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "499",
+       "strPrice": "起",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "goodsTag": [
+      {
+       "imgUrl": "https://image.momoshop.com.tw/ecm/img/cmm/goodsdetail/Shop_16px.png?t=1793844864747",
+       "bgColor": "#5E6999",
+       "textColor": "#FFFFFF",
+       "content": "&#24215;&#8314;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "【巴弟蛋白】微粉化一水肌酸 500g｜Creatine Monohydrate 全素 無麩質",
+     "imgBottomTagUrl": "",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844864675",
+     "subTitle": "快速增加運動高強度表現與力量",
+     "contentImage": "https://i6.momoshop.com.tw/1792578136/goodsimg/TP000/9482/0000/004/TP00094820000004_OR.webp",
+     "action": {
+      "actionType": "10002",
+      "actionValue": "TP00094820000004",
+      "actionUrl": "https://www.momoshop.com.tw/TP/TP0009482/goodsDetail/TP00094820000004?mdiv=8199700000-bt_7_777_02-bt_7_777_02_e21&ctype=B",
+      "extraValue": {
+       "entpCode": "",
+       "lastPathName": "TP00094820000004",
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_02-bt_7_777_02_e21",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "TP00094820000004",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105000005430",
+      "itemAttrs": {
+       "itemId": "bt_7_777_02-TP00094820000004-1793844190124",
+       "goodsCode": "TP00094820000004",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0009482%2FgoodsDetail%2FTP00094820000004%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e21%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_02-TP00094820000004-1793844190124",
+       "goodsCode": "TP00094820000004",
+       "goodsName": "",
+       "url": "https%3A%2F%2Fwww.momoshop.com.tw%2FTP%2FTP0009482%2FgoodsDetail%2FTP00094820000004%3Fmdiv%3D8199700000-bt_7_777_02-bt_7_777_02_e21%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_02-bt_7_777_02_e25"
+     },
+     "adPriceString": [
+      "$",
+      "499起"
+     ]
+    }
+   ],
+   "underSpace": "1"
+  },
+  {
+   "columnType": "14",
+   "headerInfo": {
+    "leftMargin": "260",
+    "countDownBgColor": "#D62872",
+    "headerHeightRatio": "55",
+    "headerWidthRatio": "375",
+    "headerImage": "https://img3.momoshop.com.tw/ecm/img/online/81/997/00/000/mobile/bt_7_713_01/bt_7_713_01_e3.jpg?t=1793602102231",
+    "action": {
+     "actionType": 6,
+     "actionValue": "",
+     "actionUrl": "https://www.momoshop.com.tw/event/appRedirect.jsp?status=1&mdiv=8199700000-bt_7_713_01-&ctype=B",
+     "extraValue": {
+      "mdiv": "8199700000-bt_7_713_01-"
+     }
+    },
+    "serverTime": 1793844877809,
+    "endTime": 1793847599000,
+    "blockItem": {
+     "itemType": "banner",
+     "snapshotId": "20261102145500759",
+     "itemAttrs": {
+      "itemId": "bt_7_713_01_e9-1793602131826",
+      "itemName": "",
+      "url": ""
+     },
+     "itemAttrsV2": {
+      "itemId": "bt_7_713_01_e9-1793602131826",
+      "itemName": "",
+      "url": ""
+     },
+     "blockItemId": "8199700000-bt_7_713_01-bt_7_713_01_e9"
+    },
+    "titleUrl": "https://www.momoshop.com.tw/event/appRedirect.jsp?status=1&mdiv=8199700000-bt_7_713_01-&ctype=B"
+   },
+   "blockName": "%E9%99%90%E6%99%82%E6%90%B6%E8%B3%BC%E5%95%86%E5%93%81_%E4%B8%8A%E4%B8%8B%E6%BB%91",
+   "mdiv": "8199700000-bt_7_713_01",
+   "randomDisplay": "0",
+   "columnBgImage": "2026-11-05 10:59:59",
+   "blockTypeId": "bt_7_713",
+   "moreAction": {
+    "actionType": 6,
+    "actionValue": "",
+    "actionUrl": "https://www.momoshop.com.tw/event/appRedirect.jsp?status=1&mdiv=8199700000-bt_7_713_01-&ctype=B",
+    "extraValue": {
+     "mdiv": "8199700000-bt_7_713_01-"
+    }
+   },
+   "columnBgColor": "#ffffff",
+   "blockTypeName": "%E9%99%90%E6%99%82%E6%90%B6%E8%B3%BC%E5%95%86%E5%93%81_%E4%B8%8A%E4%B8%8B%E6%BB%91",
+   "contentInfo": [
+    {
+     "vodUrl": "",
+     "marketPrice": "$10,800",
+     "officialTagImgUrl": "",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "10,800",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "3,333",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "imgLongTagUrl": "",
+     "title": "【資生堂國際櫃】百優精純乳霜3入",
+     "imgBottomTagUrl": "https://img3.momoshop.com.tw/ecm/img/online/341/2026/11/04/152244828/2026110415224482803.png?t=20261104152244",
+     "remainingAmount": "53",
+     "subTitle": "雙11限定組★殺$1111/入",
+     "contentImage": "https://i3.momoshop.com.tw/1788836660/goodsimg/0015/675/243/15675243_OR_m.webp",
+     "action": {
+      "actionType": 7,
+      "actionValue": "AT0120261104598339",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=15675243&mdiv=8199700000-bt_7_713_01-&ctype=B",
+      "extraValue": {
+       "mdiv": "limitBuy"
+      }
+     },
+     "actionV2": {
+      "actionType": 6,
+      "actionValue": "",
+      "extraValue": {
+       "sortedAheadLimitGoods": "AT0120261104598339",
+       "limitGoodsSellInterval": {
+        "endDate": 1793847599000,
+        "startDate": 1793833200000
+       }
+      }
+     },
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261102145500759",
+      "itemAttrs": {
+       "itemId": "bt_7_713_01-15675243-1793844877527",
+       "goodsCode": "15675243",
+       "goodsName": "%E3%80%90%E8%B3%87%E7%94%9F%E5%A0%82%E5%9C%8B%E9%9A%9B%E6%AB%83%E3%80%91%E7%99%BE%E5%84%AA%E7%B2%BE%E7%B4%94%E4%B9%B3%E9%9C%9C3%E5%85%A5",
+       "url": "AT0120261104598339"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_713_01-15675243-1793844877527",
+       "goodsCode": "15675243",
+       "goodsName": "%E3%80%90%E8%B3%87%E7%94%9F%E5%A0%82%E5%9C%8B%E9%9A%9B%E6%AB%83%E3%80%91%E7%99%BE%E5%84%AA%E7%B2%BE%E7%B4%94%E4%B9%B3%E9%9C%9C3%E5%85%A5",
+       "url": "AT0120261104598339"
+      },
+      "blockItemId": "8199700000-bt_7_713_01-1"
+     },
+     "adPriceString": [
+      "$",
+      "3,333"
+     ]
+    },
+    {
+     "vodUrl": "",
+     "marketPrice": "$2,316",
+     "officialTagImgUrl": "https://img4.momoshop.com.tw/ecm/img/ec-images/offical_tag_180_120.png?t=20261105",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "2,316",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "1,299",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "https://img2.momoshop.com.tw/ecm/img/online/341/2026/11/04/163852446/2026110416385244601.png?t=20261104163852",
+     "imgLongTagUrl": "",
+     "title": "【ARIEL】4D抗菌洗衣球4包",
+     "imgBottomTagUrl": "https://img4.momoshop.com.tw/ecm/img/online/341/2026/11/04/163852446/2026110416385244603.png?t=20261104163852",
+     "remainingAmount": "9580",
+     "subTitle": "全年最低★滿額贈雙好禮",
+     "contentImage": "https://i2.momoshop.com.tw/1793808085/goodsimg/0013/239/915/13239915_OR_m.webp",
+     "action": {
+      "actionType": 7,
+      "actionValue": "AT0120261104598366",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=13239915&mdiv=8199700000-bt_7_713_01-&ctype=B",
+      "extraValue": {
+       "mdiv": "limitBuy"
+      }
+     },
+     "actionV2": {
+      "actionType": 6,
+      "actionValue": "",
+      "extraValue": {
+       "sortedAheadLimitGoods": "AT0120261104598366",
+       "limitGoodsSellInterval": {
+        "endDate": 1793847599000,
+        "startDate": 1793833200000
+       }
+      }
+     },
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261102145500759",
+      "itemAttrs": {
+       "itemId": "bt_7_713_01-13239915-1793844877532",
+       "goodsCode": "13239915",
+       "goodsName": "%E3%80%90ARIEL%E3%80%914D%E6%8A%97%E8%8F%8C%E6%B4%97%E8%A1%A3%E7%90%834%E5%8C%85",
+       "url": "AT0120261104598366"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_713_01-13239915-1793844877532",
+       "goodsCode": "13239915",
+       "goodsName": "%E3%80%90ARIEL%E3%80%914D%E6%8A%97%E8%8F%8C%E6%B4%97%E8%A1%A3%E7%90%834%E5%8C%85",
+       "url": "AT0120261104598366"
+      },
+      "blockItemId": "8199700000-bt_7_713_01-2"
+     },
+     "adPriceString": [
+      "$",
+      "1,299"
+     ]
+    },
+    {
+     "vodUrl": "",
+     "marketPrice": "$31,999",
+     "officialTagImgUrl": "",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "31,999",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "26,999",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "https://img2.momoshop.com.tw/ecm/img/online/341/2026/11/04/151534956/2026110415153495601.png?t=20261104151546",
+     "imgLongTagUrl": "",
+     "title": "順暢多工【華碩】15.6吋Core7輕薄16G/1T",
+     "imgBottomTagUrl": "https://img4.momoshop.com.tw/ecm/img/online/341/2026/11/04/151534956/2026110415153495603.png?t=20261104151546",
+     "remainingAmount": "38",
+     "subTitle": "一日加碼送限量滑鼠",
+     "contentImage": "https://i1.momoshop.com.tw/1793754593/goodsimg/0014/921/074/14921074_OR_m.webp",
+     "action": {
+      "actionType": 7,
+      "actionValue": "AT0120261104599029",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=14921074&mdiv=8199700000-bt_7_713_01-&ctype=B",
+      "extraValue": {
+       "mdiv": "limitBuy"
+      }
+     },
+     "actionV2": {
+      "actionType": 6,
+      "actionValue": "",
+      "extraValue": {
+       "sortedAheadLimitGoods": "AT0120261104599029",
+       "limitGoodsSellInterval": {
+        "endDate": 1793847599000,
+        "startDate": 1793833200000
+       }
+      }
+     },
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261102145500759",
+      "itemAttrs": {
+       "itemId": "bt_7_713_01-14921074-1793844877537",
+       "goodsCode": "14921074",
+       "goodsName": "%E9%A0%86%E6%9A%A2%E5%A4%9A%E5%B7%A5%E3%80%90%E8%8F%AF%E7%A2%A9%E3%80%9115.6%E5%90%8BCore7%E8%BC%95%E8%96%8416G%2F1T",
+       "url": "AT0120261104599029"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_713_01-14921074-1793844877537",
+       "goodsCode": "14921074",
+       "goodsName": "%E9%A0%86%E6%9A%A2%E5%A4%9A%E5%B7%A5%E3%80%90%E8%8F%AF%E7%A2%A9%E3%80%9115.6%E5%90%8BCore7%E8%BC%95%E8%96%8416G%2F1T",
+       "url": "AT0120261104599029"
+      },
+      "blockItemId": "8199700000-bt_7_713_01-3"
+     },
+     "adPriceString": [
+      "$",
+      "26,999"
+     ]
+    },
+    {
+     "vodUrl": "",
+     "marketPrice": "$1,350",
+     "officialTagImgUrl": "https://img2.momoshop.com.tw/ecm/img/ec-images/offical_tag_180_120.png?t=20261105",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "1,350",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "679",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/11/03/142446239/2026110314244623901.png?t=20261104143144",
+     "goodsTag": [
+      {
+       "imgUrl": "https://img4.momoshop.com.tw/ecm/img/cmm/goodsdetail/PreOrder_16px.png?t=20231113001",
+       "bgColor": "#FF960A",
+       "textColor": "#FFFFFF",
+       "displayLayer": "1",
+       "content": "&#38928;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "【倍潔雅】舒感柔韌150抽x70包",
+     "imgBottomTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/11/03/142446239/2026110314244623903.png?t=20261104143144",
+     "remainingAmount": "118",
+     "subTitle": "雙11最狂★滿額再送1箱！",
+     "contentImage": "https://i4.momoshop.com.tw/1793584299/goodsimg/0010/116/136/10116136_OR_m.webp",
+     "action": {
+      "actionType": 7,
+      "actionValue": "AT0120261104598830",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=10116136&mdiv=8199700000-bt_7_713_01-&ctype=B",
+      "extraValue": {
+       "mdiv": "limitBuy"
+      }
+     },
+     "actionV2": {
+      "actionType": 6,
+      "actionValue": "",
+      "extraValue": {
+       "sortedAheadLimitGoods": "AT0120261104598830",
+       "limitGoodsSellInterval": {
+        "endDate": 1793847599000,
+        "startDate": 1793833200000
+       }
+      }
+     },
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261102145500759",
+      "itemAttrs": {
+       "itemId": "bt_7_713_01-10116136-1793844877542",
+       "goodsCode": "10116136",
+       "goodsName": "%E3%80%90%E5%80%8D%E6%BD%94%E9%9B%85%E3%80%91%E8%88%92%E6%84%9F%E6%9F%94%E9%9F%8C150%E6%8A%BDx70%E5%8C%85",
+       "url": "AT0120261104598830"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_713_01-10116136-1793844877542",
+       "goodsCode": "10116136",
+       "goodsName": "%E3%80%90%E5%80%8D%E6%BD%94%E9%9B%85%E3%80%91%E8%88%92%E6%84%9F%E6%9F%94%E9%9F%8C150%E6%8A%BDx70%E5%8C%85",
+       "url": "AT0120261104598830"
+      },
+      "blockItemId": "8199700000-bt_7_713_01-4"
+     },
+     "adPriceString": [
+      "$",
+      "679"
+     ]
+    },
+    {
+     "vodUrl": "",
+     "marketPrice": "$1,350",
+     "officialTagImgUrl": "https://img2.momoshop.com.tw/ecm/img/ec-images/offical_tag_180_120.png?t=20261105",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "1,350",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "679",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/11/03/142446239/2026110314244623901.png?t=20261104143144",
+     "goodsTag": [
+      {
+       "imgUrl": "https://img4.momoshop.com.tw/ecm/img/cmm/goodsdetail/PreOrder_16px.png?t=20231113001",
+       "bgColor": "#FF960A",
+       "textColor": "#FFFFFF",
+       "displayLayer": "1",
+       "content": "&#38928;"
+      }
+     ],
+     "imgLongTagUrl": "",
+     "title": "【倍潔雅】舒感柔韌150抽x70包",
+     "imgBottomTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/11/03/142446239/2026110314244623903.png?t=20261104143144",
+     "remainingAmount": "118",
+     "subTitle": "雙11最狂★滿額再送1箱！",
+     "contentImage": "https://i4.momoshop.com.tw/1793584299/goodsimg/0010/116/136/10116136_OR_m.webp",
+     "action": {
+      "actionType": 7,
+      "actionValue": "AT0120261104598830",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=10116136&mdiv=8199700000-bt_7_713_01-&ctype=B",
+      "extraValue": {
+       "mdiv": "limitBuy"
+      }
+     },
+     "actionV2": {
+      "actionType": 6,
+      "actionValue": "",
+      "extraValue": {
+       "sortedAheadLimitGoods": "AT0120261104598830",
+       "limitGoodsSellInterval": {
+        "endDate": 1793847599000,
+        "startDate": 1793833200000
+       }
+      }
+     },
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261102145500759",
+      "itemAttrs": {
+       "itemId": "bt_7_713_01-10116136-1793844877542",
+       "goodsCode": "10116136",
+       "goodsName": "%E3%80%90%E5%80%8D%E6%BD%94%E9%9B%85%E3%80%91%E8%88%92%E6%84%9F%E6%9F%94%E9%9F%8C150%E6%8A%BDx70%E5%8C%85",
+       "url": "AT0120261104598830"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_713_01-10116136-1793844877542",
+       "goodsCode": "10116136",
+       "goodsName": "%E3%80%90%E5%80%8D%E6%BD%94%E9%9B%85%E3%80%91%E8%88%92%E6%84%9F%E6%9F%94%E9%9F%8C150%E6%8A%BDx70%E5%8C%85",
+       "url": "AT0120261104598830"
+      },
+      "blockItemId": "8199700000-bt_7_713_01-4"
+     },
+     "adPriceString": [
+      "$",
+      "679"
+     ]
+    }
+   ],
+   "underSpace": "1"
+  },
+  {
+   "columnType": "58",
+   "headerInfo": {
+    "headerHeightRatio": "55",
+    "headerWidthRatio": "375",
+    "headerImage": "https://img4.momoshop.com.tw/ecm/img/online/81/997/00/000/mobile/bt_7_777_01/bt_7_777_01_e3.png?t=1783603892021",
+    "serverTime": 1793844877910,
+    "blockItem": {
+     "itemType": "banner",
+     "snapshotId": "20261105092353153",
+     "itemAttrs": {
+      "itemId": "bt_7_777_01_e8-1783872010655",
+      "itemName": "%E5%8D%80%E5%A1%8A%E6%A8%99%E9%A1%8C_%E5%8D%B3%E6%99%82%E7%86%B1%E9%8A%B7%E6%A6%9C_960x141-2",
+      "url": "https%3A%2F%2Fm.momoshop.com.tw"
+     },
+     "itemAttrsV2": {
+      "itemId": "bt_7_777_01_e8-1783872010655",
+      "itemName": "%E5%8D%80%E5%A1%8A%E6%A8%99%E9%A1%8C_%E5%8D%B3%E6%99%82%E7%86%B1%E9%8A%B7%E6%A6%9C_960x141-2",
+      "url": "https%3A%2F%2Fm.momoshop.com.tw"
+     },
+     "blockItemId": "8199700000-bt_7_777_01-bt_7_777_01_e8"
+    }
+   },
+   "blockName": "%E8%BC%AA%E6%92%AD%E5%95%86%E5%93%81100%E5%93%81",
+   "mdiv": "8199700000-bt_7_777_01",
+   "randomDisplay": "0",
+   "blockTypeId": "bt_7_777",
+   "columnBgColor": "#f6e8eb",
+   "blockTypeName": "%E8%BC%AA%E6%92%AD%E5%95%86%E5%93%81100%E5%93%81",
+   "contentInfo": [
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "https://www.youtube.com/watch?v=HD1HGXdyGPk",
+     "marketPrice": "$7,999",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "7,999",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "5,439",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/11/03/183759342/2026110318375934201.png?t=20261103183821",
+     "imgLongTagUrl": "",
+     "title": "【LEGO 樂高】Icons 11386 《海綿寶寶》：比奇堡(派大星 章魚哥 禮物 玩具 居家擺設 雙11)",
+     "imgBottomTagUrl": "https://img3.momoshop.com.tw/ecm/img/online/341/2026/11/03/183759342/2026110318375934203.png?t=20261103183821",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844877911",
+     "subTitle": "滿1件享68折",
+     "contentImage": "https://i1.momoshop.com.tw/1791199207/goodsimg/0015/767/643/15767643_OR.jpg",
+     "action": {
+      "actionType": "11",
+      "actionValue": "15767643",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=15767643&mdiv=8199700000-bt_7_777_01-bt_7_777_01_e11&ctype=B",
+      "extraValue": {
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_01-bt_7_777_01_e11",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "15767643",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105092353153",
+      "itemAttrs": {
+       "itemId": "bt_7_777_01-15767643-1793844191261",
+       "goodsCode": "15767643",
+       "goodsName": "%E3%80%90LEGO+%E6%A8%82%E9%AB%98%E3%80%91Icons+11386+%E3%80%8A%E6%B5%B7%E7%B6%BF%E5%AF%B6%E5%AF%B6%E3%80%8B%EF%BC%9A%E6%AF%94%E5%A5%87%E5%A0%A1%28%E6%B4%BE%E5%A4%A7%E6%98%9F+%E7%AB%A0%E9%AD%9A%E5%93%A5+%E7%A6%AE%E7%89%A9+%E7%8E%A9%E5%85%B7+%E5%B1%85%E5%AE%B6%E6%93%BA%E8%A8%AD+%E9%9B%9911%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D15767643%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e11%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_01-15767643-1793844191261",
+       "goodsCode": "15767643",
+       "goodsName": "%E3%80%90LEGO+%E6%A8%82%E9%AB%98%E3%80%91Icons+11386+%E3%80%8A%E6%B5%B7%E7%B6%BF%E5%AF%B6%E5%AF%B6%E3%80%8B%EF%BC%9A%E6%AF%94%E5%A5%87%E5%A0%A1%28%E6%B4%BE%E5%A4%A7%E6%98%9F+%E7%AB%A0%E9%AD%9A%E5%93%A5+%E7%A6%AE%E7%89%A9+%E7%8E%A9%E5%85%B7+%E5%B1%85%E5%AE%B6%E6%93%BA%E8%A8%AD+%E9%9B%9911%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D15767643%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e11%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_01-bt_7_777_01_e15"
+     },
+     "adPriceString": [
+      "$",
+      "5,439"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "$15,800",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "15,800",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "11,111",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "https://img3.momoshop.com.tw/ecm/img/online/341/2026/09/29/175503418/2026092917550341801.png?t=20260929175503",
+     "imgLongTagUrl": "",
+     "title": "【Hilltop 山頂鳥】獨家特談-GORE-TEX 2L單件式防水防風透氣短大衣外套(男女多款任選/施華洛世奇/水鑽)",
+     "imgBottomTagUrl": "",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844877917",
+     "subTitle": "官方旗艦館",
+     "contentImage": "https://i2.momoshop.com.tw/1791349575/goodsimg/0015/774/620/15774620_OR.jpg",
+     "action": {
+      "actionType": "11",
+      "actionValue": "15774620",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=15774620&mdiv=8199700000-bt_7_777_01-bt_7_777_01_e21&ctype=B",
+      "extraValue": {
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_01-bt_7_777_01_e21",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "15774620",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105092353153",
+      "itemAttrs": {
+       "itemId": "bt_7_777_01-15774620-1793844191261",
+       "goodsCode": "15774620",
+       "goodsName": "%E3%80%90Hilltop+%E5%B1%B1%E9%A0%82%E9%B3%A5%E3%80%91%E7%8D%A8%E5%AE%B6%E7%89%B9%E8%AB%87-GORE-TEX+2L%E5%96%AE%E4%BB%B6%E5%BC%8F%E9%98%B2%E6%B0%B4%E9%98%B2%E9%A2%A8%E9%80%8F%E6%B0%A3%E7%9F%AD%E5%A4%A7%E8%A1%A3%E5%A4%96%E5%A5%97%28%E7%94%B7%E5%A5%B3%E5%A4%9A%E6%AC%BE%E4%BB%BB%E9%81%B8%2F%E6%96%BD%E8%8F%AF%E6%B4%9B%E4%B8%96%E5%A5%87%2F%E6%B0%B4%E9%91%BD%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D15774620%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e21%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_01-15774620-1793844191261",
+       "goodsCode": "15774620",
+       "goodsName": "%E3%80%90Hilltop+%E5%B1%B1%E9%A0%82%E9%B3%A5%E3%80%91%E7%8D%A8%E5%AE%B6%E7%89%B9%E8%AB%87-GORE-TEX+2L%E5%96%AE%E4%BB%B6%E5%BC%8F%E9%98%B2%E6%B0%B4%E9%98%B2%E9%A2%A8%E9%80%8F%E6%B0%A3%E7%9F%AD%E5%A4%A7%E8%A1%A3%E5%A4%96%E5%A5%97%28%E7%94%B7%E5%A5%B3%E5%A4%9A%E6%AC%BE%E4%BB%BB%E9%81%B8%2F%E6%96%BD%E8%8F%AF%E6%B4%9B%E4%B8%96%E5%A5%87%2F%E6%B0%B4%E9%91%BD%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D15774620%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e21%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_01-bt_7_777_01_e25"
+     },
+     "adPriceString": [
+      "$",
+      "11,111"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "$2,990",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "2,990",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "1,111",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/10/27/095722483/2026102709572248301.png?t=20261027095722",
+     "imgLongTagUrl": "",
+     "title": "【Neogence 霓淨思】雙11限定★超爆水全效水光應援組面膜50片(清爽保濕x20/透亮煥白x20/青春緊緻x10)",
+     "imgBottomTagUrl": "https://img1.momoshop.com.tw/ecm/img/online/341/2026/10/27/095722483/2026102709572248303.png?t=20261027095722",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844877923",
+     "subTitle": "全方位滲透 敷出爆水透明感",
+     "contentImage": "https://i3.momoshop.com.tw/1793497567/goodsimg/0015/700/569/15700569_OR.jpg",
+     "action": {
+      "actionType": "11",
+      "actionValue": "15700569",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=15700569&mdiv=8199700000-bt_7_777_01-bt_7_777_01_e31&ctype=B",
+      "extraValue": {
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_01-bt_7_777_01_e31",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "15700569",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105092353153",
+      "itemAttrs": {
+       "itemId": "bt_7_777_01-15700569-1793844191261",
+       "goodsCode": "15700569",
+       "goodsName": "%E3%80%90Neogence+%E9%9C%93%E6%B7%A8%E6%80%9D%E3%80%91%E9%9B%9911%E9%99%90%E5%AE%9A%E2%98%85%E8%B6%85%E7%88%86%E6%B0%B4%E5%85%A8%E6%95%88%E6%B0%B4%E5%85%89%E6%87%89%E6%8F%B4%E7%B5%84%E9%9D%A2%E8%86%9C50%E7%89%87%28%E6%B8%85%E7%88%BD%E4%BF%9D%E6%BF%95x20%2F%E9%80%8F%E4%BA%AE%E7%85%A5%E7%99%BDx20%2F%E9%9D%92%E6%98%A5%E7%B7%8A%E7%B7%BBx10%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D15700569%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e31%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_01-15700569-1793844191261",
+       "goodsCode": "15700569",
+       "goodsName": "%E3%80%90Neogence+%E9%9C%93%E6%B7%A8%E6%80%9D%E3%80%91%E9%9B%9911%E9%99%90%E5%AE%9A%E2%98%85%E8%B6%85%E7%88%86%E6%B0%B4%E5%85%A8%E6%95%88%E6%B0%B4%E5%85%89%E6%87%89%E6%8F%B4%E7%B5%84%E9%9D%A2%E8%86%9C50%E7%89%87%28%E6%B8%85%E7%88%BD%E4%BF%9D%E6%BF%95x20%2F%E9%80%8F%E4%BA%AE%E7%85%A5%E7%99%BDx20%2F%E9%9D%92%E6%98%A5%E7%B7%8A%E7%B7%BBx10%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D15700569%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e31%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_01-bt_7_777_01_e35"
+     },
+     "adPriceString": [
+      "$",
+      "1,111"
+     ]
+    },
+    {
+     "isInstantGoodsStatus": true,
+     "vodUrl": "",
+     "marketPrice": "$1,700",
+     "marketPriceModel": {
+      "basePrice": {
+       "price": "1,700",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "goodsPriceModel": {
+      "basePrice": {
+       "price": "811",
+       "strPrice": "",
+       "sign": "$"
+      }
+     },
+     "imgTagUrl": "",
+     "imgLongTagUrl": "",
+     "title": "【LUX 麗仕】雙11限定★日本製髮的補給 胺基酸洗髮精/護髮乳450gx4入(絲蛋白/膠原蛋白/角蛋白/冰河水)",
+     "imgBottomTagUrl": "https://img3.momoshop.com.tw/ecm/img/online/341/2026/11/03/191245551/2026110319124555103.png?t=20261103191245",
+     "adPriceImage": "https://img1.momoshop.com.tw/ecm/img/cmm/mobile/main/adPriceImage.png?t=1793844877929",
+     "subTitle": "髮的補給 再進化",
+     "contentImage": "https://i4.momoshop.com.tw/1793838806/goodsimg/0013/442/804/13442804_OR.jpg",
+     "action": {
+      "actionType": "11",
+      "actionValue": "13442804",
+      "actionUrl": "https://m.momoshop.com.tw/goods.momo?i_code=13442804&mdiv=8199700000-bt_7_777_01-bt_7_777_01_e41&ctype=B",
+      "extraValue": {
+       "variationId": "",
+       "mdiv": "8199700000-bt_7_777_01-bt_7_777_01_e41",
+       "experimentId": ""
+      }
+     },
+     "goodsCode": "13442804",
+     "blockItem": {
+      "itemType": "imgGoods",
+      "snapshotId": "20261105092353153",
+      "itemAttrs": {
+       "itemId": "bt_7_777_01-13442804-1793844191261",
+       "goodsCode": "13442804",
+       "goodsName": "%E3%80%90LUX+%E9%BA%97%E4%BB%95%E3%80%91%E9%9B%9911%E9%99%90%E5%AE%9A%E2%98%85%E6%97%A5%E6%9C%AC%E8%A3%BD%E9%AB%AE%E7%9A%84%E8%A3%9C%E7%B5%A6+%E8%83%BA%E5%9F%BA%E9%85%B8%E6%B4%97%E9%AB%AE%E7%B2%BE%2F%E8%AD%B7%E9%AB%AE%E4%B9%B3450gx4%E5%85%A5%28%E7%B5%B2%E8%9B%8B%E7%99%BD%2F%E8%86%A0%E5%8E%9F%E8%9B%8B%E7%99%BD%2F%E8%A7%92%E8%9B%8B%E7%99%BD%2F%E5%86%B0%E6%B2%B3%E6%B0%B4%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D13442804%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e41%26ctype%3DB"
+      },
+      "itemAttrsV2": {
+       "itemId": "bt_7_777_01-13442804-1793844191261",
+       "goodsCode": "13442804",
+       "goodsName": "%E3%80%90LUX+%E9%BA%97%E4%BB%95%E3%80%91%E9%9B%9911%E9%99%90%E5%AE%9A%E2%98%85%E6%97%A5%E6%9C%AC%E8%A3%BD%E9%AB%AE%E7%9A%84%E8%A3%9C%E7%B5%A6+%E8%83%BA%E5%9F%BA%E9%85%B8%E6%B4%97%E9%AB%AE%E7%B2%BE%2F%E8%AD%B7%E9%AB%AE%E4%B9%B3450gx4%E5%85%A5%28%E7%B5%B2%E8%9B%8B%E7%99%BD%2F%E8%86%A0%E5%8E%9F%E8%9B%8B%E7%99%BD%2F%E8%A7%92%E8%9B%8B%E7%99%BD%2F%E5%86%B0%E6%B2%B3%E6%B0%B4%29",
+       "url": "https%3A%2F%2Fm.momoshop.com.tw%2Fgoods.momo%3Fi_code%3D13442804%26mdiv%3D8199700000-bt_7_777_01-bt_7_777_01_e41%26ctype%3DB"
+      },
+      "blockItemId": "8199700000-bt_7_777_01-bt_7_777_01_e45"
+     },
+     "adPriceString": [
+      "$",
+      "811"
+     ]
+    }
+   ],
+   "underSpace": "0"
+  },
+  {
+   "columnType": "75",
+   "headerInfo": {
+    "headerHeightRatio": "55",
+    "headerWidthRatio": "375",
+    "headerImage": "https://img4.momoshop.com.tw/ecm/img/online/81/997/00/000/mobile/bt_7_712_01/bt_7_712_01_e3.png?t=1793263131291",
+    "serverTime": 1793844878504,
+    "blockItem": {
+     "itemType": "banner",
+     "snapshotId": "20261102000006655",
+     "itemAttrs": {
+      "itemId": "bt_7_712_01_e7-1793548806655",
+      "itemName": "momobanner+MB+%E5%8D%80%E6%A8%99+2026-10-29+%E4%B8%8B%E5%8D%884-36-12",
+      "url": "https%3A%2F%2Fm.momoshop.com.tw"
+     },
+     "itemAttrsV2": {
+      "itemId": "bt_7_712_01_e7-1793548806655",
+      "itemName": "momobanner+MB+%E5%8D%80%E6%A8%99+2026-10-29+%E4%B8%8B%E5%8D%884-36-12",
+      "url": "https%3A%2F%2Fm.momoshop.com.tw"
+     },
+     "blockItemId": "8199700000-bt_7_712_01-bt_7_712_01_e7"
+    }
+   },
+   "blockName": "%E4%BD%A0%E5%8F%AF%E8%83%BD%E6%9C%83%E5%96%9C%E6%AD%A1",
+   "shouldHideImageTag": false,
+   "mdiv": "8199700000-bt_r_waterfall_01",
+   "randomDisplay": "0",
+   "blockTypeId": "bt_r_waterfall",
+   "columnBgColor": "#FFFFFF",
+   "blockTypeName": "%E4%BD%A0%E5%8F%AF%E8%83%BD%E6%9C%83%E5%96%9C%E6%AD%A1",
+   "underSpace": "1"
+  }
+ ],
+ "MOMOMSGID": "20261105101635916Me1D0UaXtp",
+ "requestId": "fd9c165b-bb7e-4407-aaa5-af8341bbc6ec"
+}

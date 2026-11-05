@@ -1,5 +1,5 @@
 import { LitElement, html, nothing, svg, type PropertyValues, type TemplateResult } from "lit";
-import { discountLabel, formatCount, formatPrice } from "../core/pricing";
+import { formatCount, formatPrice, formatSoldCount } from "../core/pricing";
 import { pluginRegistry, type ResolvedPlugin } from "../plugins/registry";
 import type { CardSlot } from "../plugins/types";
 import { CARD_SLOT_LABELS, parseCard, type Card, type CardLayout } from "../schema/card.schema";
@@ -18,6 +18,8 @@ const cartIcon = html`<svg width="16" height="16" viewBox="0 0 24 24" fill="none
   ${svg`<path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6.2"/><circle cx="9.5" cy="20" r="1.2"/><circle cx="17" cy="20" r="1.2"/>`}
 </svg>`;
 
+const playIcon = html`<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">${svg`<path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/>`}</svg>`;
+
 type Source =
   | { kind: "ok"; card: Card; state: CardRuntimeState; synced: boolean }
   | { kind: "invalid"; issues: Array<{ path: string; message: string }> }
@@ -32,7 +34,8 @@ type Source =
  *   3. `card-id` attribute — 從共享 Store 讀取，並跨分頁 / 跨宿主即時同步（Showroom 編輯立即反映）
  *
  * 對外事件（bubbles + composed，可穿越 Shadow DOM）：
- *   momo-card:click / momo-card:favorite-change / momo-card:add-to-cart / momo-card:error / momo-card:impression(plugin)
+ *   momo-card:click（detail 含 url）/ momo-card:favorite-change / momo-card:add-to-cart / momo-card:play-video
+ *   momo-card:error / momo-card:impression(plugin)
  * 可查詢狀態：`invalid` attribute、`issues` getter
  *
  * 編輯模式（`editable` attribute）：供 WYSIWYG 編輯器使用。插槽以 `data-slot` 標示並顯示為放置區，
@@ -53,6 +56,7 @@ export class MomoProductCard extends LitElement {
     _localState: { state: true },
     _record: { state: true },
     _pluginsVersion: { state: true },
+    _imageIndex: { state: true },
   };
 
   declare cardId: string | null;
@@ -68,6 +72,7 @@ export class MomoProductCard extends LitElement {
   declare private _localState: CardRuntimeState;
   declare private _record: CardRecord | undefined;
   declare private _pluginsVersion: number;
+  declare private _imageIndex: number;
 
   private unsubscribers: Array<() => void> = [];
   private pluginCleanups: Array<() => void> = [];
@@ -87,6 +92,7 @@ export class MomoProductCard extends LitElement {
     this._localState = { favorite: false, cartQty: 0 };
     this._record = undefined;
     this._pluginsVersion = 0;
+    this._imageIndex = 0;
   }
 
   override connectedCallback(): void {
@@ -185,6 +191,16 @@ export class MomoProductCard extends LitElement {
     this.emit("momo-card:add-to-cart", { cardId: card.id, price: card.price, cartQty });
   }
 
+  private onSelectImage(e: Event, index: number) {
+    e.stopPropagation();
+    this._imageIndex = index;
+  }
+
+  private onPlayVideo(e: Event, card: Card) {
+    e.stopPropagation();
+    this.emit("momo-card:play-video", { cardId: card.id, videoUrl: card.videoUrl });
+  }
+
   // ---------- 生命週期：倒數 / plugin setup / 錯誤回報 ----------
 
   private syncTicker(source: Source) {
@@ -280,36 +296,57 @@ export class MomoProductCard extends LitElement {
     const { card, state, synced } = source;
     const renderer = rendererFor(card.variant);
     const layout = this.layout ?? card.layout;
-    const discount = discountLabel(card.price, card.originalPrice);
     const inactive = renderer.inactive?.(card as never, this._now) ?? false;
+    const gallery = [card.imageUrl, ...card.images];
+    const imageIndex = this._imageIndex < gallery.length ? this._imageIndex : 0;
+    const price = formatPrice(card.price).slice(1);
+    const showOriginal = card.originalPrice !== undefined && card.originalPrice > card.price;
 
     return html`
       <article
         part="card"
         class="card card--${layout} card--${card.variant} ${inactive ? "expired" : ""}"
-        @click=${() => this.emit("momo-card:click", { cardId: card.id })}
+        @click=${() => this.emit("momo-card:click", { cardId: card.id, url: card.url ?? null })}
       >
         <div class="media" part="media">
-          <img src=${card.imageUrl} alt=${card.title} loading="lazy" />
+          <img src=${gallery[imageIndex]} alt=${card.title} loading="lazy" />
+          ${card.videoUrl
+            ? html`<button class="play" aria-label="播放商品影片" @click=${(e: Event) => this.onPlayVideo(e, card)}>${playIcon}</button>`
+            : nothing}
           <div class="media-top" data-slot="media-top" data-label=${this.slotLabel("media-top")}>${renderer.mediaTop?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-top")}</div>
-          <div class="media-bottom" data-slot="media-bottom" data-label=${this.slotLabel("media-bottom")}>${renderer.mediaBottom?.(card as never, this._now) ?? nothing}${this.renderSlot(card, "media-bottom")}</div>
+          <div class="media-bottom" data-slot="media-bottom" data-label=${this.slotLabel("media-bottom")}>${this.renderSlot(card, "media-bottom")}${renderer.mediaBottom?.(card as never, this._now) ?? nothing}</div>
         </div>
+        ${gallery.length > 1
+          ? html`<div class="dots" role="tablist" aria-label="商品圖片">
+              ${gallery.slice(0, 6).map(
+                (_, i) => html`<button
+                  role="tab"
+                  aria-label="第 ${i + 1} 張圖"
+                  aria-selected=${i === imageIndex ? "true" : "false"}
+                  @click=${(e: Event) => this.onSelectImage(e, i)}
+                ></button>`,
+              )}
+            </div>`
+          : nothing}
         <div class="body">
+          ${card.subtitle ? html`<p class="subtitle" part="subtitle">${card.subtitle}</p>` : nothing}
           <h3 class="title" part="title" title=${card.title}>${card.title}</h3>
-          <div class="badges" data-slot="badges" data-label=${this.slotLabel("badges")}>${this.renderSlot(card, "badges")}</div>
           <div class="price-row" part="price">
-            <span class="price"><small>$</small>${formatPrice(card.price).slice(1)}</span>
-            ${card.originalPrice && card.originalPrice > card.price ? html`<s class="original">${formatPrice(card.originalPrice)}</s>` : nothing}
-            ${discount ? html`<span class="discount">${discount}</span>` : nothing}
+            ${renderer.priceLabel ? html`<span class="price-label">${renderer.priceLabel}</span>` : nothing}
+            <span class="price"><small>$</small>${price}${card.priceFrom ? html`<small class="from">起</small>` : nothing}</span>
+            ${showOriginal ? html`<s class="original">${formatPrice(card.originalPrice!)}</s>` : nothing}
           </div>
           <div class="price-extra" data-slot="price-extra" data-label=${this.slotLabel("price-extra")}>${this.renderSlot(card, "price-extra")}</div>
+          ${card.rating !== undefined && card.rating > 0
+            ? html`<div class="rating" aria-label="評分 ${card.rating.toFixed(1)}">
+                <span class="stars" style="--_fill:${(card.rating / 5) * 100}%" aria-hidden="true"></span>
+                ${card.reviewCount ? html`<span>(${formatCount(card.reviewCount)})</span>` : nothing}
+              </div>`
+            : nothing}
+          <div class="badges" data-slot="badges" data-label=${this.slotLabel("badges")}>${this.renderSlot(card, "badges")}</div>
           ${renderer.body?.(card as never, this._now) ?? nothing}
           <div class="meta">
-            <span>
-              ${card.rating !== undefined ? html`<span class="rating">★ ${card.rating.toFixed(1)}</span>` : nothing}
-              ${card.reviewCount ? html`(${formatCount(card.reviewCount)})` : nothing}
-              ${card.variant === "standard" && card.soldCount ? html` · 已售 ${formatCount(card.soldCount)}` : nothing}
-            </span>
+            <span class="sold">${card.soldCount ? formatSoldCount(card.soldCount) : nothing}</span>
             <span class="actions" part="actions">
               ${state.cartQty > 0 ? html`<span class="cart-qty" aria-live="polite">×${state.cartQty}</span>` : nothing}
               <button
@@ -318,12 +355,19 @@ export class MomoProductCard extends LitElement {
                 aria-pressed=${state.favorite ? "true" : "false"}
                 @click=${(e: Event) => this.onToggleFavorite(e, card, state, synced)}
               >${heartIcon(state.favorite)}</button>
-              <button
-                class="icon-btn icon-btn--cart"
-                aria-label="加入購物車"
-                ?disabled=${inactive}
-                @click=${(e: Event) => this.onAddToCart(e, card, state, synced)}
-              >${cartIcon}</button>
+              ${renderer.ctaLabel
+                ? html`<button
+                    class="cta"
+                    aria-label="${renderer.ctaLabel}購：加入購物車"
+                    ?disabled=${inactive}
+                    @click=${(e: Event) => this.onAddToCart(e, card, state, synced)}
+                  >${inactive ? "已結束" : renderer.ctaLabel}</button>`
+                : html`<button
+                    class="icon-btn icon-btn--cart"
+                    aria-label="加入購物車"
+                    ?disabled=${inactive}
+                    @click=${(e: Event) => this.onAddToCart(e, card, state, synced)}
+                  >${cartIcon}</button>`}
             </span>
           </div>
           <div class="footer" data-slot="footer" data-label=${this.slotLabel("footer")}>${this.renderSlot(card, "footer")}</div>

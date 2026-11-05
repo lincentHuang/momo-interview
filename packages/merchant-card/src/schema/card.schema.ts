@@ -10,7 +10,7 @@ z.config(zhTW());
  * 分析 momo 搜尋頁 / 分類頁 / 直播頁 / 排行榜後，歸納出「一張商品卡」由兩個正交維度組成：
  *   1. variant（業務型態）：決定卡片專屬資訊，用 Discriminated Union 表達
  *      - standard   一般商品卡（搜尋、分類列表）
- *      - flash-sale 限時搶購卡（倒數計時 + 已搶購進度）
+ *      - flash-sale 限時搶購卡（倒數計時 + 剩餘組數 +「搶」按鈕）
  *      - live       直播商品卡（直播狀態 + 觀看人數）
  *      - ranking    排行榜卡（名次 + 榜單分類）
  *   2. extensions（行銷附加資訊）：快速到貨、折價券、贈品、分期…
@@ -18,7 +18,7 @@ z.config(zhTW());
  *
  * layout（grid / list）屬於「呈現」維度，與 variant 正交。
  */
-export const CARD_SCHEMA_VERSION = 3;
+export const CARD_SCHEMA_VERSION = 4;
 
 export const CARD_VARIANTS = ["standard", "flash-sale", "live", "ranking"] as const;
 export type CardVariant = (typeof CARD_VARIANTS)[number];
@@ -59,12 +59,25 @@ const money = z.number().int().nonnegative();
 
 const baseShape = {
   id: z.string().min(1),
-  title: z.string().min(1).max(80),
+  /** momo goodsName 實測可超過 100 字；畫面以兩行截斷，schema 只防止異常資料 */
+  title: z.string().min(1).max(150),
+  /** 促銷短語（momo goodsSubName / subTitle，例如「滿1件享95折」），顯示於標題上方 */
+  subtitle: z.string().max(40).optional(),
   imageUrl: z.string().min(1),
+  /** 其他角度商品圖（momo imgUrlArray）；有值時圖片下方顯示切換圓點 */
+  images: z.array(z.string().min(1)).max(10).default([]),
+  /** 商品影片（momo vodUrl）；有值時圖片中央顯示播放鈕 */
+  videoUrl: z.string().min(1).optional(),
+  /** 商品頁連結。卡片本身不導頁，只在 click 事件帶出，由宿主決定開新分頁或 SPA 導航 */
+  url: z.string().min(1).optional(),
   price: money,
+  /** 多規格商品顯示最低價 +「起」（momo basePrice.strPrice === "起"） */
+  priceFrom: z.boolean().default(false),
   originalPrice: money.optional(),
   rating: z.number().min(0).max(5).optional(),
   reviewCount: z.number().int().nonnegative().optional(),
+  /** 總銷量下限（momo 只給「總銷量>1.5萬」這類區間字串，adapter 解析為數字，呈現時再格式化） */
+  soldCount: z.number().int().nonnegative().optional(),
   layout: z.enum(CARD_LAYOUTS).default("grid"),
   /** pluginId → plugin config；key 存在即代表啟用該 plugin */
   extensions: z.record(z.string(), z.record(z.string(), z.unknown())).default({}),
@@ -75,7 +88,6 @@ const baseShape = {
 export const StandardCardSchema = z.object({
   ...baseShape,
   variant: z.literal("standard"),
-  soldCount: z.number().int().nonnegative().optional(),
 });
 
 export const FlashSaleCardSchema = z.object({
@@ -83,8 +95,10 @@ export const FlashSaleCardSchema = z.object({
   variant: z.literal("flash-sale"),
   /** 結束時間（epoch ms）。用絕對時間而非「剩餘秒數」，跨分頁 / 跨宿主同步時才不會漂移 */
   endsAt: z.number().int(),
-  stockTotal: z.number().int().positive(),
-  stockSold: z.number().int().nonnegative(),
+  /** 剩餘組數（momo remainingAmount →「最後 N 組」）。momo 不提供總量，因此以剩餘量為主 */
+  stockRemaining: z.number().int().nonnegative(),
+  /** 活動總量（選填）；有值時額外顯示已搶購進度條 */
+  stockTotal: z.number().int().positive().optional(),
 });
 
 export const LiveCardSchema = z.object({
@@ -108,8 +122,8 @@ export const CardSchema = z
     if (card.originalPrice !== undefined && card.originalPrice < card.price) {
       ctx.addIssue({ code: "custom", path: ["originalPrice"], message: "原價不可低於售價" });
     }
-    if (card.variant === "flash-sale" && card.stockSold > card.stockTotal) {
-      ctx.addIssue({ code: "custom", path: ["stockSold"], message: "已售數量不可超過總量" });
+    if (card.variant === "flash-sale" && card.stockTotal !== undefined && card.stockRemaining > card.stockTotal) {
+      ctx.addIssue({ code: "custom", path: ["stockRemaining"], message: "剩餘數量不可超過總量" });
     }
   });
 

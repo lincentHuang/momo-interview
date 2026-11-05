@@ -10,6 +10,9 @@ import { CARD_SCHEMA_VERSION } from "./card.schema";
  * v2 → v3：新增 `placements`（WYSIWYG 編輯器的版位覆寫）。
  *          雖然欄位有預設值，仍需升版：v2 程式碼解析 v3 資料時會把 placements 當未知欄位剝除，
  *          寫回時就會弄丟使用者的排版；升版讓舊分頁進入唯讀而不是默默覆寫。
+ * v3 → v4：對齊 momo 真實資料（見 docs/momo-data-format.md）。
+ *          - flash-sale：`stockSold` 改為 `stockRemaining`（momo 只提供 remainingAmount「最後 N 組」）
+ *          - `soldCount` 由 standard 專屬提升為共用欄位；新增 subtitle / images / videoUrl / url / priceFrom（皆有預設或選填）
  */
 type Raw = Record<string, unknown>;
 type MigrationStep = (card: Raw) => Raw;
@@ -35,6 +38,14 @@ const steps: Record<number, MigrationStep> = {
   },
   // from v2
   2: (card) => ({ ...card, placements: card.placements ?? {} }),
+  // from v3
+  3: (card) => {
+    if (card.variant !== "flash-sale") return card;
+    const { stockSold, ...rest } = card;
+    const total = typeof rest.stockTotal === "number" ? rest.stockTotal : 0;
+    const sold = typeof stockSold === "number" ? stockSold : 0;
+    return { ...rest, stockRemaining: Math.max(0, total - sold) };
+  },
 };
 
 export function migrateCard(raw: unknown, fromVersion: number): unknown {
