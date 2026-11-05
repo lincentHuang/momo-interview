@@ -42,10 +42,28 @@ export const cardStyles = css`
   .card:hover { box-shadow: 0 4px 16px rgb(0 0 0 / 0.1); }
   /* 卡片等高：宿主給高度（grid / flex stretch）時 body 撐滿，互動列以 margin-top:auto 貼底 */
   .card--grid { grid-template-rows: auto 1fr; }
-  .card--list { grid-template-columns: minmax(96px, 38%) 1fr; }
+  /*
+   * 橫式（list）：對齊 momo 首頁「品牌旗艦」橫向卡——淺灰底大圓角卡、圖片內縮成白底圓角方塊，
+   * 右側文字垂直置中，價格與標題之間留出呼吸空間。
+   */
+  .card--list {
+    grid-template-columns: minmax(96px, 44%) 1fr; align-items: center; gap: 14px; padding: 14px;
+    background: var(--momo-card-list-surface, #fafafa); border-color: var(--momo-card-list-border, #e3e3e3);
+    border-radius: var(--momo-card-list-radius, 10px);
+  }
 
   .media { position: relative; aspect-ratio: 1; background: #f6f6f6; overflow: hidden; }
-  .card--list .media { align-self: start; }
+  .card--list .media { align-self: center; border-radius: 8px; background: #fff; }
+  .card--list .body { align-self: stretch; justify-content: center; gap: 4px; padding: 0; }
+  .card--list .subtitle { font-size: 14px; line-height: 20px; min-height: 0; }
+  .card--list .subtitle:empty { display: none; }
+  .card--list .title { font-size: 15px; line-height: 22px; min-height: 0; }
+  .card--list .price-row { margin-top: 10px; }
+  .card--list .price { font-size: 22px; }
+  .card--list .price small { font-size: 14px; }
+  .card--list .original { font-size: 14px; }
+  .card--list .meta { margin-top: 2px; }
+  .card--list .meta:has(.sold:empty):has(.actions:empty) { display: none; }
   /* 多圖輪播：原生 scroll-snap，觸控滑動 / 觸控板橫向捲動 / 箭頭 / 圓點共用同一條捲動軌道 */
   .track {
     display: flex; width: 100%; height: 100%; overflow-x: auto; overscroll-behavior-x: contain;
@@ -139,17 +157,48 @@ export const cardStyles = css`
     border: 1px solid var(--_border); color: #8a8a8a; cursor: pointer; background: var(--_surface);
   }
   .icon-btn:hover { border-color: var(--_primary); color: var(--_primary); }
-  .icon-btn:focus-visible, .cta:focus-visible { outline: 2px solid var(--_primary); outline-offset: 2px; }
+  .icon-btn:focus-visible { outline: 2px solid var(--_primary); outline-offset: 2px; }
   .icon-btn[aria-pressed="true"] { color: var(--_primary); border-color: var(--_primary); background: var(--_primary-soft); }
   .icon-btn--cart { background: var(--_primary); border-color: var(--_primary); color: #fff; }
   .icon-btn--cart:hover { color: #fff; filter: brightness(1.08); }
-  .icon-btn[disabled], .cta[disabled] { opacity: 0.4; cursor: not-allowed; }
-  .cart-qty { font-size: 11px; color: var(--_primary); font-weight: 600; }
-  .cta {
-    all: unset; cursor: pointer; min-width: 44px; height: 28px; padding: 0 12px; border-radius: 14px 0 0 14px;
-    margin-right: -8px; text-align: center; line-height: 28px; font-size: 15px; font-weight: 700; color: #fff;
-    background: linear-gradient(90deg, #ff3b3b, #d70a1e);
+  .icon-btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+  /* 加入購物車：整條按鈕（與收藏並排時佔滿剩餘寬度，自己換到新的一行） */
+  .meta:has(.cart-bar) { flex-wrap: wrap; }
+  .actions:has(.cart-bar) { flex: 1 0 100%; }
+  .actions > :has(.cart-bar), .cart-bar { flex: 1; }
+  .cart-bar {
+    all: unset; box-sizing: border-box; display: flex; align-items: center; justify-content: center; gap: 4px;
+    height: 32px; border-radius: 4px; background: var(--_primary); color: #fff; font-size: 14px; font-weight: 700;
+    cursor: pointer; text-align: center;
   }
+  .cart-bar:hover { filter: brightness(1.08); }
+
+  /*
+   * 絕對定位（角落頁籤 / 圖片按鈕）：相對 .card 定位，貼齊卡片邊緣。
+   * 互動列保留右側空間，避免收藏按鈕或銷量文字跑到按鈕底下。
+   */
+  .actions:has(.cart-abs--bottom-right) { min-height: 28px; padding-right: 60px; }
+  .actions:has(.cart-img.cart-abs--bottom-right) { padding-right: 76px; }
+  /* momo 限搶卡的「搶」：紅色頁籤、左上大圓角、粗斜體 */
+  .cart-corner {
+    all: unset; box-sizing: border-box; display: grid; place-items: center; min-width: 64px; height: 34px; padding: 0 16px;
+    border-radius: 18px 0 0 0; background: #d1322e; color: #fff; font-size: 20px; font-weight: 900; font-style: italic;
+    letter-spacing: 0.02em; cursor: pointer;
+  }
+  .cart-corner.cart-abs--top-right { border-radius: 0 0 0 18px; }
+  .cart-corner--icon svg { width: 20px; height: 20px; }
+  .cart-corner:hover { filter: brightness(1.08); }
+  .cart-corner[disabled] { font-size: 13px; font-style: normal; }
+  .cart-img { all: unset; display: block; cursor: pointer; line-height: 0; }
+  .cart-img img { display: block; width: auto; max-width: 160px; }
+  .cart-img:hover { filter: brightness(1.05); }
+  /* 放在按鈕本身的 all: unset 之後，避免 position 被重設 */
+  .cart-abs { position: absolute; z-index: 3; }
+  .cart-abs--bottom-right { right: 0; bottom: 0; }
+  .cart-abs--top-right { right: 0; top: 0; }
+  .cart-bar:focus-visible, .cart-corner:focus-visible, .cart-img:focus-visible { outline: 2px solid var(--_primary); outline-offset: 2px; }
+  .cart-bar[disabled], .cart-corner[disabled], .cart-img[disabled] { opacity: 0.4; cursor: not-allowed; filter: none; }
 
   .tag { display: inline-flex; align-items: center; gap: 2px; height: 18px; padding: 0 3px; font-size: 11px; line-height: 18px; border-radius: 2px; white-space: nowrap; }
   .tag-img { display: block; height: 18px; width: auto; }

@@ -21,7 +21,7 @@ export interface CardRuntime {
   addToCart: () => void;
   /** 卡片處於「已結束」狀態（例如限搶倒數結束），購買類按鈕應停用 */
   inactive: boolean;
-  /** variant 指定的文字主按鈕（限時搶購為「搶」）；省略時使用購物車圖示 */
+  /** variant 建議的購買按鈕文字（限時搶購為「搶」）；add-to-cart 的 auto 樣式據此改用角落頁籤 */
   ctaLabel?: string;
 }
 

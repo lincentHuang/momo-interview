@@ -303,7 +303,7 @@ function RankingSection({ section, source }: { section: MomoSection; source: Sou
 function CarouselSection({ section }: { section: MomoSection }) {
   return (
     <SectionFrame section={section} cards={section.cards}>
-      <CardRow cards={section.cards} width="w-[300px]" layout="list" />
+      <CardRow cards={section.cards} width="w-[340px]" layout="list" />
     </SectionFrame>
   );
 }

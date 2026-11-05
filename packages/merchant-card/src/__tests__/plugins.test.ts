@@ -24,6 +24,19 @@ describe("PluginRegistry", () => {
     expect(reg.resolve(card({}), "actions")).toEqual([]);
   });
 
+  it("加入購物車：舊資料 {} 補上預設樣式，不合法樣式退回預設", () => {
+    const reg = new PluginRegistry();
+    BUILTIN_PLUGINS.forEach((p) => reg.register(p));
+    const [r] = reg.resolve(card({ "add-to-cart": {} }), "actions");
+    expect(r?.config).toEqual({ style: "auto", position: "bottom-right", imageHeight: 36 });
+    const [bar] = reg.resolve(card({ "add-to-cart": { style: "bar", label: "買" } }), "actions");
+    expect(bar?.config).toMatchObject({ style: "bar", label: "買" });
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const [bad] = reg.resolve(card({ "add-to-cart": { style: "floating" } }), "actions");
+    expect(bad?.config.style).toBe("auto");
+    warn.mockRestore();
+  });
+
   it("config 不合法時退回預設值，而非拋錯", () => {
     const reg = new PluginRegistry();
     BUILTIN_PLUGINS.forEach((p) => reg.register(p));

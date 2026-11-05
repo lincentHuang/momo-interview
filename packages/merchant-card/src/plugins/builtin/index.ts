@@ -248,23 +248,86 @@ export const favoritePlugin = definePlugin({
   },
 });
 
-/** 加入購物車。限時搶購卡由 variant 指定文字主按鈕（「搶」），其餘為購物車圖示 */
+const CART_STYLES = ["auto", "icon", "bar", "corner", "image"] as const;
+const CART_POSITIONS = ["bottom-right", "top-right", "inline"] as const;
+
+/**
+ * 加入購物車。提供幾種常見樣式（依 momo 與常見電商版型）：
+ *   - auto：依卡片類型決定——限時搶購為角落「搶」頁籤，其餘為購物車圖示
+ *   - icon：互動列內的圓形購物車圖示
+ *   - bar：卡片底部一整條「加入購物車」按鈕
+ *   - corner：絕對定位貼齊卡片角落的頁籤（momo 限搶卡的「搶」）
+ *   - image：以商家自備圖片當按鈕，可絕對定位或放在互動列
+ * 加購數量只記在狀態與事件（momo-card:add-to-cart 的 cartQty），卡片上不顯示（momo 官網沒有）。
+ */
 export const addToCartPlugin = definePlugin({
   id: "add-to-cart",
   name: "加入購物車",
-  description: "購物車 / 搶購按鈕（發出 momo-card:add-to-cart）",
+  description: "購物車按鈕：圖示 / 整條 / 角落頁籤 / 圖片（發出 momo-card:add-to-cart）",
   slot: "actions",
   order: 10,
-  defaults: {},
-  fields: [],
-  render: ({ runtime }) => {
-    const qty = runtime?.state.cartQty ?? 0;
+  configSchema: z.object({
+    style: z.enum(CART_STYLES),
+    position: z.enum(CART_POSITIONS),
+    label: z.string().max(8).optional(),
+    imageUrl: z.string().optional(),
+    imageHeight: z.number().int().min(16).max(96),
+  }),
+  defaults: { style: "auto", position: "bottom-right", imageHeight: 36 },
+  fields: [
+    {
+      kind: "select",
+      key: "style",
+      label: "按鈕樣式",
+      options: [
+        { value: "auto", label: "自動（限搶為「搶」頁籤）" },
+        { value: "icon", label: "圓形圖示" },
+        { value: "bar", label: "整條按鈕" },
+        { value: "corner", label: "角落頁籤" },
+        { value: "image", label: "圖片按鈕" },
+      ],
+    },
+    {
+      kind: "select",
+      key: "position",
+      label: "位置（角落頁籤 / 圖片按鈕）",
+      options: [
+        { value: "bottom-right", label: "卡片右下角" },
+        { value: "top-right", label: "卡片右上角" },
+        { value: "inline", label: "互動列內（僅圖片按鈕）" },
+      ],
+    },
+    { kind: "text", key: "label", label: "按鈕文字（選填）", maxLength: 8, placeholder: "例：搶、加入購物車" },
+    { kind: "text", key: "imageUrl", label: "按鈕圖片網址（圖片按鈕）" },
+    { kind: "number", key: "imageHeight", label: "圖片高度", min: 16, max: 96, step: 2, unit: "px" },
+  ],
+  render: ({ config, runtime }) => {
     const inactive = runtime?.inactive ?? false;
-    const cta = runtime?.ctaLabel;
     const add = stop(() => runtime?.addToCart());
-    return html`${qty > 0 ? html`<span class="cart-qty" aria-live="polite">×${qty}</span>` : null}${cta
-      ? html`<button class="cta" aria-label="${cta}購：加入購物車" ?disabled=${inactive} @click=${add}>${inactive ? "已結束" : cta}</button>`
-      : html`<button class="icon-btn icon-btn--cart" aria-label="加入購物車" ?disabled=${inactive} @click=${add}>${cartIcon}</button>`}`;
+    const style = config.style === "auto" ? (runtime?.ctaLabel ? "corner" : "icon") : config.style;
+    const label = config.label || (style === "bar" ? "加入購物車" : runtime?.ctaLabel);
+    const pos = config.position === "inline" ? "bottom-right" : config.position;
+
+    if (style === "image" && config.imageUrl) {
+      const cls = config.position === "inline" ? "cart-img" : `cart-img cart-abs cart-abs--${pos}`;
+      return html`<button class=${cls} aria-label=${label ?? "加入購物車"} ?disabled=${inactive} @click=${add}>
+        <img src=${config.imageUrl} alt="" style="height:${config.imageHeight}px" draggable="false" />
+      </button>`;
+    }
+    if (style === "bar") {
+      return html`<button class="cart-bar" aria-label="加入購物車" ?disabled=${inactive} @click=${add}>
+        ${inactive ? "已結束" : html`${cartIcon}<span>${label}</span>`}
+      </button>`;
+    }
+    if (style === "corner") {
+      return html`<button
+        class="cart-corner cart-abs cart-abs--${pos} ${label ? "" : "cart-corner--icon"}"
+        aria-label=${label ? `${label}：加入購物車` : "加入購物車"}
+        ?disabled=${inactive}
+        @click=${add}
+      >${inactive ? "已結束" : (label ?? cartIcon)}</button>`;
+    }
+    return html`<button class="icon-btn icon-btn--cart" aria-label="加入購物車" ?disabled=${inactive} @click=${add}>${cartIcon}</button>`;
   },
 });
 
